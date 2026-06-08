@@ -1,0 +1,734 @@
+<style>
+.prefooter-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  height: var(--banner-desk-height, 220px);
+  background-color: var(--banner-bg-color, #ffffff);
+  color: var(--banner-text-color, #555555);
+}
+
+.prefooter-banner__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.prefooter-banner__bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.prefooter-banner__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--banner-overlay-color, #000000);
+  opacity: var(--banner-overlay-opacity, 0);
+  pointer-events: none;
+}
+
+.prefooter-banner__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--banner-desk-width, 100%);
+  height: 100%;
+  padding: 1rem 2rem;
+}
+
+/* ---- Left image — absolutely positioned so content stays centred ---- */
+.prefooter-banner__left-img {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--banner-left-img-max-width, 22%);
+  max-width: 22%;
+  pointer-events: none;
+}
+
+.prefooter-banner__left-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ---- Center content ---- */
+.prefooter-banner__content {
+  flex: 0 1 auto;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.prefooter-banner__heading {
+  margin: 0 0 0.35rem;
+  font-size: var(--banner-heading-font-size, 18px);
+  font-weight: var(--banner-heading-font-weight, 700);
+  line-height: 1.2;
+  color: var(--banner-heading-color, #000000);
+}
+
+.prefooter-banner__subtext {
+  margin: 0 0 0.5rem;
+  font-size: var(--banner-subtext-font-size, 14px);
+  color: var(--banner-text-color, #555555);
+}
+
+.prefooter-banner__desc {
+  margin: 0 0 1rem;
+  font-size: var(--banner-desc-font-size, 13px);
+  line-height: 1.6;
+}
+
+.prefooter-banner__btn {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid var(--banner-btn-border, #000000);
+  background-color: var(--banner-btn-bg, #000000);
+  color: var(--banner-btn-text, #ffffff);
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.prefooter-banner__btn:hover {
+  opacity: 0.85;
+}
+
+/* ---- Email form ---- */
+.prefooter-banner__email {
+  margin-bottom: 0.75rem;
+}
+
+.prefooter-banner__email form {
+  display: flex;
+  gap: var(--banner-email-gap, 0px);
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.prefooter-banner__email-input {
+  flex: 0 0 auto;
+  width: var(--banner-email-width, 320px);
+  max-width: 100%;
+  height: var(--banner-email-height, 54px);
+  padding: 0 1.25rem;
+  font-size: var(--banner-email-font-size, 16px);
+  border: 1px solid var(--banner-email-input-border, #cccccc);
+  border-radius: var(--banner-email-radius, 24px);
+  background: var(--banner-email-input-bg, #ffffff);
+  color: var(--banner-email-input-text, #333333);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.prefooter-banner__email-input::placeholder {
+  color: var(--banner-email-input-text, #333333);
+  opacity: 0.55;
+}
+
+.prefooter-banner__email-input:focus {
+  border-color: var(--banner-email-btn-bg, #000000);
+}
+
+.prefooter-banner__email-btn {
+  flex: 0 0 auto;
+  height: var(--banner-email-height, 54px);
+  padding: 0 2.5rem;
+  font-size: var(--banner-email-font-size, 16px);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  border: none;
+  border-radius: var(--banner-email-radius, 24px);
+  background-color: var(--banner-email-btn-bg, #000000);
+  color: var(--banner-email-btn-text, #ffffff);
+  cursor: pointer;
+  transition: opacity 0.2s;
+  box-sizing: border-box;
+}
+
+.prefooter-banner__email-btn:hover {
+  opacity: 0.85;
+}
+
+.prefooter-banner__email-success {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--banner-heading-color, #000000);
+}
+
+/* ---- Right image — absolutely positioned to keep content centred ---- */
+.prefooter-banner__right-img {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22%;
+  max-width: 22%;
+  pointer-events: none;
+}
+
+.prefooter-banner__right-img-el {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  animation: prefooter-bounce 3s ease-in-out infinite;
+}
+
+@keyframes prefooter-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* ========== Mobile ========== */
+@media (max-width: 767px) {
+  .prefooter-banner {
+    height: auto;
+    min-height: var(--banner-mob-height, 280px);
+    padding: 2rem 0;
+  }
+
+  .prefooter-banner__inner {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: var(--banner-mob-width, 100%);
+    padding: 1.5rem 1.25rem;
+  }
+
+  .prefooter-banner__left-img {
+    position: static;
+    transform: none;
+    width: 50%;
+    max-width: 50%;
+  }
+
+  .prefooter-banner__content {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .prefooter-banner__email form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .prefooter-banner__email-input {
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--banner-email-radius, 24px);
+  }
+
+  .prefooter-banner__email-btn {
+    width: 100%;
+    border-radius: var(--banner-email-radius, 24px);
+  }
+
+  .prefooter-banner__right-img {
+    display: none;
+  }
+}
+</style>
+
+<div
+  class="prefooter-banner"
+  style="
+    --banner-desk-height: {{ section.settings.desk_height }}px;
+    --banner-mob-height: {{ section.settings.mob_height }}px;
+    --banner-desk-width: {{ section.settings.desk_width }}%;
+    --banner-mob-width: {{ section.settings.mob_width }}%;
+    --banner-bg-color: {{ section.settings.bg_color }};
+    --banner-heading-color: {{ section.settings.heading_color }};
+    --banner-text-color: {{ section.settings.text_color }};
+    --banner-overlay-color: {{ section.settings.overlay_color }};
+    --banner-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --banner-email-height: {{ section.settings.email_height }}px;
+    --banner-email-font-size: {{ section.settings.email_font_size }}px;
+    --banner-email-width: {{ section.settings.email_width }}px;
+    --banner-email-radius: {{ section.settings.email_radius }}px;
+    --banner-email-gap: {{ section.settings.email_gap }}px;
+    --banner-email-input-bg: {{ section.settings.email_input_bg }};
+    --banner-email-input-text: {{ section.settings.email_input_text }};
+    --banner-email-input-border: {{ section.settings.email_input_border }};
+    --banner-email-btn-bg: {{ section.settings.email_btn_bg }};
+    --banner-email-btn-text: {{ section.settings.email_btn_text_color }};
+    --banner-heading-font-size: {{ section.settings.heading_font_size }}px;
+    --banner-subtext-font-size: {{ section.settings.subtext_font_size }}px;
+    --banner-desc-font-size: {{ section.settings.desc_font_size }}px;
+    --banner-heading-font-weight: {{ section.settings.heading_font_weight }};
+  "
+>
+  {%- if section.settings.bg_image != blank -%}
+    <div class="prefooter-banner__bg">
+      {{
+        section.settings.bg_image
+        | image_url: width: 1920
+        | image_tag: loading: 'lazy', class: 'prefooter-banner__bg-img'
+      }}
+    </div>
+  {%- endif -%}
+
+  <div class="prefooter-banner__overlay"></div>
+
+  <div class="prefooter-banner__inner page-width">
+    {%- if section.settings.left_image != blank -%}
+      <div class="prefooter-banner__left-img">
+        {{
+          section.settings.left_image
+          | image_url: width: 800
+          | image_tag: loading: 'lazy'
+        }}
+      </div>
+    {%- endif -%}
+
+    <div class="prefooter-banner__content">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="prefooter-banner__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.subheading != blank -%}
+        <p class="prefooter-banner__subtext">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <div class="prefooter-banner__desc">{{ section.settings.description }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.show_email -%}
+        <div class="prefooter-banner__email">
+          {%- form 'customer', id: 'prefooter-email' -%}
+            {{ form.errors | default_errors }}
+            {%- if form.posted_successfully? -%}
+              <p class="prefooter-banner__email-success">{{ section.settings.email_success }}</p>
+            {%- else -%}
+              <input
+                type="email"
+                name="contact[email]"
+                class="prefooter-banner__email-input"
+                value="{{ form.email }}"
+                placeholder="{{ section.settings.email_placeholder }}"
+                autocorrect="off"
+                autocapitalize="off"
+                required
+              >
+              <button type="submit" class="prefooter-banner__email-btn">
+                {{ section.settings.email_btn_text }}
+              </button>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.btn_text != blank and section.settings.btn_url != blank -%}
+        <a
+          href="{{ section.settings.btn_url }}"
+          class="prefooter-banner__btn"
+          style="
+            --banner-btn-bg: {{ section.settings.btn_bg }};
+            --banner-btn-text: {{ section.settings.btn_text_color }};
+            --banner-btn-border: {{ section.settings.btn_border }};
+          "
+        >
+          {{ section.settings.btn_text }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.right_hover_image != blank -%}
+      <div class="prefooter-banner__right-img">
+        {{
+          section.settings.right_hover_image
+          | image_url: width: 800
+          | image_tag: loading: 'lazy', class: 'prefooter-banner__right-img-el'
+        }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Prefooter Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Sizing"
+    },
+    {
+      "type": "range",
+      "id": "desk_height",
+      "label": "Height — Desktop (px)",
+      "min": 150,
+      "max": 1000,
+      "step": 10,
+      "default": 220,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mob_height",
+      "label": "Height — Mobile (px)",
+      "min": 200,
+      "max": 800,
+      "step": 10,
+      "default": 280,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "desk_width",
+      "label": "Content Width — Desktop (%)",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "mob_width",
+      "label": "Content Width — Mobile (%)",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay Opacity (%)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Left Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_hover_image",
+      "label": "Right Side Image",
+      "info": "Always visible with a soft bounce animation."
+    },
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your heading here"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Your subheading here"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Tell your story here."
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (px)",
+      "min": 10,
+      "max": 60,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "subtext_font_size",
+      "label": "Subheading Font Size (px)",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "desc_font_size",
+      "label": "Description Font Size (px)",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 13,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Email Capture"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_email",
+      "label": "Show email signup form",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email input placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "email_btn_text",
+      "label": "Email submit button text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "email_success",
+      "label": "Success message",
+      "default": "Thanks for subscribing!",
+      "info": "Shown after a successful signup."
+    },
+    {
+      "type": "header",
+      "content": "Email Style"
+    },
+    {
+      "type": "range",
+      "id": "email_height",
+      "label": "Input & Button Height (px)",
+      "min": 36,
+      "max": 80,
+      "step": 2,
+      "default": 54,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "email_font_size",
+      "label": "Input & Button Font Size (px)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "email_width",
+      "label": "Input Width (px)",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "default": 320,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "email_radius",
+      "label": "Border Radius (px)",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "email_gap",
+      "label": "Gap Between Input & Button (px)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "email_input_bg",
+      "label": "Input Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "email_input_text",
+      "label": "Input Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "email_input_border",
+      "label": "Input Border",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "email_btn_bg",
+      "label": "Button Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "email_btn_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text / Body Color",
+      "default": "#555555"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Label",
+      "default": "Shop Now",
+      "info": "Leave empty to hide button."
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Button Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_border",
+      "label": "Button Border Color",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Prefooter Banner",
+      "settings": {
+        "desk_height": 220,
+        "mob_height": 280,
+        "desk_width": 100,
+        "mob_width": 100,
+        "bg_color": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0,
+        "heading": "Your heading here",
+        "subheading": "Your subheading here",
+        "description": "Tell your story here.",
+        "heading_font_size": 18,
+        "subtext_font_size": 14,
+        "desc_font_size": 13,
+        "heading_font_weight": "700",
+        "show_email": true,
+        "email_placeholder": "Enter your email",
+        "email_btn_text": "Subscribe",
+        "email_success": "Thanks for subscribing!",
+        "email_height": 54,
+        "email_font_size": 16,
+        "email_width": 320,
+        "email_radius": 24,
+        "email_gap": 0,
+        "email_input_bg": "#ffffff",
+        "email_input_text": "#333333",
+        "email_input_border": "#cccccc",
+        "email_btn_bg": "#000000",
+        "email_btn_text_color": "#ffffff",
+        "heading_color": "#000000",
+        "text_color": "#555555",
+        "btn_text": "Shop Now",
+        "btn_bg": "#000000",
+        "btn_text_color": "#ffffff",
+        "btn_border": "#000000"
+      }
+    }
+  ]
+}
+{% endschema %}

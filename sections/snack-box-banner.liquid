@@ -1,0 +1,572 @@
+{% comment %}
+  Section: Snack Box Valentine Banner
+  - Left-aligned text (left ~30% of banner)
+  - Product image centered in the banner (middle zone)
+  - Separate desktop / mobile background images
+  - All sizes controlled via Theme Editor sliders
+{% endcomment %}
+
+{%- liquid
+  assign bg_desktop  = section.settings.background_image
+  assign bg_mobile   = section.settings.background_image_mobile
+  assign product_image = section.settings.product_image
+-%}
+
+<style>
+  /* ─── Wrapper ─────────────────────────────────────────────── */
+  #snack-banner-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: block;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    box-sizing: border-box;
+  }
+
+  /* ─── Background images ───────────────────────────────────── */
+  #snack-banner-{{ section.id }} .snack-banner__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+  }
+  /* Desktop bg: visible on desktop, hidden on mobile */
+  #snack-banner-{{ section.id }} .snack-banner__bg--desktop {
+    display: block;
+  }
+  /* Mobile bg: hidden on desktop, visible on mobile */
+  #snack-banner-{{ section.id }} .snack-banner__bg--mobile {
+    display: none;
+  }
+
+  /* ─── Inner container ─────────────────────────────────────── */
+  #snack-banner-{{ section.id }} .snack-banner__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: {{ section.settings.section_height_desktop }}px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0;
+  }
+
+  /* ─── Text content — left-pinned ─────────────────────────── */
+  #snack-banner-{{ section.id }} .snack-banner__content {
+    position: absolute;
+    left: {{ section.settings.content_left_desktop }}%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: {{ section.settings.content_width_desktop }}%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: {{ section.settings.content_gap_desktop }}px;
+  }
+
+  /* ─── Heading ─────────────────────────────────────────────── */
+  #snack-banner-{{ section.id }} .snack-banner__heading {
+    margin: 0;
+    padding: 0;
+    font-family: {{ section.settings.heading_font.family }}, Georgia, serif;
+    font-style: italic;
+    line-height: 1.15;
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_font_size_desktop }}px;
+    font-weight: {{ section.settings.heading_font.weight | default: 700 }};
+  }
+  #snack-banner-{{ section.id }} .snack-banner__heading span {
+    color: {{ section.settings.heading_line2_color }};
+    display: block;
+  }
+
+  /* ─── Badge / subheading ──────────────────────────────────── */
+  #snack-banner-{{ section.id }} .snack-banner__subheading {
+    display: inline-block;
+    background: {{ section.settings.subheading_bg_color }};
+    color: {{ section.settings.subheading_color }};
+    font-size: {{ section.settings.subheading_font_size_desktop }}px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin: 0;
+  }
+
+  /* ─── Button ──────────────────────────────────────────────── */
+  #snack-banner-{{ section.id }} .snack-banner__btn {
+    display: inline-block;
+    padding: 9px 24px;
+    background: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    font-size: {{ section.settings.button_font_size_desktop }}px;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+    margin: 0;
+  }
+  #snack-banner-{{ section.id }} .snack-banner__btn:hover {
+    opacity: 0.82;
+  }
+
+  /* ─── Product image — centered in banner ─────────────────── */
+  #snack-banner-{{ section.id }} .snack-banner__product {
+    position: absolute;
+    left: {{ section.settings.product_left_desktop }}%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #snack-banner-{{ section.id }} .snack-banner__product img {
+    width: {{ section.settings.product_width_desktop }}px;
+    height: auto;
+    max-height: {{ section.settings.section_height_desktop }}px;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* ═══ MOBILE (≤ 767px) ═══════════════════════════════════════ */
+  @media screen and (max-width: 767px) {
+
+    /* Switch background images */
+    #snack-banner-{{ section.id }} .snack-banner__bg--desktop {
+      display: {% if bg_mobile != blank %}none{% else %}block{% endif %};
+    }
+    #snack-banner-{{ section.id }} .snack-banner__bg--mobile {
+      display: {% if bg_mobile != blank %}block{% else %}none{% endif %};
+    }
+
+    /*
+     * Mobile: vertical stack — product image on top, text below.
+     * Both in normal flow so the section grows naturally.
+     * Background image stretches to cover the full height.
+     */
+    #snack-banner-{{ section.id }} .snack-banner__inner {
+      height: auto;
+      min-height: unset;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+      gap: 0;
+    }
+
+    /* Product image — full width, on top */
+    #snack-banner-{{ section.id }} .snack-banner__product {
+      position: static;
+      transform: none;
+      order: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: {{ section.settings.content_gap_mobile }}px 5% 0;
+      box-sizing: border-box;
+    }
+    #snack-banner-{{ section.id }} .snack-banner__product img {
+      width: {{ section.settings.product_width_mobile }}px;
+      max-width: 85%;
+      max-height: none;
+      height: auto;
+    }
+
+    /* Text block — below the image, centered */
+    #snack-banner-{{ section.id }} .snack-banner__content {
+      position: static;
+      transform: none;
+      order: 2;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: {{ section.settings.content_gap_mobile }}px;
+      padding: {{ section.settings.content_gap_mobile }}px 5% calc({{ section.settings.content_gap_mobile }}px + 8px);
+      box-sizing: border-box;
+    }
+
+    /* Typography */
+    #snack-banner-{{ section.id }} .snack-banner__heading {
+      font-size: {{ section.settings.heading_font_size_mobile }}px;
+    }
+    #snack-banner-{{ section.id }} .snack-banner__subheading {
+      font-size: {{ section.settings.subheading_font_size_mobile }}px;
+      padding: 4px 12px;
+    }
+    #snack-banner-{{ section.id }} .snack-banner__btn {
+      font-size: {{ section.settings.button_font_size_mobile }}px;
+      padding: 8px 18px;
+    }
+  }
+</style>
+
+<section id="snack-banner-{{ section.id }}" aria-label="{{ section.settings.heading_line1 }} {{ section.settings.heading_line2 }}">
+
+  {%- comment -%} Desktop background {%- endcomment -%}
+  {%- if bg_desktop != blank -%}
+    <img
+      class="snack-banner__bg snack-banner__bg--desktop"
+      src="{{ bg_desktop | image_url: width: 2200 }}"
+      srcset="
+        {{ bg_desktop | image_url: width: 800 }} 800w,
+        {{ bg_desktop | image_url: width: 1200 }} 1200w,
+        {{ bg_desktop | image_url: width: 1600 }} 1600w,
+        {{ bg_desktop | image_url: width: 2200 }} 2200w
+      "
+      sizes="100vw"
+      width="{{ bg_desktop.width }}"
+      height="{{ bg_desktop.height }}"
+      alt="{{ bg_desktop.alt | default: 'Banner background' | escape }}"
+      loading="eager"
+    >
+  {%- endif -%}
+
+  {%- comment -%} Mobile background (optional — falls back to desktop bg if not set) {%- endcomment -%}
+  {%- if bg_mobile != blank -%}
+    <img
+      class="snack-banner__bg snack-banner__bg--mobile"
+      src="{{ bg_mobile | image_url: width: 800 }}"
+      srcset="
+        {{ bg_mobile | image_url: width: 400 }} 400w,
+        {{ bg_mobile | image_url: width: 600 }} 600w,
+        {{ bg_mobile | image_url: width: 800 }} 800w
+      "
+      sizes="100vw"
+      width="{{ bg_mobile.width }}"
+      height="{{ bg_mobile.height }}"
+      alt="{{ bg_mobile.alt | default: 'Banner background mobile' | escape }}"
+      loading="eager"
+    >
+  {%- endif -%}
+
+  <div class="snack-banner__inner">
+
+    {%- comment -%} Text content — absolutely positioned left {%- endcomment -%}
+    <div class="snack-banner__content">
+      {%- if section.settings.heading_line1 != blank or section.settings.heading_line2 != blank -%}
+        <h2 class="snack-banner__heading">
+          {{- section.settings.heading_line1 | escape -}}
+          {%- if section.settings.heading_line2 != blank -%}
+            <span>{{ section.settings.heading_line2 | escape }}</span>
+          {%- endif -%}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.subheading != blank -%}
+        <p class="snack-banner__subheading">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a class="snack-banner__btn" href="{{ section.settings.button_url | default: '#' }}">
+          {{ section.settings.button_label | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Product image — absolutely positioned center {%- endcomment -%}
+    {%- if product_image != blank -%}
+      <div class="snack-banner__product">
+        <img
+          src="{{ product_image | image_url: width: 700 }}"
+          srcset="
+            {{ product_image | image_url: width: 300 }} 300w,
+            {{ product_image | image_url: width: 500 }} 500w,
+            {{ product_image | image_url: width: 700 }} 700w
+          "
+          sizes="(max-width: 767px) {{ section.settings.product_width_mobile }}px, {{ section.settings.product_width_desktop }}px"
+          width="{{ product_image.width }}"
+          height="{{ product_image.height }}"
+          alt="{{ product_image.alt | default: 'Snack box' | escape }}"
+          loading="eager"
+        >
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Snack Box Banner",
+  "tag": "div",
+  "class": "snack-box-banner-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image (mobile) — optional, falls back to desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product / Snack box image"
+    },
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Heading — line 1",
+      "default": "Share the love,"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Heading — line 2 (accent color)",
+      "default": "Send snacks."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading / Badge",
+      "default": "Happy Valentine's Day!"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading line 1 color",
+      "default": "#5c2b3a"
+    },
+    {
+      "type": "color",
+      "id": "heading_line2_color",
+      "label": "Heading line 2 color",
+      "default": "#d63c6b"
+    },
+    {
+      "type": "color",
+      "id": "subheading_bg_color",
+      "label": "Subheading background",
+      "default": "#d63c6b"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#3d1f28"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Typography — Desktop"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "playfair_display_n7"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "label": "Heading font size (desktop, px)",
+      "min": 18,
+      "max": 72,
+      "step": 1,
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "subheading_font_size_desktop",
+      "label": "Subheading font size (desktop, px)",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_desktop",
+      "label": "Button font size (desktop, px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Typography — Mobile"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading font size (mobile, px)",
+      "min": 8,
+      "max": 48,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "subheading_font_size_mobile",
+      "label": "Subheading font size (mobile, px)",
+      "min": 5,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_mobile",
+      "label": "Button font size (mobile, px)",
+      "min": 5,
+      "max": 18,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Layout — Desktop"
+    },
+    {
+      "type": "range",
+      "id": "section_height_desktop",
+      "label": "Section height — desktop (px)",
+      "min": 80,
+      "max": 500,
+      "step": 5,
+      "default": 160
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom (px)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_left_desktop",
+      "label": "Text: distance from left — desktop (%)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "content_width_desktop",
+      "label": "Text block width — desktop (%)",
+      "min": 15,
+      "max": 50,
+      "step": 1,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "content_gap_desktop",
+      "label": "Text elements gap — desktop (px)",
+      "min": 2,
+      "max": 30,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "product_left_desktop",
+      "label": "Product image: distance from left — desktop (%)",
+      "min": 20,
+      "max": 70,
+      "step": 1,
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "product_width_desktop",
+      "label": "Product image width — desktop (px)",
+      "min": 80,
+      "max": 600,
+      "step": 10,
+      "default": 300
+    },
+    {
+      "type": "header",
+      "content": "Layout — Mobile"
+    },
+    {
+      "type": "range",
+      "id": "content_gap_mobile",
+      "label": "Text elements gap — mobile (px)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "product_width_mobile",
+      "label": "Product image width — mobile (px)",
+      "min": 30,
+      "max": 250,
+      "step": 5,
+      "default": 130
+    }
+  ],
+  "presets": [
+    {
+      "name": "Snack Box Banner",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,808 @@
+{%- style -%}
+  :root {
+    --jg-test-bg-{{ section.id }}: {{ section.settings.background_color }};
+    
+    /* Spacing */
+    --jg-test-pad-top-{{ section.id }}: {{ section.settings.pad_top }}px;
+    --jg-test-pad-bottom-{{ section.id }}: {{ section.settings.pad_bottom }}px;
+    --jg-test-mar-top-{{ section.id }}: {{ section.settings.mar_top }}px;
+    --jg-test-mar-bottom-{{ section.id }}: {{ section.settings.mar_bottom }}px;
+    
+    --jg-test-pad-top-mob-{{ section.id }}: {{ section.settings.pad_top_mobile }}px;
+    --jg-test-pad-bottom-mob-{{ section.id }}: {{ section.settings.pad_bottom_mobile }}px;
+    --jg-test-mar-top-mob-{{ section.id }}: {{ section.settings.mar_top_mobile }}px;
+    --jg-test-mar-bottom-mob-{{ section.id }}: {{ section.settings.mar_bottom_mobile }}px;
+  }
+  
+  .jg-testimonials-{{ section.id }} {
+    background-color: var(--jg-test-bg-{{ section.id }});
+    padding-top: var(--jg-test-pad-top-{{ section.id }});
+    padding-bottom: var(--jg-test-pad-bottom-{{ section.id }});
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: var(--jg-test-mar-top-{{ section.id }});
+    margin-bottom: var(--jg-test-mar-bottom-{{ section.id }});
+    font-family: var(--jg-font-sans);
+    position: relative;
+  }
+  .jg-testimonials__header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .jg-testimonials__title {
+    font-family: var(--jg-font-serif);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--jg-color-blue);
+    margin: 0;
+  }
+  
+  /* Wrapper around container and arrows */
+  .jg-testimonials__wrapper {
+    position: relative;
+    max-width: {% if section.settings.width_mode == 'boxed' %}1100px{% else %}100%{% endif %};
+    margin: 0 auto;
+  }
+
+  /* Carousel Navigation Arrows */
+  .jg-testimonials__arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 1px solid #ede7db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--jg-color-blue);
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+  }
+  .jg-testimonials__arrow:hover {
+    background-color: var(--jg-color-bg-light);
+    color: var(--jg-color-gold);
+    transform: scale(1.05);
+  }
+  .jg-testimonials__arrow svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+  }
+  
+  /* Cards Container */
+  .jg-testimonials__container {
+    display: grid;
+    grid-template-columns: repeat({% if section.blocks.size < 3 %}{{ section.blocks.size }}{% else %}3{% endif %}, 1fr);
+    gap: 24px;
+  }
+  .jg-testimonials__card {
+    background: #ffffff;
+    border: 1px solid #f0eae0;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(139, 122, 98, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .jg-testimonials__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(139, 122, 98, 0.08);
+  }
+  
+  .jg-testimonials__stars {
+    color: var(--jg-color-gold);
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+  }
+  .jg-testimonials__quote {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4a4a4a;
+    font-style: italic;
+    margin: 0 0 20px 0;
+    flex-grow: 1;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .jg-testimonials__author {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--jg-color-blue);
+    margin: 0 0 5px 0;
+  }
+  
+  /* Verified Buyer badge styling */
+  .jg-testimonials__verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--jg-color-gold);
+  }
+  .jg-testimonials__verified-check {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: var(--jg-color-gold);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .jg-testimonials__verified-check svg {
+    width: 9px;
+    height: 9px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+  }
+
+  /* Dots pagination */
+  .jg-testimonials__dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .jg-testimonials__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ede7db;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .jg-testimonials__dot.active {
+    background-color: var(--jg-color-gold);
+    width: 24px;
+    border-radius: 4px;
+  }
+
+  /* Desktop/Tablet Carousel Layout & Scroll Settings */
+  .jg-testimonials__track-outer {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    width: 100%;
+    padding: 10px 0;
+  }
+  .jg-testimonials__track-outer::-webkit-scrollbar {
+    display: none;
+  }
+  .jg-testimonials__track {
+    display: flex;
+    gap: 24px;
+  }
+  .jg-testimonials__track .jg-testimonials__card {
+    flex: 0 0 {% if section.blocks.size == 1 %}100%{% elsif section.blocks.size == 2 %}calc(50% - 12px){% else %}calc(33.333% - 16px){% endif %};
+    scroll-snap-align: center;
+    box-sizing: border-box;
+  }
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .jg-testimonials__track .jg-testimonials__card {
+      flex: 0 0 {% if section.blocks.size == 1 %}100%{% else %}calc(50% - 12px){% endif %};
+    }
+  }
+  .jg-testimonials__desk-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  @media (min-width: 1025px) {
+    {% if section.blocks.size <= 3 %}
+    .jg-testimonials__desk-controls {
+      display: none !important;
+    }
+    {% endif %}
+  }
+  @media (max-width: 1024px) and (min-width: 769px) {
+    {% if section.blocks.size <= 2 %}
+    .jg-testimonials__desk-controls {
+      display: none !important;
+    }
+    {% endif %}
+  }
+
+  /* ── MOBILE CAROUSEL ───────────────────────────────────────── */
+  /* Hidden on desktop by default; shown by media query */
+  .jg-testimonials__mob-wrap {
+    display: none;
+  }
+
+  /* Mobile controls (prev dot-strip next) */
+  .jg-testimonials__mob-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .jg-testimonials__mob-controls .jg-testimonials__arrow {
+    width: 36px;
+    height: 36px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  .jg-testimonials__mob-controls .jg-testimonials__arrow svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* ── RESPONSIVE BREAKPOINTS ────────────────────────────────── */
+  @media (max-width: 768px) {
+    .jg-testimonials-{{ section.id }} {
+      padding-top: var(--jg-test-pad-top-mob-{{ section.id }});
+      padding-bottom: var(--jg-test-pad-bottom-mob-{{ section.id }});
+      margin-top: var(--jg-test-mar-top-mob-{{ section.id }});
+      margin-bottom: var(--jg-test-mar-bottom-mob-{{ section.id }});
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    /* Hide desktop carousel on mobile */
+    .jg-testimonials__track-outer,
+    .jg-testimonials__desk-controls {
+      display: none;
+    }
+
+    /* Show mobile carousel on mobile */
+    .jg-testimonials__mob-wrap {
+      display: block;
+    }
+
+    .jg-testimonials__mob-container {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 16px;
+      padding: 8px 4px 16px 4px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .jg-testimonials__mob-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Mobile cards */
+    .jg-testimonials__mob-container .jg-testimonials__card {
+      width: 86%;
+      min-width: 86%;
+      max-width: 86%;
+      padding: 24px;
+      background: #ffffff;
+      border: 1px solid #f0eae0;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(139, 122, 98, 0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      scroll-snap-align: center;
+      flex-shrink: 0;
+      box-sizing: border-box;
+    }
+  }
+
+  {{ section.settings.custom_css }}
+{%- endstyle -%}
+
+<section
+  id="{{ section.settings.custom_id | default: section.id }}"
+  class="jg-testimonials-{{ section.id }} {{ section.settings.custom_class }}"
+  style="{{ section.settings.custom_style }}"
+  data-jg-testimonials="{{ section.id }}"
+  data-jg-testimonials-slider
+>
+
+  <div class="jg-testimonials__header">
+    <h2 class="jg-testimonials__title">{{ section.settings.title }}</h2>
+  </div>
+
+  {%- assign total = section.blocks.size -%}
+
+  {%- comment -%} ── DESKTOP / TABLET AUTO-CAROUSEL ────────────────────────── {%- endcomment -%}
+  <div class="jg-testimonials__track-outer" data-jg-track-outer>
+    <div class="jg-testimonials__track" data-jg-track>
+      {%- for block in section.blocks -%}
+        <div class="jg-testimonials__card" data-jg-real-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <div>
+            <div class="jg-testimonials__stars">
+              {%- for i in (1..block.settings.stars) -%}★{%- endfor -%}
+            </div>
+            <p class="jg-testimonials__quote">"{{ block.settings.quote }}"</p>
+          </div>
+          <div>
+            <h4 class="jg-testimonials__author">— {{ block.settings.author }}</h4>
+            {%- if block.settings.verified -%}
+              <div class="jg-testimonials__verified">
+                <div class="jg-testimonials__verified-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span>Verified Buyer</span>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- comment -%} Desktop controls: prev · dots · next {%- endcomment -%}
+  {%- if total > 1 -%}
+    <div class="jg-testimonials__desk-controls">
+      <div class="jg-testimonials__arrow jg-testimonials__arrow--prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </div>
+      <div class="jg-testimonials__dots" data-jg-dots>
+        {%- for block in section.blocks -%}
+          <button class="jg-testimonials__dot{% if forloop.first %} active{% endif %}"
+            data-index="{{ forloop.index0 }}"
+            aria-label="Slide {{ forloop.index }}">
+          </button>
+        {%- endfor -%}
+      </div>
+      <div class="jg-testimonials__arrow jg-testimonials__arrow--next" aria-label="Next">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ── MOBILE CAROUSEL ───────────────────────────────────────── {%- endcomment -%}
+  <div class="jg-testimonials__mob-wrap">
+    <div class="jg-testimonials__mob-container" data-jg-mob-container>
+      {%- for block in section.blocks -%}
+        <div class="jg-testimonials__card" data-jg-mob-index="{{ forloop.index0 }}">
+          <div>
+            <div class="jg-testimonials__stars">
+              {%- for i in (1..block.settings.stars) -%}★{%- endfor -%}
+            </div>
+            <p class="jg-testimonials__quote">"{{ block.settings.quote }}"</p>
+          </div>
+          <div>
+            <h4 class="jg-testimonials__author">— {{ block.settings.author }}</h4>
+            {%- if block.settings.verified -%}
+              <div class="jg-testimonials__verified">
+                <div class="jg-testimonials__verified-check">
+                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span>Verified Buyer</span>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if total > 1 -%}
+      <div class="jg-testimonials__mob-controls">
+        <div class="jg-testimonials__arrow jg-testimonials__arrow--mob-prev" aria-label="Previous">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </div>
+        <div class="jg-testimonials__dots" data-jg-mob-dots>
+          {%- for block in section.blocks -%}
+            <button class="jg-testimonials__dot{% if forloop.first %} active{% endif %}"
+              data-index="{{ forloop.index0 }}"
+              aria-label="Slide {{ forloop.index }}">
+            </button>
+          {%- endfor -%}
+        </div>
+        <div class="jg-testimonials__arrow jg-testimonials__arrow--mob-next" aria-label="Next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+
+</section>
+
+<script>
+function initTestimonialsSlider(section) {
+  const container = section.querySelector('[data-jg-track-outer]');
+  const track = section.querySelector('[data-jg-track]');
+  const cards = track ? track.querySelectorAll('.jg-testimonials__card') : [];
+  const dots = section.querySelectorAll('[data-jg-dots] .jg-testimonials__dot');
+  const prevArrow = section.querySelector('.jg-testimonials__arrow--prev');
+  const nextArrow = section.querySelector('.jg-testimonials__arrow--next');
+
+  const mobContainer = section.querySelector('[data-jg-mob-container]');
+  const mobCards = mobContainer ? mobContainer.querySelectorAll('.jg-testimonials__card') : [];
+  const mobDots = section.querySelectorAll('[data-jg-mob-dots] .jg-testimonials__dot');
+  const mobPrevArrow = section.querySelector('.jg-testimonials__arrow--mob-prev');
+  const mobNextArrow = section.querySelector('.jg-testimonials__arrow--mob-next');
+
+  function isMobile() {
+    return window.innerWidth <= 768;
+  }
+
+  function scrollToCard(scrollContainer, cardElement) {
+    if (!scrollContainer || !cardElement) return;
+    const containerLeft = scrollContainer.getBoundingClientRect().left;
+    const cardLeft = cardElement.getBoundingClientRect().left;
+    scrollContainer.scrollBy({
+      left: cardLeft - containerLeft - (scrollContainer.clientWidth - cardElement.clientWidth) / 2,
+      behavior: 'smooth'
+    });
+  }
+
+  // Desktop events
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const index = parseInt(dot.getAttribute('data-index'));
+      const card = cards[index];
+      if (card) {
+        scrollToCard(container, card);
+        resetAutoplay();
+      }
+    });
+  });
+
+  if (prevArrow && nextArrow && cards.length > 0) {
+    prevArrow.addEventListener('click', () => {
+      let activeIndex = 0;
+      dots.forEach((dot, i) => {
+        if (dot.classList.contains('active')) activeIndex = i;
+      });
+      const targetIndex = Math.max(0, activeIndex - 1);
+      const card = cards[targetIndex];
+      if (card) {
+        scrollToCard(container, card);
+        resetAutoplay();
+      }
+    });
+
+    nextArrow.addEventListener('click', () => {
+      let activeIndex = 0;
+      dots.forEach((dot, i) => {
+        if (dot.classList.contains('active')) activeIndex = i;
+      });
+      const targetIndex = Math.min(cards.length - 1, activeIndex + 1);
+      const card = cards[targetIndex];
+      if (card) {
+        scrollToCard(container, card);
+        resetAutoplay();
+      }
+    });
+  }
+
+  // Mobile events
+  mobDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const index = parseInt(dot.getAttribute('data-index'));
+      const card = mobCards[index];
+      if (card) {
+        scrollToCard(mobContainer, card);
+      }
+    });
+  });
+
+  if (mobPrevArrow && mobNextArrow && mobCards.length > 0) {
+    mobPrevArrow.addEventListener('click', () => {
+      let activeIndex = 0;
+      mobDots.forEach((dot, i) => {
+        if (dot.classList.contains('active')) activeIndex = i;
+      });
+      const targetIndex = Math.max(0, activeIndex - 1);
+      const card = mobCards[targetIndex];
+      if (card) scrollToCard(mobContainer, card);
+    });
+
+    mobNextArrow.addEventListener('click', () => {
+      let activeIndex = 0;
+      mobDots.forEach((dot, i) => {
+        if (dot.classList.contains('active')) activeIndex = i;
+      });
+      const targetIndex = Math.min(mobCards.length - 1, activeIndex + 1);
+      const card = mobCards[targetIndex];
+      if (card) scrollToCard(mobContainer, card);
+    });
+  }
+
+  // IntersectionObserver to update dots on scroll (Desktop)
+  if ('IntersectionObserver' in window && dots.length > 0 && container) {
+    const observerOptions = {
+      root: container,
+      threshold: 0.6
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const index = Array.from(cards).indexOf(entry.target);
+          dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+          });
+        }
+      });
+    }, observerOptions);
+    
+    cards.forEach(card => observer.observe(card));
+  }
+
+  // IntersectionObserver to update dots on scroll (Mobile)
+  if ('IntersectionObserver' in window && mobDots.length > 0 && mobContainer) {
+    const observerOptions = {
+      root: mobContainer,
+      threshold: 0.6
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const index = Array.from(mobCards).indexOf(entry.target);
+          mobDots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+          });
+        }
+      });
+    }, observerOptions);
+    
+    mobCards.forEach(card => observer.observe(card));
+  }
+
+  // Autoplay Logic
+  let autoplayInterval = null;
+
+  function startAutoplay() {
+    if (isMobile()) return;
+    if (cards.length <= 1) return;
+    if (container && container.scrollWidth <= container.clientWidth) return;
+
+    autoplayInterval = setInterval(() => {
+      let activeIndex = 0;
+      dots.forEach((dot, i) => {
+        if (dot.classList.contains('active')) activeIndex = i;
+      });
+      const targetIndex = (activeIndex + 1) % cards.length;
+      const card = cards[targetIndex];
+      if (card) {
+        scrollToCard(container, card);
+      }
+    }, 4000);
+  }
+
+  function stopAutoplay() {
+    if (autoplayInterval) {
+      clearInterval(autoplayInterval);
+      autoplayInterval = null;
+    }
+  }
+
+  function resetAutoplay() {
+    stopAutoplay();
+    startAutoplay();
+  }
+
+  // Hover pauses autoplay
+  section.addEventListener('mouseenter', stopAutoplay);
+  section.addEventListener('mouseleave', startAutoplay);
+
+  // Resize listener
+  window.addEventListener('resize', () => {
+    if (isMobile()) {
+      stopAutoplay();
+    } else {
+      if (!autoplayInterval) {
+        startAutoplay();
+      }
+    }
+  });
+
+  // Start autoplay initially
+  startAutoplay();
+}
+
+// Initialize
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-jg-testimonials-slider]').forEach(section => {
+      initTestimonialsSlider(section);
+    });
+  });
+} else {
+  document.querySelectorAll('[data-jg-testimonials-slider]').forEach(section => {
+    initTestimonialsSlider(section);
+  });
+}
+
+// Re-initialize when section is loaded in Shopify Admin Editor
+if (window.Shopify && Shopify.designMode) {
+  document.addEventListener('shopify:section:load', (event) => {
+    const section = event.target.querySelector('[data-jg-testimonials-slider]') || (event.target.hasAttribute('data-jg-testimonials-slider') ? event.target : null);
+    if (section) {
+      initTestimonialsSlider(section);
+    }
+  });
+}
+</script>
+
+{% schema %}
+{
+  "name": "Jolly Good Testimonials",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Controls"
+    },
+    {
+      "type": "select",
+      "id": "width_mode",
+      "label": "Width Mode",
+      "options": [
+        { "value": "full", "label": "Full Width" },
+        { "value": "boxed", "label": "Boxed (1200px)" }
+      ],
+      "default": "boxed"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Why Customers Love Jolly Good"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#fdfbf7"
+    },
+    {
+      "type": "header",
+      "content": "Spacing Sliders"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "min": 10,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "min": 10,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "mar_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Top (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mar_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Bottom (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_top_mobile",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom_mobile",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mar_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Top (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mar_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Bottom (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Advanced Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS overrides"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom HTML Classes"
+    },
+    {
+      "type": "text",
+      "id": "custom_id",
+      "label": "Custom HTML id"
+    },
+    {
+      "type": "text",
+      "id": "custom_style",
+      "label": "Custom Inline Styles"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial Card",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote Text",
+          "default": "Perfect gift for my son at college. He was so excited!"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Michelle T."
+        },
+        {
+          "type": "range",
+          "id": "stars",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Stars Rating",
+          "default": 5
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Verified Buyer Badge",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Jolly Good Testimonials Slider"
+    }
+  ]
+}
+{% endschema %}

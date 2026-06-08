@@ -1,0 +1,183 @@
+<div class="color-picker-section section-{{ section.id }}" id="color-picker-{{ section.id }}">
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+    {% endif %}
+
+    <div class="color-grid">
+      {% for block in section.blocks %}
+        {% if block.settings.color_code != blank %}
+          <button 
+            class="color-btn" 
+            data-color="{{ block.settings.color_code }}"
+            style="border-color: {{ block.settings.border_color }}; color: {{ block.settings.text_color }};"
+            aria-label="Copy color {{ block.settings.color_code }}"
+            {{ block.shopify_attributes }}
+          >
+            <span class="btn-text-main">Color code on click this btn copy color</span>
+            <span class="btn-text-sub">color code will be take as bg ({{ block.settings.color_code }})</span>
+            <span class="copied-toast" style="color: {{ block.settings.text_color }};">Copied!</span>
+          </button>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .color-picker-section {
+    padding: 60px 0;
+    transition: background-color 0.4s ease;
+    background-color: {{ section.settings.default_bg }};
+  }
+  .section-title {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .color-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+  }
+  .color-btn {
+    background: transparent;
+    border: 2px solid #ff0000;
+    padding: 20px 30px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 280px;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .color-btn:hover {
+    transform: translateY(-2px);
+  }
+  .btn-text-main {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .btn-text-sub {
+    font-size: 12px;
+    opacity: 0.8;
+  }
+  .copied-toast {
+    position: absolute;
+    bottom: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .color-btn.copied .copied-toast {
+    opacity: 1;
+  }
+  .color-btn.copied .btn-text-sub {
+    opacity: 0;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sectionContainer = document.getElementById('color-picker-{{ section.id }}');
+    if (!sectionContainer) return;
+
+    const buttons = sectionContainer.querySelectorAll('.color-btn');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', function() {
+        const color = this.getAttribute('data-color');
+
+        // 1. Copy the hex code to the clipboard
+        navigator.clipboard.writeText(color).then(() => {
+          // 2. Dynamically update the section's background color
+          sectionContainer.style.backgroundColor = color;
+
+          // 3. Trigger a brief visual "Copied!" feedback state
+          this.classList.add('copied');
+          setTimeout(() => {
+            this.classList.remove('copied');
+          }, 1500);
+        }).catch(err => {
+          console.error('Could not copy text: ', err);
+        });
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Dynamic Color Copier",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Heading",
+      "default": "Click to Copy & Change BG"
+    },
+    {
+      "type": "color",
+      "id": "default_bg",
+      "label": "Default Background Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "color_card",
+      "name": "Color Card Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "color_code",
+          "label": "Hex Color Code to Copy",
+          "placeholder": "#123456",
+          "default": "#2b2b2b"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Button Border Color",
+          "default": "#ff0000"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Button Text Color",
+          "default": "#ff0000"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dynamic Color Copier",
+      "blocks": [
+        {
+          "type": "color_card",
+          "settings": {
+            "color_code": "#1a1a1a",
+            "border_color": "#ff0000",
+            "text_color": "#ff0000"
+          }
+        },
+        {
+          "type": "color_card",
+          "settings": {
+            "color_code": "#0055ff",
+            "border_color": "#ff0000",
+            "text_color": "#ff0000"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

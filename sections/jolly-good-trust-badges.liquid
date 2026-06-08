@@ -1,0 +1,329 @@
+{%- style -%}
+  :root {
+    --jg-trust-bg-{{ section.id }}: {{ section.settings.background_color }};
+    
+    /* Spacing */
+    --jg-trust-pad-top-{{ section.id }}: {{ section.settings.pad_top }}px;
+    --jg-trust-pad-bottom-{{ section.id }}: {{ section.settings.pad_bottom }}px;
+    --jg-trust-mar-top-{{ section.id }}: {{ section.settings.mar_top }}px;
+    --jg-trust-mar-bottom-{{ section.id }}: {{ section.settings.mar_bottom }}px;
+    
+    --jg-trust-pad-top-mob-{{ section.id }}: {{ section.settings.pad_top_mobile }}px;
+    --jg-trust-pad-bottom-mob-{{ section.id }}: {{ section.settings.pad_bottom_mobile }}px;
+    --jg-trust-mar-top-mob-{{ section.id }}: {{ section.settings.mar_top_mobile }}px;
+    --jg-trust-mar-bottom-mob-{{ section.id }}: {{ section.settings.mar_bottom_mobile }}px;
+  }
+  
+  .jg-trust-badges-{{ section.id }} {
+    background-color: var(--jg-trust-bg-{{ section.id }});
+    padding-top: var(--jg-trust-pad-top-{{ section.id }});
+    padding-bottom: var(--jg-trust-pad-bottom-{{ section.id }});
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: var(--jg-trust-mar-top-{{ section.id }});
+    margin-bottom: var(--jg-trust-mar-bottom-{{ section.id }});
+    border-top: 1px solid #f0eae0;
+    border-bottom: 1px solid #ede7db;
+    font-family: var(--jg-font-sans);
+  }
+  .jg-trust-badges__container {
+    max-width: {% if section.settings.width_mode == 'boxed' %}1200px{% else %}100%{% endif %};
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+  .jg-trust-badges__badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 200px;
+  }
+  .jg-trust-badges__icon {
+    width: 32px;
+    height: 32px;
+    fill: none;
+    stroke: var(--jg-color-gold);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+  .jg-trust-badges__text-wrapper {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    text-align: left;
+  }
+  .jg-trust-badges__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--jg-color-blue);
+    margin: 0;
+  }
+  .jg-trust-badges__subtitle {
+    font-size: 11px;
+    font-weight: 500;
+    color: #777777;
+    margin: 0;
+  }
+  
+  /* Custom styling for Amazon logo */
+  .jg-trust-badges__icon--amazon {
+    stroke: none;
+    fill: #000000;
+    width: 36px;
+    height: auto;
+  }
+  
+  @media (max-width: 768px) {
+    .jg-trust-badges-{{ section.id }} {
+      padding-top: var(--jg-trust-pad-top-mob-{{ section.id }});
+      padding-bottom: var(--jg-trust-pad-bottom-mob-{{ section.id }});
+      margin-top: var(--jg-trust-mar-top-mob-{{ section.id }});
+      margin-bottom: var(--jg-trust-mar-bottom-mob-{{ section.id }});
+    }
+    .jg-trust-badges__container {
+      justify-content: center;
+      gap: 20px;
+    }
+    .jg-trust-badges__badge {
+      max-width: 100%;
+      width: calc(50% - 20px);
+    }
+  }
+  @media (max-width: 480px) {
+    .jg-trust-badges__badge {
+      width: 100%;
+      justify-content: flex-start;
+      padding-left: 20px;
+    }
+  }
+
+  {{ section.settings.custom_css }}
+{%- endstyle -%}
+
+<section 
+  id="{{ section.settings.custom_id | default: section.id }}" 
+  class="jg-trust-badges-{{ section.id }} {{ section.settings.custom_class }}"
+  style="{{ section.settings.custom_style }}"
+>
+  <div class="jg-trust-badges__container">
+    {%- for block in section.blocks -%}
+      <div class="jg-trust-badges__badge" {{ block.shopify_attributes }}>
+        {%- case block.settings.icon -%}
+          {%- when 'amazon' -%}
+            <svg class="jg-trust-badges__icon jg-trust-badges__icon--amazon" viewBox="0 0 100 30">
+              <path d="M16.5 22.8c-1.3.5-3.3.8-4.9.8-5.3 0-8.9-3.2-8.9-8.4 0-5.8 4.2-9.1 9.7-9.1 1.4 0 3 .2 4.1.6v2.9c-1-.4-2.4-.6-3.8-.6-3.8 0-6.5 2.1-6.5 6 0 3.3 1.9 5.3 5.4 5.3 1.3 0 2.9-.3 3.9-.7V22.8zm2.6.4V6.4h3v1.8c1-1.3 2.5-2.1 4.5-2.1 3.5 0 5.4 2.2 5.4 5.9v11.2h-3.2V12.4c0-2.3-.9-3.5-2.8-3.5-1.7 0-2.9 1.1-3.4 2.7-.2.5-.3 1.1-.3 1.7v9.9h-3.2zm21.4 0h-3.2V6.4h3v1.8c1-1.3 2.5-2.1 4.5-2.1 3.5 0 5.4 2.2 5.4 5.9v11.2h-3.2V12.4c0-2.3-.9-3.5-2.8-3.5-1.7 0-2.9 1.1-3.4 2.7-.2.5-.3 1.1-.3 1.7v9.9h-.4zm21-8.1c0 3.1.2 5.4.5 7.1-1 .3-2.3.5-3.7.5-3.6 0-5.7-1.8-5.7-5.1 0-3.9 2.9-5.1 7.4-5.1v-.2c0-1.8-.8-2.6-2.9-2.6-1.5 0-3.2.5-4.2 1.1l-1-2c1.4-.9 3.6-1.5 6.1-1.5 4.3 0 5.2 2 5.2 5.4v7.4zm-3.2 2.3v-2.3c-2.7 0-4.3.5-4.3 2.5 0 1.2.7 1.9 1.9 1.9 1.1 0 2-.6 2.4-2.1zm20.8 5.8c-1.3.5-3.3.8-4.9.8-5.3 0-8.9-3.2-8.9-8.4 0-5.8 4.2-9.1 9.7-9.1 1.4 0 3 .2 4.1.6v2.9c-1-.4-2.4-.6-3.8-.6-3.8 0-6.5 2.1-6.5 6 0 3.3 1.9 5.3 5.4 5.3 1.3 0 2.9-.3 3.9-.7V23.2zm3.3-8.8c0-3.3 1.9-5.3 5.4-5.3 1.3 0 2.9.3 3.9.7V.8h3.2v22.4c-1.3.5-3.3.8-4.9.8-5.3 0-8.9-3.2-8.9-8.4l1.3-.2z"/>
+              <path d="M12 28.5c23.5 6 52.8 1.2 62.8-10.5 1-1.2 0-2.3-1.1-1.6-9.8 6.5-35 9-62.2 2-1.5-.4-2.5 1-.5 2.1z" fill="#FF9900"/>
+            </svg>
+          {%- when 'box' -%}
+            <svg class="jg-trust-badges__icon" viewBox="0 0 24 24">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+          {%- when 'family' -%}
+            <svg class="jg-trust-badges__icon" viewBox="0 0 24 24">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          {%- when 'lock' -%}
+            <svg class="jg-trust-badges__icon" viewBox="0 0 24 24">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          {%- when 'smile' -%}
+            <svg class="jg-trust-badges__icon" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+              <line x1="9" y1="9" x2="9.01" y2="9"></line>
+              <line x1="15" y1="9" x2="15.01" y2="9"></line>
+            </svg>
+        {%- endcase -%}
+        <div class="jg-trust-badges__text-wrapper">
+          <span class="jg-trust-badges__title">{{ block.settings.title }}</span>
+          <span class="jg-trust-badges__subtitle">{{ block.settings.subtitle }}</span>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Jolly Good Trust Badges",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Controls"
+    },
+    {
+      "type": "select",
+      "id": "width_mode",
+      "label": "Width Mode",
+      "options": [
+        { "value": "full", "label": "Full Width" },
+        { "value": "boxed", "label": "Boxed (1200px)" }
+      ],
+      "default": "boxed"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Spacing Sliders"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "mar_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Top (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mar_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Bottom (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_top_mobile",
+      "min": 5,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom_mobile",
+      "min": 5,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mar_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Top (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mar_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Bottom (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Advanced Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS overrides"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom HTML Classes"
+    },
+    {
+      "type": "text",
+      "id": "custom_id",
+      "label": "Custom HTML id"
+    },
+    {
+      "type": "text",
+      "id": "custom_style",
+      "label": "Custom Inline Styles"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading Text",
+          "default": "Badge Title"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle Text",
+          "default": "Details text"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Badge Icon",
+          "options": [
+            { "value": "amazon", "label": "Amazon Logo" },
+            { "value": "box", "label": "Box (Shipped)" },
+            { "value": "family", "label": "Family (Small Biz)" },
+            { "value": "lock", "label": "Lock (Secure)" },
+            { "value": "smile", "label": "Smile (Guarantee)" }
+          ],
+          "default": "smile"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Jolly Good Trust Badges Bar"
+    }
+  ]
+}
+{% endschema %}

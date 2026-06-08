@@ -1,0 +1,240 @@
+{
+  "sections": {
+    "jg_hero": {
+      "type": "jolly-good-hero",
+      "settings": {
+        "heading": "A Gift They'll Actually Enjoy.",
+        "text": "45+ popular snacks, beautifully packed and handmade in the USA. Perfect for birthdays, college students, employees, care packages, thank-you gifts, and more.",
+        "btn_1_label": "Shop Best Sellers",
+        "btn_1_link": "shopify://collections/all",
+        "btn_2_label": "Take the Gift Finder Quiz",
+        "btn_2_link": "shopify://pages/gift-finder",
+        "rating_text": "Rated 4.8/5 by thousands of happy customers"
+      }
+    },
+    "jg_features": {
+      "type": "jolly-good-features",
+      "blocks": {
+        "feat_1": {
+          "type": "feature",
+          "settings": {
+            "title": "Handmade in USA",
+            "text": "Hand packed with love and care",
+            "icon": "heart"
+          }
+        },
+        "feat_2": {
+          "type": "feature",
+          "settings": {
+            "title": "Ships in 1 Business Day",
+            "text": "Fast, reliable nationwide shipping",
+            "icon": "truck"
+          }
+        },
+        "feat_3": {
+          "type": "feature",
+          "settings": {
+            "title": "45+ Popular Snacks",
+            "text": "Only name brands people love",
+            "icon": "box"
+          }
+        },
+        "feat_4": {
+          "type": "feature",
+          "settings": {
+            "title": "Free Shipping",
+            "text": "On every order, every time",
+            "icon": "gift"
+          }
+        }
+      },
+      "block_order": [
+        "feat_1",
+        "feat_2",
+        "feat_3",
+        "feat_4"
+      ]
+    },
+    "jg_testimonials": {
+      "type": "jolly-good-testimonials",
+      "settings": {
+        "title": "Why Customers Love Jolly Good"
+      },
+      "blocks": {
+        "test_1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Perfect gift for my son at college. He was so excited!",
+            "author": "Michelle T.",
+            "stars": 5,
+            "verified": true
+          }
+        },
+        "test_2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I send these to my team every quarter and they absolutely love them.",
+            "author": "David R.",
+            "stars": 5,
+            "verified": true
+          }
+        },
+        "test_3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Arrived quickly, packed beautifully, and full of great snacks!",
+            "author": "Sarah L.",
+            "stars": 5,
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "test_1",
+        "test_2",
+        "test_3"
+      ]
+    },
+    "jg_occasions": {
+      "type": "jolly-good-occasions",
+      "settings": {
+        "title": "Shop By Occasion"
+      },
+      "blocks": {
+        "occ_1": {
+          "type": "occasion",
+          "settings": {
+            "title": "College Students",
+            "icon": "cap",
+            "link": "shopify://collections/all"
+          }
+        },
+        "occ_2": {
+          "type": "occasion",
+          "settings": {
+            "title": "Birthdays",
+            "icon": "cake",
+            "link": "shopify://collections/all"
+          }
+        },
+        "occ_3": {
+          "type": "occasion",
+          "settings": {
+            "title": "Corporate Gifts",
+            "icon": "briefcase",
+            "link": "shopify://collections/all"
+          }
+        },
+        "occ_4": {
+          "type": "occasion",
+          "settings": {
+            "title": "Care Packages",
+            "icon": "heart",
+            "link": "shopify://collections/all"
+          }
+        },
+        "occ_5": {
+          "type": "occasion",
+          "settings": {
+            "title": "Get Well Soon",
+            "icon": "pulse",
+            "link": "shopify://collections/all"
+          }
+        },
+        "occ_6": {
+          "type": "occasion",
+          "settings": {
+            "title": "Thank You Gifts",
+            "icon": "gift",
+            "link": "shopify://collections/all"
+          }
+        },
+        "occ_7": {
+          "type": "occasion",
+          "settings": {
+            "title": "Holidays",
+            "icon": "tree",
+            "link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "occ_1",
+        "occ_2",
+        "occ_3",
+        "occ_4",
+        "occ_5",
+        "occ_6",
+        "occ_7"
+      ]
+    },
+    "jg_newsletter": {
+      "type": "jolly-good-newsletter",
+      "settings": {
+        "title": "Join the Jolly Good Community!",
+        "text": "Get 15% off your first order + exclusive offers and gift ideas.",
+        "btn_label": "Claim My 15% Off"
+      }
+    },
+    "jg_trust_badges": {
+      "type": "jolly-good-trust-badges",
+      "blocks": {
+        "bad_1": {
+          "type": "badge",
+          "settings": {
+            "title": "Amazon",
+            "subtitle": "Best Seller",
+            "icon": "amazon"
+          }
+        },
+        "bad_2": {
+          "type": "badge",
+          "settings": {
+            "title": "Thousands of",
+            "subtitle": "Boxes Shipped Every Month",
+            "icon": "box"
+          }
+        },
+        "bad_3": {
+          "type": "badge",
+          "settings": {
+            "title": "Family-Owned",
+            "subtitle": "Small Business",
+            "icon": "family"
+          }
+        },
+        "bad_4": {
+          "type": "badge",
+          "settings": {
+            "title": "Secure Checkout",
+            "subtitle": "100% Safe & Secure",
+            "icon": "lock"
+          }
+        },
+        "bad_5": {
+          "type": "badge",
+          "settings": {
+            "title": "Happiness",
+            "subtitle": "Guarantee",
+            "icon": "smile"
+          }
+        }
+      },
+      "block_order": [
+        "bad_1",
+        "bad_2",
+        "bad_3",
+        "bad_4",
+        "bad_5"
+      ]
+    }
+  },
+  "order": [
+    "jg_hero",
+    "jg_features",
+    "jg_testimonials",
+    "jg_occasions",
+    "jg_newsletter",
+    "jg_trust_badges"
+  ]
+}
