@@ -1,0 +1,606 @@
+{% style %}
+  .mission-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      to right,
+      {{ section.settings.bg_gradient_left }},
+      {{ section.settings.bg_gradient_right }}
+    );
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .mission-hero__container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  .mission-hero__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+
+  .mission-hero__content {
+    flex: 1 1 500px;
+  }
+
+  .mission-hero__subtitle {
+    position: relative;
+    display: inline-block;
+    margin: 0 0 35px;
+    color: {{ section.settings.subtitle_color }};
+    font-size: {{ section.settings.subtitle_size_mobile }}px;
+    font-weight: {{ section.settings.subtitle_weight }};
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .mission-hero__subtitle::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -14px;
+    width: {{ section.settings.subtitle_border_width }}px;
+    height: {{ section.settings.subtitle_border_height }}px;
+    background: {{ section.settings.subtitle_border_color }};
+    border-radius: 50px;
+  }
+
+  .mission-hero__title {
+    margin: 0 0 24px;
+    color: {{ section.settings.title_color }};
+    font-size: {{ section.settings.title_size_mobile }}px;
+    font-weight: {{ section.settings.title_weight }};
+    line-height: 1.2;
+    max-width: {{ section.settings.title_max_width }}px;
+  }
+
+  .mission-hero__description {
+    margin-bottom: 35px;
+    color: {{ section.settings.description_color }};
+    font-size: {{ section.settings.description_size_mobile }}px;
+    font-weight: {{ section.settings.description_weight }};
+    line-height: 1.7;
+    max-width: {{ section.settings.description_max_width }}px;
+  }
+
+  .mission-hero__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 180px;
+    padding: 8px 18px;
+    background: {{ section.settings.button_bg }};
+    color: {{ section.settings.button_text_color }};
+    font-size: {{ section.settings.button_font_size }}px;
+    font-weight: {{ section.settings.button_font_weight }};
+    text-decoration: none;
+    border-radius: {{ section.settings.button_radius }}px;
+    transition: all 0.3s ease;
+  }
+
+  .mission-hero__button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+
+  .mission-hero__image-wrapper {
+    flex: 1 1 550px;
+    position: relative;
+  }
+
+  .mission-hero__image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: {{ section.settings.image_radius }}px;
+  }
+
+  .mission-hero__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: inherit;
+  }
+
+  @media screen and (min-width: 768px) {
+
+    .mission-hero {
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+
+    .mission-hero__subtitle {
+      font-size: {{ section.settings.subtitle_size_desktop }}px;
+    }
+
+    .mission-hero__title {
+      font-size: {{ section.settings.title_size_desktop }}px;
+    }
+
+    .mission-hero__description {
+      font-size: {{ section.settings.description_size_desktop }}px;
+    }
+
+    .mission-hero__image-wrapper {
+      max-width: {{ section.settings.image_width_desktop }}px;
+      height: {{ section.settings.image_height_desktop }}px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+
+    .mission-hero__wrapper {
+      gap: 40px;
+    }
+
+    .mission-hero__content {
+      order: 2;
+    }
+
+    .mission-hero__image-wrapper {
+      order: 1;
+      width: 100%;
+      max-width: {{ section.settings.image_width_mobile }}px;
+      height: {{ section.settings.image_height_mobile }}px;
+      margin: 0 auto;
+    }
+
+    .mission-hero__button {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<section class="mission-hero">
+  <div class="mission-hero__container">
+
+    <div class="mission-hero__wrapper">
+
+      <!-- Content -->
+      <div class="mission-hero__content">
+
+        {% if section.settings.subtitle != blank %}
+          <div class="mission-hero__subtitle">
+            {{ section.settings.subtitle }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.title != blank %}
+          <h2 class="mission-hero__title">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <div class="mission-hero__description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.button_text != blank %}
+          <a
+            href="{{ section.settings.button_link }}"
+            class="mission-hero__button"
+          >
+            {{ section.settings.button_text }}
+          </a>
+        {% endif %}
+
+      </div>
+
+      <!-- Image -->
+      <div class="mission-hero__image-wrapper">
+
+        {% if section.settings.hero_image != blank %}
+          <div class="mission-hero__image">
+            {{
+              section.settings.hero_image
+              | image_url: width: 1400
+              | image_tag:
+                loading: 'lazy',
+                alt: section.settings.title
+            }}
+          </div>
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Mission Hero",
+  "settings": [
+
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Container Max Width",
+      "min": 1000,
+      "max": 1800,
+      "step": 20,
+      "default": 1400
+    },
+
+    {
+      "type": "color",
+      "id": "bg_gradient_left",
+      "label": "Gradient Left Color",
+      "default": "#ffffff"
+    },
+
+    {
+      "type": "color",
+      "id": "bg_gradient_right",
+      "label": "Gradient Right Color",
+      "default": "#fff5f8"
+    },
+
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Desktop Padding Top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 80
+    },
+
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Desktop Padding Bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 80
+    },
+
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Mobile Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 50
+    },
+
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Mobile Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 50
+    },
+
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "OUR MISSION"
+    },
+
+    {
+      "type": "range",
+      "id": "subtitle_size_desktop",
+      "label": "Subtitle Font Size Desktop",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "default": 22
+    },
+
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "label": "Subtitle Font Size Mobile",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "default": 18
+    },
+
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#111111"
+    },
+
+    {
+      "type": "select",
+      "id": "subtitle_weight",
+      "label": "Subtitle Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "700"
+    },
+
+    {
+      "type": "color",
+      "id": "subtitle_border_color",
+      "label": "Subtitle Border Color",
+      "default": "#ff4f87"
+    },
+
+    {
+      "type": "range",
+      "id": "subtitle_border_width",
+      "label": "Subtitle Border Width",
+      "min": 20,
+      "max": 200,
+      "step": 5,
+      "default": 60
+    },
+
+    {
+      "type": "range",
+      "id": "subtitle_border_height",
+      "label": "Subtitle Border Height",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "To make the world a kinder place, one snack box at a time."
+    },
+
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Title Font Size Desktop",
+      "min": 20,
+      "max": 90,
+      "step": 2,
+      "default": 52
+    },
+
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Title Font Size Mobile",
+      "min": 18,
+      "max": 50,
+      "step": 2,
+      "default": 32
+    },
+
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#ff4f87"
+    },
+
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "700"
+    },
+
+    {
+      "type": "range",
+      "id": "title_max_width",
+      "label": "Title Max Width",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "default": 560
+    },
+
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "We believe joy is better when it's shared. That's why we're here — to help you celebrate life's little moments with boxes that are as thoughtful as they are delicious."
+    },
+
+    {
+      "type": "range",
+      "id": "description_size_desktop",
+      "label": "Description Font Size Desktop",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "default": 20
+    },
+
+    {
+      "type": "range",
+      "id": "description_size_mobile",
+      "label": "Description Font Size Mobile",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16
+    },
+
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#444444"
+    },
+
+    {
+      "type": "select",
+      "id": "description_weight",
+      "label": "Description Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" }
+      ],
+      "default": "400"
+    },
+
+    {
+      "type": "range",
+      "id": "description_max_width",
+      "label": "Description Max Width",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "default": 520
+    },
+
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+
+    {
+      "type": "range",
+      "id": "image_width_desktop",
+      "label": "Image Width Desktop",
+      "min": 300,
+      "max": 900,
+      "step": 10,
+      "default": 650
+    },
+
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "label": "Image Height Desktop",
+      "min": 300,
+      "max": 900,
+      "step": 10,
+      "default": 420
+    },
+
+    {
+      "type": "range",
+      "id": "image_width_mobile",
+      "label": "Image Width Mobile",
+      "min": 200,
+      "max": 500,
+      "step": 10,
+      "default": 340
+    },
+
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "label": "Image Height Mobile",
+      "min": 200,
+      "max": 500,
+      "step": 10,
+      "default": 260
+    },
+
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image Border Radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "default": 0
+    },
+
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "SHOP OUR BOXES"
+    },
+
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button Background",
+      "default": "#ff4f87"
+    },
+
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button Font Size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16
+    },
+
+    {
+      "type": "select",
+      "id": "button_font_weight",
+      "label": "Button Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 4
+    }
+
+  ],
+
+  "presets": [
+    {
+      "name": "About Mission Hero"
+    }
+  ]
+}
+{% endschema %}

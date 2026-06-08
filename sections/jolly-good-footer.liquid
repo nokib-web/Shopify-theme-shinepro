@@ -1,0 +1,376 @@
+{%- style -%}
+  :root {
+    --jg-foot-bg-{{ section.id }}: {{ section.settings.background_color }};
+    
+    /* Spacing - Desktop */
+    --jg-foot-pad-top-{{ section.id }}: {{ section.settings.pad_top }}px;
+    --jg-foot-pad-bottom-{{ section.id }}: {{ section.settings.pad_bottom }}px;
+    --jg-foot-mar-top-{{ section.id }}: {{ section.settings.mar_top }}px;
+    --jg-foot-mar-bottom-{{ section.id }}: {{ section.settings.mar_bottom }}px;
+    
+    /* Spacing - Mobile */
+    --jg-foot-pad-top-mob-{{ section.id }}: {{ section.settings.pad_top_mobile }}px;
+    --jg-foot-pad-bottom-mob-{{ section.id }}: {{ section.settings.pad_bottom_mobile }}px;
+    --jg-foot-mar-top-mob-{{ section.id }}: {{ section.settings.mar_top_mobile }}px;
+    --jg-foot-mar-bottom-mob-{{ section.id }}: {{ section.settings.mar_bottom_mobile }}px;
+  }
+
+  .jg-footer-{{ section.id }} {
+    background-color: var(--jg-foot-bg-{{ section.id }});
+    color: #fcf8f2;
+    padding-top: var(--jg-foot-pad-top-{{ section.id }});
+    padding-bottom: var(--jg-foot-pad-bottom-{{ section.id }});
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: var(--jg-foot-mar-top-{{ section.id }});
+    margin-bottom: var(--jg-foot-mar-bottom-{{ section.id }});
+    font-family: var(--jg-font-sans);
+    font-size: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: {{ section.settings.z_index }};
+    position: relative;
+  }
+  .jg-footer__container {
+    max-width: {% if section.settings.width_mode == 'boxed' %}1200px{% else %}100%{% endif %};
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  /* Details/Contact Row */
+  .jg-footer__details {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+  }
+  .jg-footer__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(252, 248, 242, 0.85);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  a.jg-footer__item:hover {
+    color: var(--jg-color-gold);
+  }
+  .jg-footer__icon {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: var(--jg-color-gold);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+  
+  /* Social Media icons */
+  .jg-footer__socials {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .jg-footer__social-link {
+    color: rgba(252, 248, 242, 0.7);
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .jg-footer__social-link:hover {
+    color: var(--jg-color-gold);
+    transform: translateY(-2px);
+  }
+  .jg-footer__social-link svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  @media (max-width: 768px) {
+    .jg-footer-{{ section.id }} {
+      padding-top: var(--jg-foot-pad-top-mob-{{ section.id }});
+      padding-bottom: var(--jg-foot-pad-bottom-mob-{{ section.id }});
+      margin-top: var(--jg-foot-mar-top-mob-{{ section.id }});
+      margin-bottom: var(--jg-foot-mar-bottom-mob-{{ section.id }});
+    }
+    .jg-footer__container {
+      flex-direction: column;
+      text-align: center;
+      gap: 15px;
+    }
+    .jg-footer__details {
+      justify-content: center;
+      gap: 15px;
+    }
+  }
+
+  {{ section.settings.custom_css }}
+{%- endstyle -%}
+
+<footer 
+  id="{{ section.settings.custom_id | default: section.id }}" 
+  class="jg-footer-{{ section.id }} {{ section.settings.custom_class }}"
+  style="{{ section.settings.custom_style }}"
+>
+  <div class="jg-footer__container">
+    
+    <!-- Left/Center Details -->
+    <div class="jg-footer__details">
+      <!-- 5-Star Reviews -->
+      {%- if section.settings.reviews_text != blank -%}
+        <div class="jg-footer__item">
+          <svg class="jg-footer__icon" viewBox="0 0 24 24" style="fill: var(--jg-color-gold); stroke: none;">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+          </svg>
+          <span>{{ section.settings.reviews_text }}</span>
+        </div>
+      {%- endif -%}
+      
+      <!-- Phone -->
+      {%- if section.settings.phone != blank -%}
+        <a href="tel:{{ section.settings.phone | replace: ' ', '' | replace: '(', '' | replace: ')', '' | replace: '-', '' }}" class="jg-footer__item">
+          <svg class="jg-footer__icon" viewBox="0 0 24 24">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span>{{ section.settings.phone }}</span>
+        </a>
+      {%- endif -%}
+      
+      <!-- Email -->
+      {%- if section.settings.email != blank -%}
+        <a href="mailto:{{ section.settings.email }}" class="jg-footer__item">
+          <svg class="jg-footer__icon" viewBox="0 0 24 24">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          <span>{{ section.settings.email }}</span>
+        </a>
+      {%- endif -%}
+      
+      <!-- Location -->
+      {%- if section.settings.location != blank -%}
+        <div class="jg-footer__item">
+          <svg class="jg-footer__icon" viewBox="0 0 24 24">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span>{{ section.settings.location }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+    
+    <!-- Right Socials -->
+    <div class="jg-footer__socials">
+      {%- if settings.social_facebook_link != blank -%}
+        <a href="{{ settings.social_facebook_link }}" class="jg-footer__social-link" aria-label="Facebook">
+          <svg viewBox="0 0 24 24">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+          </svg>
+        </a>
+      {%- endif -%}
+      {%- if settings.social_instagram_link != blank -%}
+        <a href="{{ settings.social_instagram_link }}" class="jg-footer__social-link" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+      {%- endif -%}
+      {%- if settings.social_tiktok_link != blank -%}
+        <a href="{{ settings.social_tiktok_link }}" class="jg-footer__social-link" aria-label="TikTok">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 12a4 4 0 1 0 4 4V4h3a2 2 0 0 0 2-2h-3v8a4 4 0 0 0-6 2z"/>
+          </svg>
+        </a>
+      {%- endif -%}
+      {%- if settings.social_pinterest_link != blank -%}
+        <a href="{{ settings.social_pinterest_link }}" class="jg-footer__social-link" aria-label="Pinterest">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.5 2 2 6.5 2 12c0 4.2 2.6 7.8 6.3 9.3-.1-.8-.2-2-.0-2.8.2-.8 1.3-5.5 1.3-5.5s-.3-.6-.3-1.6c0-1.5.9-2.6 2-2.6 1 0 1.4.7 1.4 1.6 0 .9-.6 2.4-.9 3.7-.3 1.1.5 2.1 1.6 2.1 1.9 0 3.4-2 3.4-4.9 0-2.6-1.9-4.4-4.5-4.4-3.1 0-4.9 2.3-4.9 4.7 0 .9.3 1.9.8 2.5.1.1.1.2.1.3-.1.3-.3 1.1-.3 1.2-.1.2-.2.3-.4.2-1.6-.7-2.6-3.1-2.6-5 0-4.1 3-7.9 8.6-7.9 4.5 0 8 3.2 8 7.5 0 4.5-2.8 8.1-6.8 8.1-1.3 0-2.6-.7-3-1.5l-1 3.8c-.4 1.4-1.3 3.1-2 4.1 1.1.3 2.3.5 3.5.5 5.5 0 10-4.5 10-10S17.5 2 12 2z"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+    
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Jolly Good Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Controls"
+    },
+    {
+      "type": "select",
+      "id": "width_mode",
+      "label": "Width Mode",
+      "options": [
+        { "value": "full", "label": "Full Width" },
+        { "value": "boxed", "label": "Boxed (1200px)" }
+      ],
+      "default": "boxed"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#05101a"
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "reviews_text",
+      "label": "Reviews Badge",
+      "default": "Over 4,000 5-Star Reviews"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone Number",
+      "default": "(540) 123-4567"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email Address",
+      "default": "hello@jollygoodbox.com"
+    },
+    {
+      "type": "text",
+      "id": "location",
+      "label": "Location Text",
+      "default": "Manassas, VA"
+    },
+    {
+      "type": "header",
+      "content": "Spacing Settings"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mar_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Top (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mar_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Bottom (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_top_mobile",
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom_mobile",
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mar_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Top (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mar_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Bottom (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Advanced Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS overrides"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom HTML Classes"
+    },
+    {
+      "type": "text",
+      "id": "custom_id",
+      "label": "Custom HTML id"
+    },
+    {
+      "type": "text",
+      "id": "custom_style",
+      "label": "Custom Inline Styles"
+    },
+    {
+      "type": "range",
+      "id": "z_index",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Z-Index Height",
+      "default": 10
+    }
+  ]
+}
+{% endschema %}

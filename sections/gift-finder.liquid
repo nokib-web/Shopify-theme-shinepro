@@ -1,0 +1,604 @@
+<style>
+  #gift-finder-{{ section.id }} {
+    --gf-bg:              {{ section.settings.bg_color }};
+    --gf-accent:          {{ section.settings.accent_color }};
+    --gf-accent-text:     {{ section.settings.accent_text_color }};
+    --gf-card-bg:         {{ section.settings.card_bg_color }};
+    --gf-card-border:     {{ section.settings.card_border_color }};
+    --gf-btn-bg:          {{ section.settings.btn_bg_color }};
+    --gf-btn-text:        {{ section.settings.btn_text_color }};
+    --gf-btn-active-bg:   {{ section.settings.btn_active_bg_color }};
+    --gf-btn-active-text: {{ section.settings.btn_active_text_color }};
+    --gf-heading-color:   {{ section.settings.heading_color }};
+    --gf-highlight-color: {{ section.settings.highlight_color }};
+    --gf-sub-color:       {{ section.settings.subheading_color }};
+    --gf-label-color:     {{ section.settings.label_color }};
+    --gf-body-color:      {{ section.settings.body_color }};
+    --gf-link-color:      {{ section.settings.link_color }};
+    --gf-result-bg:       {{ section.settings.result_bg_color }};
+    --gf-result-border:   {{ section.settings.result_border_color }};
+
+    --gf-heading-size:    {{ section.settings.heading_size }}px;
+    --gf-sub-size:        {{ section.settings.subheading_size }}px;
+    --gf-subtitle-size:   {{ section.settings.subtitle_size }}px;
+    --gf-label-size:      {{ section.settings.label_size }}px;
+    --gf-btn-size:        {{ section.settings.btn_font_size }}px;
+    --gf-body-size:       {{ section.settings.body_font_size }}px;
+
+    --gf-card-radius:     {{ section.settings.card_border_radius }}px;
+    --gf-btn-radius:      {{ section.settings.btn_border_radius }}px;
+    --gf-card-gap:        {{ section.settings.card_gap }}px;
+    --gf-btn-gap:         {{ section.settings.btn_gap }}px;
+    --gf-card-padding:    {{ section.settings.card_padding }}px;
+    --gf-btn-pv:          {{ section.settings.btn_padding_v }}px;
+    --gf-btn-ph:          {{ section.settings.btn_padding_h }}px;
+
+    background-color: var(--gf-bg);
+    {%- if section.settings.bg_image != blank -%}
+    background-image: url({{ section.settings.bg_image | image_url: width: 1600 }});
+    background-size: {{ section.settings.bg_image_size }};
+    background-position: {{ section.settings.bg_image_position }};
+    background-repeat: no-repeat;
+    {%- endif -%}
+    padding: {{ section.settings.padding_top }}px {{ section.settings.padding_right }}px {{ section.settings.padding_bottom }}px {{ section.settings.padding_left }}px;
+    font-family: var(--font-body-family, inherit);
+  }
+
+  .gf-inner { max-width: {{ section.settings.max_width }}px; margin: 0 auto; }
+
+  .gf-header {
+    text-align: {{ section.settings.text_align }};
+    margin-bottom: {{ section.settings.header_bottom_margin }}px;
+  }
+  .gf-heading {
+    font-size: var(--gf-heading-size);
+    font-weight: {{ section.settings.heading_weight }};
+    color: var(--gf-heading-color);
+    text-transform: {{ section.settings.heading_transform }};
+    letter-spacing: {{ section.settings.heading_letter_spacing }}px;
+    line-height: 1.1; margin: 0 0 4px;
+  }
+  .gf-subheading {
+    font-size: var(--gf-sub-size);
+    font-weight: {{ section.settings.subheading_weight }};
+    color: var(--gf-highlight-color);
+    text-transform: {{ section.settings.subheading_transform }};
+    letter-spacing: {{ section.settings.subheading_letter_spacing }}px;
+    line-height: 1.1; margin: 0 0 12px;
+  }
+  .gf-subtitle { font-size: var(--gf-subtitle-size); color: var(--gf-sub-color); margin: 0; }
+
+  .gf-cards-wrap {
+    display: flex; flex-wrap: wrap;
+    gap: var(--gf-card-gap);
+    justify-content: {{ section.settings.cards_justify }};
+  }
+  .gf-card {
+    flex: 1 1 {{ section.settings.card_min_width }}px;
+    max-width: {{ section.settings.card_max_width }}px;
+    background: var(--gf-card-bg);
+    border: {{ section.settings.card_border_width }}px solid var(--gf-card-border);
+    border-radius: var(--gf-card-radius);
+    padding: var(--gf-card-padding);
+    display: flex; flex-direction: column; gap: var(--gf-btn-gap);
+  }
+  .gf-card.gf-card-selected { border-color: var(--gf-accent); border-width: {{ section.settings.card_border_active_width }}px; }
+  .gf-card-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .gf-card-icon-img {
+    width: {{ section.settings.card_icon_size }}px;
+    height: {{ section.settings.card_icon_size }}px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    flex-shrink: 0;
+  }
+  @media (max-width: 749px) {
+    .gf-card-icon-img {
+      width: {{ section.settings.mobile_card_icon_size }}px;
+      height: {{ section.settings.mobile_card_icon_size }}px;
+    }
+  }
+  .gf-card-label {
+    font-size: var(--gf-label-size);
+    font-weight: {{ section.settings.label_weight }};
+    color: var(--gf-label-color);
+    text-align: {{ section.settings.text_align }};
+    text-transform: {{ section.settings.label_transform }};
+    letter-spacing: {{ section.settings.label_letter_spacing }}px;
+    margin-bottom: {{ section.settings.label_bottom_margin }}px;
+  }
+  .gf-btn {
+    display: block; width: 100%;
+    padding: var(--gf-btn-pv) var(--gf-btn-ph);
+    background: var(--gf-btn-bg); color: var(--gf-btn-text);
+    border: 1px solid var(--gf-accent); border-radius: var(--gf-btn-radius);
+    font-size: var(--gf-btn-size); font-weight: {{ section.settings.btn_font_weight }};
+    text-align: {{ section.settings.btn_text_align }};
+    text-transform: {{ section.settings.btn_transform }};
+    letter-spacing: {{ section.settings.btn_letter_spacing }}px;
+    line-height: 1.3; cursor: pointer; transition: all 0.2s ease; font-family: inherit;
+  }
+  .gf-btn:hover:not(.gf-active) { background: var(--gf-accent); color: #FFFFFF !important; border-color: var(--gf-accent); }
+  .gf-btn.gf-active { background: var(--gf-btn-active-bg) !important; color: var(--gf-btn-active-text) !important; border-color: var(--gf-btn-active-bg) !important; font-weight: 700; }
+
+  /* Result */
+  .gf-result { display: none; margin-top: {{ section.settings.result_top_margin }}px; justify-content: center; }
+  .gf-result.gf-show { display: flex; animation: gfFadeIn 0.4s ease; }
+  @keyframes gfFadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  .gf-result-box {
+    background: var(--gf-result-bg);
+    border: 2px solid var(--gf-result-border);
+    border-radius: var(--gf-card-radius);
+    padding: var(--gf-card-padding);
+    width: 100%; max-width: {{ section.settings.result_max_width }}px; box-sizing: border-box;
+  }
+  .gf-result-inner { display: flex; flex-wrap: nowrap; gap: 20px; align-items: flex-start; }
+  .gf-result-img {
+    width: {{ section.settings.result_img_width }}px;
+    min-width: {{ section.settings.result_img_width }}px;
+    flex-shrink: 0; border-radius: {{ section.settings.result_img_radius }}px; overflow: hidden;
+  }
+  .gf-result-img img { width: 100%; height: auto; display: block; object-fit: cover; }
+  .gf-result-info { flex: 1 1 0; min-width: 0; }
+  .gf-result-match-label { font-size: var(--gf-label-size); font-weight: 800; color: var(--gf-heading-color); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 6px; }
+  .gf-result-stars { color: var(--gf-accent); font-size: 14px; margin-bottom: 4px; display: flex; align-items: center; gap: 2px; flex-wrap: wrap; }
+  .gf-result-title { font-size: {{ section.settings.result_title_size }}px; font-weight: 700; color: var(--gf-heading-color); margin: 0 0 4px; }
+  .gf-result-price { font-size: {{ section.settings.result_price_size }}px; font-weight: 700; color: var(--gf-heading-color); margin: 0 0 12px; }
+  .gf-result-cta {
+    display: block; width: 100%; box-sizing: border-box;
+    background: var(--gf-btn-active-bg); color: var(--gf-btn-active-text);
+    padding: 14px 24px; border-radius: var(--gf-btn-radius);
+    font-size: var(--gf-btn-size); font-weight: 700;
+    text-align: center; text-transform: uppercase; letter-spacing: 0.5px;
+    border: none; cursor: pointer; transition: opacity 0.2s; font-family: inherit;
+  }
+  .gf-result-cta:hover { opacity: 0.85; }
+  .gf-result-cta:disabled { opacity: 0.6; cursor: not-allowed; }
+  .gf-result-link { display: block; margin-top: 8px; font-size: 13px; color: var(--gf-link-color); text-decoration: underline; text-align: center; }
+
+  .gf-footer { text-align: {{ section.settings.text_align }}; margin-top: {{ section.settings.footer_top_margin }}px; font-size: var(--gf-body-size); color: var(--gf-body-color); }
+  .gf-footer a { color: var(--gf-link-color); text-decoration: underline; }
+
+  @media (max-width: 749px) {
+    #gift-finder-{{ section.id }} {
+      --gf-heading-size:  {{ section.settings.mobile_heading_size }}px;
+      --gf-sub-size:      {{ section.settings.mobile_subheading_size }}px;
+      --gf-subtitle-size: {{ section.settings.mobile_subtitle_size }}px;
+      --gf-label-size:    {{ section.settings.mobile_label_size }}px;
+      --gf-btn-size:      {{ section.settings.mobile_btn_font_size }}px;
+      --gf-body-size:     {{ section.settings.mobile_body_font_size }}px;
+      --gf-card-gap:      {{ section.settings.mobile_card_gap }}px;
+      --gf-btn-gap:       {{ section.settings.mobile_btn_gap }}px;
+      --gf-card-padding:  {{ section.settings.mobile_card_padding }}px;
+      padding: {{ section.settings.mobile_padding_top }}px {{ section.settings.mobile_padding_right }}px {{ section.settings.mobile_padding_bottom }}px {{ section.settings.mobile_padding_left }}px;
+    }
+    .gf-cards-wrap { justify-content: {{ section.settings.mobile_cards_justify }}; }
+    .gf-card { flex: 1 1 100%; max-width: 100%; }
+    .gf-header { text-align: {{ section.settings.mobile_text_align }}; }
+    .gf-result-box { max-width: 100%; }
+    .gf-result-inner { flex-wrap: wrap; }
+    .gf-result-img { width: 100%; min-width: unset; }
+  }
+</style>
+
+<section id="gift-finder-{{ section.id }}">
+  <div class="gf-inner">
+
+    {%- if section.settings.show_header -%}
+    <div class="gf-header">
+      <h2 class="gf-heading">{{ section.settings.heading }}</h2>
+      <p class="gf-subheading">{{ section.settings.subheading }}</p>
+      <p class="gf-subtitle">{{ section.settings.subtitle }}</p>
+    </div>
+    {%- endif -%}
+
+    <div class="gf-cards-wrap">
+      {%- for col in (1..3) -%}
+        {%- assign label_key = 'label_' | append: col -%}
+        {%- assign icon_key  = 'col' | append: col | append: '_icon' -%}
+        <div class="gf-card" id="gf-card{{ col }}-{{ section.id }}">
+          {%- if section.settings[icon_key] != blank -%}
+          <div class="gf-card-icon">
+            <img class="gf-card-icon-img"
+                 src="{{ section.settings[icon_key] | image_url: width: 200 }}"
+                 alt="{{ section.settings[label_key] | escape }}">
+          </div>
+          {%- endif -%}
+          <div class="gf-card-label">{{ section.settings[label_key] }}</div>
+          {%- for i in (1..4) -%}
+            {%- assign opt_key = 'col' | append: col | append: '_opt' | append: i -%}
+            {%- if section.settings[opt_key] != blank -%}
+              <button type="button" class="gf-btn" data-group="col{{ col }}" data-value="{{ section.settings[opt_key] | downcase }}">
+                {{ section.settings[opt_key] }}
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="gf-result" id="gf-result-{{ section.id }}">
+      <div class="gf-result-box">
+        <div class="gf-result-inner">
+          <div class="gf-result-img" id="gf-result-img-{{ section.id }}">
+            <img id="gf-result-img-tag-{{ section.id }}" src="" alt="">
+          </div>
+          <div class="gf-result-info">
+            <p class="gf-result-match-label">{{ section.settings.result_label }}</p>
+            <div class="gf-result-stars" id="gf-result-stars-{{ section.id }}"></div>
+            <h3 class="gf-result-title" id="gf-result-title-{{ section.id }}"></h3>
+            <p class="gf-result-price" id="gf-result-price-{{ section.id }}"></p>
+            <button type="button" class="gf-result-cta" id="gf-result-cta-{{ section.id }}">ADD TO CART</button>
+            <a class="gf-result-link" id="gf-result-link-{{ section.id }}" href="#">{{ section.settings.result_view_details_text }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {%- if section.settings.show_footer -%}
+    <div class="gf-footer">
+      {{ section.settings.footer_text }}
+      {%- if section.settings.footer_link != blank -%}
+        <a href="{{ section.settings.footer_link }}">{{ section.settings.footer_link_text }}</a>
+      {%- endif -%}
+    </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var sid    = '{{ section.id }}';
+  var root   = document.getElementById('gift-finder-' + sid);
+  if (!root) return;
+
+  /* ── Product data (Liquid → JS) ─────────────────────────────── */
+  var products = [
+    {% for block in section.blocks %}{% if block.type == 'product_match' %}
+    {%- assign bp  = block.settings.product -%}
+    {%- assign bpv = bp.selected_or_first_available_variant -%}
+    {
+      col1:      {{ block.settings.match_col1 | downcase | json }},
+      col2:      {{ block.settings.match_col2 | downcase | json }},
+      col3:      {{ block.settings.match_col3 | downcase | json }},
+      title:     {{ bp.title | json }},
+      price:     {{ bpv.price | money | json }},
+      image:     {{ bp.featured_image | img_url: '480x' | json }},
+      stars:     {{ bp.metafields.reviews.rating.value | default: '' | json }},
+      reviews:   {{ bp.metafields.reviews.rating_count.value | default: '' | json }},
+      variantId: {{ bpv.id | json }},
+      url:       {{ bp.url | json }}
+    },
+    {% endif %}{% endfor %}
+  ];
+
+  /* ── State ───────────────────────────────────────────────────── */
+  var state = { col1: null, col2: null, col3: null };
+
+  /* ── Selection handler ───────────────────────────────────────── */
+  root.addEventListener('click', function (e) {
+    var btn = e.target.closest('.gf-btn');
+    if (!btn) return;
+
+    var group = btn.dataset.group;
+    state[group] = btn.dataset.value;
+
+    btn.closest('.gf-card').querySelectorAll('.gf-btn').forEach(function (b) {
+      b.classList.toggle('gf-active', b === btn);
+    });
+
+    root.querySelectorAll('.gf-card').forEach(function (c, i) {
+      c.classList.toggle('gf-card-selected', state['col' + (i + 1)] !== null);
+    });
+
+    if (state.col1 && state.col2 && state.col3) renderResult();
+    else document.getElementById('gf-result-' + sid).classList.remove('gf-show');
+  });
+
+  /* ── Render matched product ──────────────────────────────────── */
+  function renderResult() {
+    var match = products.find(function (p) {
+      return (p.col1 === '' || p.col1 === state.col1) &&
+             (p.col2 === '' || p.col2 === state.col2) &&
+             (p.col3 === '' || p.col3 === state.col3);
+    }) || products[0];
+    if (!match) return;
+
+    /* image */
+    var imgWrap = document.getElementById('gf-result-img-' + sid);
+    var imgTag  = document.getElementById('gf-result-img-tag-' + sid);
+    if (match.image) {
+      imgTag.src = match.image;
+      imgTag.alt = match.title || '';
+      imgWrap.style.display = '';
+    } else {
+      imgWrap.style.display = 'none';
+    }
+
+    /* text */
+    document.getElementById('gf-result-title-' + sid).textContent = match.title || '';
+    document.getElementById('gf-result-price-' + sid).textContent = match.price || '';
+
+    /* stars — use metafield values if available, else hide */
+    var starsEl = document.getElementById('gf-result-stars-' + sid);
+    if (match.stars) {
+      var n = parseFloat(match.stars), html = '';
+      for (var s = 1; s <= 5; s++) html += s <= Math.round(n) ? '★' : '☆';
+      if (match.reviews) html += '<span style="color:var(--gf-sub-color);font-size:12px;margin-left:6px;">' + match.stars + ' · ' + match.reviews + ' reviews</span>';
+      starsEl.innerHTML = html;
+      starsEl.style.display = '';
+    } else {
+      starsEl.style.display = 'none';
+    }
+
+    /* CTA */
+    var cta = document.getElementById('gf-result-cta-' + sid);
+    cta.dataset.variantId = match.variantId || '';
+    cta.textContent = 'ADD TO CART' + (match.price ? ' — ' + match.price : '');
+    cta.disabled = false;
+
+    /* link */
+    var link = document.getElementById('gf-result-link-' + sid);
+    if (match.url && match.url !== 'null') {
+      link.href = match.url;
+      link.style.display = '';
+    } else {
+      link.style.display = 'none';
+    }
+
+    /* animate */
+    var result = document.getElementById('gf-result-' + sid);
+    result.classList.remove('gf-show');
+    void result.offsetWidth;
+    result.classList.add('gf-show');
+  }
+
+  /* ── Add to cart (AJAX, no page reload) ─────────────────────── */
+  document.addEventListener('click', function (e) {
+    var cta = e.target.closest('#gf-result-cta-' + sid);
+    if (!cta) return;
+    e.preventDefault();
+
+    var variantId = cta.dataset.variantId;
+    if (!variantId || variantId === 'null') return;
+
+    var original = cta.textContent;
+    cta.textContent = 'Adding…';
+    cta.disabled = true;
+
+    /* Find Shrine's cart drawer section ID from the DOM so we can
+       use the Sections Rendering API to get fresh HTML in one call */
+    var cartDrawerEl  = document.querySelector('[id^="shopify-section"][id*="cart-drawer"], [id^="shopify-section"][id*="mini-cart"]');
+    var cartIconEl    = document.querySelector('[id^="shopify-section"][id*="cart-icon"], [id^="shopify-section"][id*="cart-count"]');
+    var sectionIds    = [];
+    if (cartDrawerEl) sectionIds.push(cartDrawerEl.id.replace('shopify-section-', ''));
+    if (cartIconEl)   sectionIds.push(cartIconEl.id.replace('shopify-section-', ''));
+
+    var body = { id: parseInt(variantId, 10), quantity: 1 };
+    if (sectionIds.length) body.sections = sectionIds;
+
+    fetch('/cart/add.js', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body:    JSON.stringify(body)
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (data.status) {
+        cta.textContent = original;
+        cta.disabled = false;
+        return;
+      }
+      cta.textContent = '✓ Added!';
+
+      /* If Shopify returned rendered section HTML, inject it directly */
+      if (data.sections) {
+        Object.keys(data.sections).forEach(function (sectionId) {
+          var html    = data.sections[sectionId];
+          var wrapper = document.getElementById('shopify-section-' + sectionId);
+          if (!wrapper) return;
+          var tmp = document.createElement('div');
+          tmp.innerHTML = html;
+          var inner = tmp.querySelector('[id="shopify-section-' + sectionId + '"]') || tmp.firstElementChild;
+          if (inner) wrapper.innerHTML = inner.innerHTML;
+        });
+      }
+
+      /* Open Shrine's cart drawer — try the web component first, then
+         fall back to clicking whichever toggle button is in the DOM */
+      var drawerEl = document.querySelector('mini-cart, cart-drawer');
+      if (drawerEl && typeof drawerEl.open === 'function') {
+        drawerEl.open();
+      } else {
+        var toggle = document.querySelector('[data-open-mini-cart], [aria-controls*="cart"], .js-toggle-cart');
+        if (toggle) toggle.click();
+      }
+
+      /* Always fire cart:refresh on documentElement as a safety net */
+      document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+
+      setTimeout(function () { cta.textContent = original; cta.disabled = false; }, 1800);
+    })
+    .catch(function () { cta.textContent = original; cta.disabled = false; });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Gift Finder",
+  "tag": "section",
+  "class": "gift-finder-section-wrapper",
+  "settings": [
+    { "type": "header", "content": "Header" },
+    { "type": "checkbox", "id": "show_header", "label": "Show header", "default": true },
+    { "type": "text",    "id": "heading",    "label": "Main heading",    "default": "FIND THE RIGHT GIFT" },
+    { "type": "text",    "id": "subheading", "label": "Highlighted subheading", "default": "IN SECONDS" },
+    { "type": "text",    "id": "subtitle",   "label": "Subtitle",        "default": "Tell us who it's for and we'll point you to the best box." },
+    { "type": "range",   "id": "header_bottom_margin", "label": "Header bottom margin", "min": 0, "max": 80, "step": 2, "default": 32, "unit": "px" },
+
+    { "type": "header", "content": "Column Labels" },
+    { "type": "text", "id": "label_1", "label": "Column 1 label", "default": "1. WHO IS IT FOR?" },
+    { "type": "text", "id": "label_2", "label": "Column 2 label", "default": "2. WHAT'S THE OCCASION?" },
+    { "type": "text", "id": "label_3", "label": "Column 3 label", "default": "3. CHOOSE A BOX SIZE" },
+
+    { "type": "header", "content": "Column Icons" },
+    { "type": "image_picker", "id": "col1_icon", "label": "Column 1 icon" },
+    { "type": "image_picker", "id": "col2_icon", "label": "Column 2 icon" },
+    { "type": "image_picker", "id": "col3_icon", "label": "Column 3 icon" },
+    { "type": "range", "id": "card_icon_size",        "label": "Icon size (desktop)", "min": 40, "max": 160, "step": 4, "default": 80, "unit": "px" },
+    { "type": "range", "id": "mobile_card_icon_size", "label": "Icon size (mobile)",  "min": 40, "max": 120, "step": 4, "default": 64, "unit": "px" },
+
+    { "type": "header", "content": "Column 1 Options" },
+    { "type": "text", "id": "col1_opt1", "label": "Option 1", "default": "STUDENT" },
+    { "type": "text", "id": "col1_opt2", "label": "Option 2", "default": "FRIEND" },
+    { "type": "text", "id": "col1_opt3", "label": "Option 3", "default": "FAMILY" },
+    { "type": "text", "id": "col1_opt4", "label": "Option 4", "default": "TEAM / OFFICE" },
+
+    { "type": "header", "content": "Column 2 Options" },
+    { "type": "text", "id": "col2_opt1", "label": "Option 1", "default": "BIRTHDAY" },
+    { "type": "text", "id": "col2_opt2", "label": "Option 2", "default": "GET WELL" },
+    { "type": "text", "id": "col2_opt3", "label": "Option 3", "default": "THANK YOU" },
+    { "type": "text", "id": "col2_opt4", "label": "Option 4", "default": "JUST BECAUSE" },
+
+    { "type": "header", "content": "Column 3 Options" },
+    { "type": "text", "id": "col3_opt1", "label": "Option 1", "default": "SMALL" },
+    { "type": "text", "id": "col3_opt2", "label": "Option 2", "default": "MEDIUM" },
+    { "type": "text", "id": "col3_opt3", "label": "Option 3", "default": "LARGE" },
+    { "type": "text", "id": "col3_opt4", "label": "Option 4 (leave blank to hide)" },
+
+    { "type": "header", "content": "Result Box" },
+    { "type": "text",  "id": "result_label",            "label": "Match label",           "default": "YOUR PERFECT MATCH!" },
+    { "type": "text",  "id": "result_view_details_text","label": "View details link text", "default": "View Full Details \u2192" },
+    { "type": "range", "id": "result_top_margin",  "label": "Result top margin",         "min": 0,   "max": 80,  "step": 2,  "default": 32,  "unit": "px" },
+    { "type": "range", "id": "result_max_width",   "label": "Result box max width",      "min": 300, "max": 900, "step": 10, "default": 600, "unit": "px" },
+    { "type": "range", "id": "result_img_width",   "label": "Product image width",       "min": 80,  "max": 400, "step": 4,  "default": 160, "unit": "px" },
+    { "type": "range", "id": "result_img_radius",  "label": "Product image radius",      "min": 0,   "max": 32,  "step": 1,  "default": 8,   "unit": "px" },
+    { "type": "range", "id": "result_title_size",  "label": "Product title font size",   "min": 12,  "max": 36,  "step": 1,  "default": 18,  "unit": "px" },
+    { "type": "range", "id": "result_price_size",  "label": "Product price font size",   "min": 12,  "max": 36,  "step": 1,  "default": 20,  "unit": "px" },
+
+    { "type": "header", "content": "Footer" },
+    { "type": "checkbox", "id": "show_footer",     "label": "Show footer",     "default": true },
+    { "type": "text",     "id": "footer_text",     "label": "Footer text",     "default": "Not sure? " },
+    { "type": "text",     "id": "footer_link_text","label": "Footer link text","default": "Shop Best Sellers" },
+    { "type": "url",      "id": "footer_link",     "label": "Footer link URL" },
+    { "type": "range",    "id": "footer_top_margin","label": "Footer top margin","min": 0,"max": 80,"step": 2,"default": 24,"unit": "px" },
+
+    { "type": "header", "content": "Background Image" },
+    { "type": "image_picker", "id": "bg_image", "label": "Background image" },
+    { "type": "select", "id": "bg_image_size", "label": "Image size", "options": [{"value":"cover","label":"Cover (fill section)"},{"value":"contain","label":"Contain (fit inside)"},{"value":"auto","label":"Auto (original size)"}], "default": "cover" },
+    { "type": "select", "id": "bg_image_position", "label": "Image position", "options": [{"value":"center center","label":"Center"},{"value":"top center","label":"Top"},{"value":"bottom center","label":"Bottom"},{"value":"left center","label":"Left"},{"value":"right center","label":"Right"}], "default": "center center" },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color",            "label": "Section background",      "default": "#FFF0F5" },
+    { "type": "color", "id": "accent_color",        "label": "Accent / hover",          "default": "#E91E8C" },
+    { "type": "color", "id": "accent_text_color",   "label": "Accent text",             "default": "#FFFFFF" },
+    { "type": "color", "id": "card_bg_color",       "label": "Card background",         "default": "#FFFFFF" },
+    { "type": "color", "id": "card_border_color",   "label": "Card border",             "default": "#E91E8C" },
+    { "type": "color", "id": "btn_bg_color",        "label": "Button background",       "default": "#FDE8EF" },
+    { "type": "color", "id": "btn_text_color",      "label": "Button text",             "default": "#C2185B" },
+    { "type": "color", "id": "btn_active_bg_color", "label": "Button background (active)", "default": "#E91E8C" },
+    { "type": "color", "id": "btn_active_text_color","label": "Button text (active)",   "default": "#FFFFFF" },
+    { "type": "color", "id": "heading_color",       "label": "Heading color",           "default": "#111111" },
+    { "type": "color", "id": "highlight_color",     "label": "Highlighted heading",     "default": "#E91E8C" },
+    { "type": "color", "id": "subheading_color",    "label": "Subtitle / meta text",    "default": "#666666" },
+    { "type": "color", "id": "label_color",         "label": "Label color",             "default": "#111111" },
+    { "type": "color", "id": "body_color",          "label": "Body / footer text",      "default": "#444444" },
+    { "type": "color", "id": "link_color",          "label": "Link color",              "default": "#E91E8C" },
+    { "type": "color", "id": "result_bg_color",     "label": "Result box background",   "default": "#FFF0F5" },
+    { "type": "color", "id": "result_border_color", "label": "Result box border",       "default": "#E91E8C" },
+
+    { "type": "header", "content": "Typography" },
+    { "type": "range", "id": "heading_size",    "label": "Heading size",    "min": 20, "max": 80, "step": 1, "default": 40, "unit": "px" },
+    { "type": "range", "id": "subheading_size", "label": "Subheading size", "min": 16, "max": 70, "step": 1, "default": 36, "unit": "px" },
+    { "type": "range", "id": "subtitle_size",   "label": "Subtitle size",   "min": 10, "max": 28, "step": 1, "default": 15, "unit": "px" },
+    { "type": "range", "id": "label_size",      "label": "Label size",      "min": 10, "max": 28, "step": 1, "default": 14, "unit": "px" },
+    { "type": "range", "id": "btn_font_size",   "label": "Button font size","min": 10, "max": 24, "step": 1, "default": 13, "unit": "px" },
+    { "type": "range", "id": "body_font_size",  "label": "Body font size",  "min": 10, "max": 20, "step": 1, "default": 14, "unit": "px" },
+    { "type": "select", "id": "heading_weight", "label": "Heading weight", "options": [{"value":"400","label":"400"},{"value":"600","label":"600"},{"value":"700","label":"700"},{"value":"800","label":"800"},{"value":"900","label":"900"}], "default": "800" },
+    { "type": "select", "id": "subheading_weight", "label": "Subheading weight", "options": [{"value":"400","label":"400"},{"value":"600","label":"600"},{"value":"700","label":"700"},{"value":"800","label":"800"},{"value":"900","label":"900"}], "default": "800" },
+    { "type": "select", "id": "label_weight",   "label": "Label weight",   "options": [{"value":"400","label":"400"},{"value":"500","label":"500"},{"value":"600","label":"600"},{"value":"700","label":"700"}], "default": "600" },
+    { "type": "select", "id": "btn_font_weight","label": "Button weight",  "options": [{"value":"400","label":"400"},{"value":"500","label":"500"},{"value":"600","label":"600"},{"value":"700","label":"700"}], "default": "500" },
+    { "type": "select", "id": "heading_transform",    "label": "Heading transform",    "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"},{"value":"capitalize","label":"Capitalize"}], "default": "uppercase" },
+    { "type": "select", "id": "subheading_transform", "label": "Subheading transform", "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"},{"value":"capitalize","label":"Capitalize"}], "default": "uppercase" },
+    { "type": "select", "id": "label_transform",      "label": "Label transform",      "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"},{"value":"capitalize","label":"Capitalize"}], "default": "uppercase" },
+    { "type": "select", "id": "btn_transform",        "label": "Button transform",     "options": [{"value":"none","label":"None"},{"value":"uppercase","label":"Uppercase"},{"value":"capitalize","label":"Capitalize"}], "default": "uppercase" },
+    { "type": "range", "id": "heading_letter_spacing",    "label": "Heading letter spacing",    "min": -2, "max": 10, "step": 0.5, "default": 0,   "unit": "px" },
+    { "type": "range", "id": "subheading_letter_spacing", "label": "Subheading letter spacing", "min": -2, "max": 10, "step": 0.5, "default": 0,   "unit": "px" },
+    { "type": "range", "id": "label_letter_spacing",      "label": "Label letter spacing",      "min": -2, "max": 10, "step": 0.5, "default": 0.5, "unit": "px" },
+    { "type": "range", "id": "btn_letter_spacing",        "label": "Button letter spacing",     "min": -2, "max": 10, "step": 0.5, "default": 1,   "unit": "px" },
+
+    { "type": "header", "content": "Layout & Spacing" },
+    { "type": "range", "id": "max_width",     "label": "Section max width", "min": 600,  "max": 1600, "step": 20, "default": 1200, "unit": "px" },
+    { "type": "range", "id": "padding_top",   "label": "Padding top",       "min": 0,    "max": 120,  "step": 4,  "default": 60,   "unit": "px" },
+    { "type": "range", "id": "padding_bottom","label": "Padding bottom",    "min": 0,    "max": 120,  "step": 4,  "default": 60,   "unit": "px" },
+    { "type": "range", "id": "padding_left",  "label": "Padding left",      "min": 0,    "max": 80,   "step": 4,  "default": 24,   "unit": "px" },
+    { "type": "range", "id": "padding_right", "label": "Padding right",     "min": 0,    "max": 80,   "step": 4,  "default": 24,   "unit": "px" },
+    { "type": "range", "id": "card_gap",      "label": "Card gap",          "min": 0,    "max": 60,   "step": 2,  "default": 16,   "unit": "px" },
+    { "type": "range", "id": "btn_gap",       "label": "Button gap",        "min": 0,    "max": 40,   "step": 2,  "default": 8,    "unit": "px" },
+    { "type": "range", "id": "card_padding",  "label": "Card padding",      "min": 8,    "max": 60,   "step": 2,  "default": 20,   "unit": "px" },
+    { "type": "range", "id": "btn_padding_v", "label": "Button padding V",  "min": 4,    "max": 32,   "step": 1,  "default": 14,   "unit": "px" },
+    { "type": "range", "id": "btn_padding_h", "label": "Button padding H",  "min": 4,    "max": 60,   "step": 2,  "default": 16,   "unit": "px" },
+    { "type": "range", "id": "card_border_radius",       "label": "Card radius",            "min": 0, "max": 40, "step": 1, "default": 12, "unit": "px" },
+    { "type": "range", "id": "btn_border_radius",        "label": "Button radius",          "min": 0, "max": 40, "step": 1, "default": 8,  "unit": "px" },
+    { "type": "range", "id": "card_border_width",        "label": "Card border width",      "min": 1, "max": 6,  "step": 1, "default": 2,  "unit": "px" },
+    { "type": "range", "id": "card_border_active_width", "label": "Card border (selected)", "min": 1, "max": 6,  "step": 1, "default": 2,  "unit": "px" },
+    { "type": "range", "id": "card_min_width","label": "Card min width",    "min": 160, "max": 400, "step": 10, "default": 220, "unit": "px" },
+    { "type": "range", "id": "card_max_width","label": "Card max width",    "min": 200, "max": 600, "step": 10, "default": 380, "unit": "px" },
+    { "type": "range", "id": "label_bottom_margin", "label": "Label bottom margin", "min": 0, "max": 40, "step": 2, "default": 4, "unit": "px" },
+    { "type": "select", "id": "text_align",    "label": "Header alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "select", "id": "cards_justify", "label": "Cards alignment",  "options": [{"value":"flex-start","label":"Left"},{"value":"center","label":"Center"},{"value":"flex-end","label":"Right"},{"value":"space-between","label":"Space between"}], "default": "center" },
+    { "type": "select", "id": "btn_text_align","label": "Button alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+
+    { "type": "header", "content": "Mobile — Typography" },
+    { "type": "range", "id": "mobile_heading_size",    "label": "Heading size",    "min": 16, "max": 60, "step": 1, "default": 28, "unit": "px" },
+    { "type": "range", "id": "mobile_subheading_size", "label": "Subheading size", "min": 14, "max": 50, "step": 1, "default": 24, "unit": "px" },
+    { "type": "range", "id": "mobile_subtitle_size",   "label": "Subtitle size",   "min": 10, "max": 24, "step": 1, "default": 13, "unit": "px" },
+    { "type": "range", "id": "mobile_label_size",      "label": "Label size",      "min": 10, "max": 24, "step": 1, "default": 13, "unit": "px" },
+    { "type": "range", "id": "mobile_btn_font_size",   "label": "Button size",     "min": 10, "max": 20, "step": 1, "default": 12, "unit": "px" },
+    { "type": "range", "id": "mobile_body_font_size",  "label": "Body size",       "min": 10, "max": 18, "step": 1, "default": 13, "unit": "px" },
+
+    { "type": "header", "content": "Mobile — Layout & Spacing" },
+    { "type": "range", "id": "mobile_padding_top",    "label": "Padding top",    "min": 0, "max": 80, "step": 4, "default": 32, "unit": "px" },
+    { "type": "range", "id": "mobile_padding_bottom", "label": "Padding bottom", "min": 0, "max": 80, "step": 4, "default": 32, "unit": "px" },
+    { "type": "range", "id": "mobile_padding_left",   "label": "Padding left",   "min": 0, "max": 40, "step": 2, "default": 16, "unit": "px" },
+    { "type": "range", "id": "mobile_padding_right",  "label": "Padding right",  "min": 0, "max": 40, "step": 2, "default": 16, "unit": "px" },
+    { "type": "range", "id": "mobile_card_gap",       "label": "Card gap",       "min": 0, "max": 40, "step": 2, "default": 12, "unit": "px" },
+    { "type": "range", "id": "mobile_btn_gap",        "label": "Button gap",     "min": 0, "max": 30, "step": 2, "default": 8,  "unit": "px" },
+    { "type": "range", "id": "mobile_card_padding",   "label": "Card padding",   "min": 8, "max": 40, "step": 2, "default": 16, "unit": "px" },
+    { "type": "select", "id": "mobile_text_align",    "label": "Header alignment","options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}], "default": "center" },
+    { "type": "select", "id": "mobile_cards_justify", "label": "Cards alignment", "options": [{"value":"flex-start","label":"Left"},{"value":"center","label":"Center"},{"value":"flex-end","label":"Right"}], "default": "center" }
+  ],
+
+  "blocks": [
+    {
+      "type": "product_match",
+      "name": "Product Match",
+      "settings": [
+        { "type": "header",    "content": "Match Criteria" },
+        { "type": "paragraph", "content": "Each value must match a button label exactly (case-insensitive). Leave a field blank to match any value in that column." },
+        { "type": "select", "id": "match_col1", "label": "Who is it for?", "options": [{"value":"student","label":"Student"},{"value":"friend","label":"Friend"},{"value":"family","label":"Family"},{"value":"team / office","label":"Team / Office"}], "default": "friend" },
+        { "type": "select", "id": "match_col2", "label": "Occasion?",      "options": [{"value":"birthday","label":"Birthday"},{"value":"get well","label":"Get Well"},{"value":"thank you","label":"Thank You"},{"value":"just because","label":"Just Because"}], "default": "birthday" },
+        { "type": "select", "id": "match_col3", "label": "Box size?",      "options": [{"value":"small","label":"Small"},{"value":"medium","label":"Medium"},{"value":"large","label":"Large"}], "default": "medium" },
+        { "type": "header",  "content": "Product" },
+        { "type": "product", "id": "product", "label": "Product" }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Gift Finder",
+      "blocks": [
+        { "type": "product_match", "settings": { "match_col1": "friend", "match_col2": "birthday", "match_col3": "medium" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

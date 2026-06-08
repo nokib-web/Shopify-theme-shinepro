@@ -1,0 +1,933 @@
+{% comment %}
+  Section: Video Testimonials Slider
+  File: sections/video-testimonials.liquid
+  — CSS is embedded below; no separate asset file needed —
+{% endcomment %}
+
+{%- liquid
+  assign star_icon  = section.settings.star_icon
+  assign star_size  = section.settings.star_size
+  assign star_color = section.settings.star_color
+-%}
+
+<style>
+/* =============================================
+   Video Testimonials — scoped to #vt-{{ section.id }}
+   ============================================= */
+
+#vt-{{ section.id }} {
+  width: 100%;
+  box-sizing: border-box;
+  padding: {{ section.settings.padding_top }}px {{ section.settings.padding_horizontal }}px {{ section.settings.padding_bottom }}px;
+  background: linear-gradient(to right, {{ section.settings.bg_gradient_from }}, {{ section.settings.bg_gradient_to }});
+}
+
+#vt-{{ section.id }} .vt-inner {
+  max-width: {{ section.settings.max_width }}px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ---------- Title ---------- */
+#vt-{{ section.id }} .vt-title {
+  text-align: center;
+  margin: 0 auto 8px;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  font-size: clamp({{ section.settings.title_fontsize_mobile }}px, 4vw, {{ section.settings.title_fontsize_desktop }}px);
+  color: {{ section.settings.title_color }};
+  font-weight: {{ section.settings.title_fontweight }};
+}
+
+/* ---------- Description ---------- */
+#vt-{{ section.id }} .vt-description {
+  text-align: center;
+  margin: 0 auto 40px;
+  line-height: 1.55;
+  font-size: clamp({{ section.settings.desc_fontsize_mobile }}px, 2vw, {{ section.settings.desc_fontsize_desktop }}px);
+  color: {{ section.settings.desc_color }};
+  font-weight: {{ section.settings.desc_fontweight }};
+  max-width: {{ section.settings.desc_max_width }}px;
+}
+
+/* ---------- Slider Shell ---------- */
+#vt-{{ section.id }} .vt-slider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#vt-{{ section.id }} .vt-slider-viewport {
+  overflow: hidden;
+  width: 100%;
+  border-radius: 4px;
+}
+
+#vt-{{ section.id }} .vt-slider-track {
+  display: flex;
+  gap: {{ section.settings.block_gap }}px;
+  transition: transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: transform;
+}
+
+/* ---------- Slide Card ---------- */
+#vt-{{ section.id }} .vt-slide {
+  flex: 0 0 auto;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  border-radius: {{ section.settings.block_radius }}px;
+  gap: {{ section.settings.block_inner_gap }}px;
+}
+
+/* 60% Video */
+#vt-{{ section.id }} .vt-video-wrap {
+  flex: 0 0 60%;
+  max-width: 60%;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+  min-height: 200px;
+  border-radius: {{ section.settings.block_radius }}px 0 0 {{ section.settings.block_radius }}px;
+}
+
+#vt-{{ section.id }} .vt-video-el {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* iframe embed */
+#vt-{{ section.id }} .vt-iframe-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 120%;
+}
+
+#vt-{{ section.id }} .vt-iframe-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Thumbnail + play */
+#vt-{{ section.id }} .vt-thumb-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+}
+
+#vt-{{ section.id }} .vt-thumb-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#vt-{{ section.id }} .vt-play-btn {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(244, 63, 94, 0.92);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: transform 0.2s, background 0.2s;
+  box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4);
+}
+
+#vt-{{ section.id }} .vt-play-btn:hover {
+  transform: scale(1.1);
+  background: rgba(244, 63, 94, 1);
+}
+
+#vt-{{ section.id }} .vt-play-btn svg {
+  width: 22px;
+  height: 22px;
+  margin-left: 3px;
+}
+
+/* Placeholder */
+#vt-{{ section.id }} .vt-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #aaa;
+  background: #f5f5f5;
+}
+
+#vt-{{ section.id }} .vt-placeholder svg { width: 36px; height: 36px; }
+#vt-{{ section.id }} .vt-placeholder span { font-size: 12px; }
+
+/* ---------- Content (40%) ---------- */
+#vt-{{ section.id }} .vt-content {
+  flex: 0 0 40%;
+  max-width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 20px 20px 16px;
+  box-sizing: border-box;
+}
+
+#vt-{{ section.id }} .vt-review-text {
+  margin: 0;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+#vt-{{ section.id }} .vt-author {
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ---------- Stars ---------- */
+#vt-{{ section.id }} .vt-stars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+#vt-{{ section.id }} .vt-star { display: inline-block; flex-shrink: 0; }
+#vt-{{ section.id }} .vt-star--empty { opacity: 0.25; }
+
+/* ---------- Arrow Buttons ---------- */
+#vt-{{ section.id }} .vt-arrow {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 2;
+}
+
+#vt-{{ section.id }} .vt-arrow:hover {
+  background: {{ section.settings.star_color }};
+  border-color: {{ section.settings.star_color }};
+  color: #fff;
+  transform: scale(1.05);
+}
+
+#vt-{{ section.id }} .vt-arrow:disabled { opacity: 0.3; pointer-events: none; }
+#vt-{{ section.id }} .vt-arrow svg { width: 18px; height: 18px; }
+
+/* ---------- Dots ---------- */
+#vt-{{ section.id }} .vt-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+#vt-{{ section.id }} .vt-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  padding: 0;
+}
+
+#vt-{{ section.id }} .vt-dot--active {
+  background: {{ section.settings.star_color }};
+  transform: scale(1.35);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  #vt-{{ section.id }} .vt-slide {
+    flex-direction: column;
+  }
+  #vt-{{ section.id }} .vt-video-wrap {
+    flex: 0 0 auto;
+    max-width: 100%;
+    min-height: 220px;
+    border-radius: {{ section.settings.block_radius }}px {{ section.settings.block_radius }}px 0 0;
+  }
+  #vt-{{ section.id }} .vt-content {
+    flex: 0 0 auto;
+    max-width: 100%;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  #vt-{{ section.id }} .vt-arrow { width: 32px; height: 32px; }
+  #vt-{{ section.id }} .vt-arrow svg { width: 14px; height: 14px; }
+  #vt-{{ section.id }} .vt-content { padding: 12px; }
+}
+</style>
+
+<section id="vt-{{ section.id }}">
+  <div class="vt-inner">
+
+    {%- if section.settings.title != blank -%}
+      <h2 class="vt-title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <p class="vt-description">{{ section.settings.description }}</p>
+    {%- endif -%}
+
+    <div class="vt-slider-wrapper">
+
+      <button class="vt-arrow vt-arrow--prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+
+      <div class="vt-slider-viewport">
+        <div class="vt-slider-track" id="vt-track-{{ section.id }}">
+
+          {%- for block in section.blocks -%}
+            {%- assign stars = block.settings.star_count | default: 5 -%}
+
+            <div
+              class="vt-slide"
+              style="background: {{ block.settings.block_bg }};"
+              {{ block.shopify_attributes }}
+            >
+
+              <!-- 60% Video -->
+              <div class="vt-video-wrap">
+                {%- if block.settings.video != blank -%}
+                  {{
+                    block.settings.video
+                    | video_tag:
+                      image_size: '600x',
+                      autoplay: false,
+                      loop: false,
+                      controls: true,
+                      muted: false,
+                      class: 'vt-video-el'
+                  }}
+                {%- elsif block.settings.video_url != blank -%}
+                  <div class="vt-iframe-wrap">
+                    <iframe
+                      src="{{ block.settings.video_url }}"
+                      frameborder="0"
+                      allow="autoplay; encrypted-media"
+                      allowfullscreen
+                      loading="lazy"
+                      title="Customer video testimonial"
+                    ></iframe>
+                  </div>
+                {%- elsif block.settings.thumbnail != blank -%}
+                  <div class="vt-thumb-wrap">
+                    <img
+                      src="{{ block.settings.thumbnail | image_url: width: 600 }}"
+                      alt="{{ block.settings.author | escape }}"
+                      loading="lazy"
+                      width="600"
+                    >
+                    <button class="vt-play-btn" aria-label="Play video">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                      </svg>
+                    </button>
+                  </div>
+                {%- else -%}
+                  <div class="vt-placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                      <polyline points="8 21 12 17 16 21"/>
+                      <line x1="12" y1="17" x2="12" y2="7"/>
+                    </svg>
+                    <span>No video added</span>
+                  </div>
+                {%- endif -%}
+              </div>
+
+              <!-- 40% Content -->
+              <div class="vt-content">
+
+                {%- if block.settings.review_text != blank -%}
+                  <p
+                    class="vt-review-text"
+                    style="
+                      font-size: clamp({{ block.settings.review_fontsize_mobile | default: 13 }}px, 1.5vw, {{ block.settings.review_fontsize_desktop | default: 15 }}px);
+                      color: {{ block.settings.review_color }};
+                      font-weight: {{ block.settings.review_fontweight }};
+                      max-width: {{ block.settings.review_max_width | default: 240 }}px;
+                    "
+                  >
+                    &ldquo;{{ block.settings.review_text }}&rdquo;
+                  </p>
+                {%- endif -%}
+
+                {%- if block.settings.author != blank -%}
+                  <p
+                    class="vt-author"
+                    style="
+                      font-size: {{ block.settings.author_fontsize | default: 13 }}px;
+                      color: {{ block.settings.author_color }};
+                      font-weight: {{ block.settings.author_fontweight }};
+                    "
+                  >
+                    &ndash; {{ block.settings.author }}
+                  </p>
+                {%- endif -%}
+
+                <!-- Stars -->
+                <div class="vt-stars" aria-label="{{ stars }} out of 5 stars" role="img">
+                  {%- for i in (1..5) -%}
+                    {%- if i <= stars -%}
+                      {%- assign filled = true -%}
+                    {%- else -%}
+                      {%- assign filled = false -%}
+                    {%- endif -%}
+
+                    {%- if star_icon == 'star' -%}
+                      <svg class="vt-star{% unless filled %} vt-star--empty{% endunless %}" width="{{ star_size }}" height="{{ star_size }}" viewBox="0 0 24 24" fill="{% if filled %}{{ star_color }}{% else %}none{% endif %}" stroke="{{ star_color }}" stroke-width="1.5">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                      </svg>
+                    {%- elsif star_icon == 'heart' -%}
+                      <svg class="vt-star{% unless filled %} vt-star--empty{% endunless %}" width="{{ star_size }}" height="{{ star_size }}" viewBox="0 0 24 24" fill="{% if filled %}{{ star_color }}{% else %}none{% endif %}" stroke="{{ star_color }}" stroke-width="1.5">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                      </svg>
+                    {%- elsif star_icon == 'circle' -%}
+                      <svg class="vt-star{% unless filled %} vt-star--empty{% endunless %}" width="{{ star_size }}" height="{{ star_size }}" viewBox="0 0 24 24" fill="{% if filled %}{{ star_color }}{% else %}none{% endif %}" stroke="{{ star_color }}" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/>
+                      </svg>
+                    {%- elsif star_icon == 'diamond' -%}
+                      <svg class="vt-star{% unless filled %} vt-star--empty{% endunless %}" width="{{ star_size }}" height="{{ star_size }}" viewBox="0 0 24 24" fill="{% if filled %}{{ star_color }}{% else %}none{% endif %}" stroke="{{ star_color }}" stroke-width="1.5">
+                        <polygon points="12 2 22 12 12 22 2 12"/>
+                      </svg>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+
+              </div><!-- /vt-content -->
+            </div><!-- /vt-slide -->
+          {%- endfor -%}
+
+        </div><!-- /vt-slider-track -->
+      </div><!-- /vt-slider-viewport -->
+
+      <button class="vt-arrow vt-arrow--next" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+
+    </div><!-- /vt-slider-wrapper -->
+
+    <div class="vt-dots" id="vt-dots-{{ section.id }}"></div>
+
+  </div><!-- /vt-inner -->
+</section>
+
+<script>
+(function () {
+  var sectionEl  = document.getElementById('vt-{{ section.id }}');
+  var track      = document.getElementById('vt-track-{{ section.id }}');
+  var dotsWrap   = document.getElementById('vt-dots-{{ section.id }}');
+  var prevBtn    = sectionEl.querySelector('.vt-arrow--prev');
+  var nextBtn    = sectionEl.querySelector('.vt-arrow--next');
+  var slides     = Array.from(track.querySelectorAll('.vt-slide'));
+  var gap        = {{ section.settings.block_gap | default: 20 }};
+  var current    = 0;
+  var slidesVis  = 1;
+
+  function getSlidesVis() {
+    var vw = window.innerWidth;
+    if (vw >= 1024) return Math.min(slides.length, {{ section.settings.slides_desktop | default: 3 }});
+    if (vw >= 640)  return Math.min(slides.length, {{ section.settings.slides_tablet | default: 2 }});
+    return 1;
+  }
+
+  function setSlideWidths() {
+    var vpW = track.parentElement.offsetWidth;
+    var w   = (vpW - gap * (slidesVis - 1)) / slidesVis;
+    slides.forEach(function(s) { s.style.width = w + 'px'; });
+  }
+
+  function buildDots() {
+    dotsWrap.innerHTML = '';
+    var count = Math.ceil(slides.length / slidesVis);
+    for (var i = 0; i < count; i++) {
+      var d = document.createElement('button');
+      d.className = 'vt-dot' + (i === 0 ? ' vt-dot--active' : '');
+      d.setAttribute('aria-label', 'Go to slide group ' + (i + 1));
+      (function(idx) { d.addEventListener('click', function() { goTo(idx * slidesVis); }); })(i);
+      dotsWrap.appendChild(d);
+    }
+  }
+
+  function updateDots() {
+    var dotIdx = Math.floor(current / slidesVis);
+    dotsWrap.querySelectorAll('.vt-dot').forEach(function(d, i) {
+      d.classList.toggle('vt-dot--active', i === dotIdx);
+    });
+  }
+
+  function goTo(index) {
+    var max = slides.length - slidesVis;
+    current = Math.max(0, Math.min(index, max));
+    var slideW = slides[0] ? slides[0].offsetWidth : 0;
+    track.style.transform = 'translateX(-' + (current * (slideW + gap)) + 'px)';
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current >= max;
+    updateDots();
+  }
+
+  function init() {
+    slidesVis = getSlidesVis();
+    setSlideWidths();
+    buildDots();
+    goTo(0);
+  }
+
+  prevBtn.addEventListener('click', function() { goTo(current - slidesVis); });
+  nextBtn.addEventListener('click', function() { goTo(current + slidesVis); });
+
+  /* Touch / swipe */
+  var startX = 0;
+  track.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', function(e) {
+    var diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) goTo(diff > 0 ? current + slidesVis : current - slidesVis);
+  });
+
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(init, 150);
+  });
+
+  init();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Video Testimonials",
+  "tag": "section",
+  "class": "video-testimonials-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0, "max": 120, "step": 4, "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0, "max": 120, "step": 4, "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Padding Horizontal",
+      "min": 0, "max": 120, "step": 4, "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max Width",
+      "min": 800, "max": 1600, "step": 40, "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "header",
+      "content": "Background Gradient (Left → Right)"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_from",
+      "label": "Gradient From (Left)",
+      "default": "#fff0f4"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_to",
+      "label": "Gradient To (Right)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Loved by Thousands"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "title_fontsize_desktop",
+      "label": "Title Font Size (Desktop)",
+      "min": 20, "max": 72, "step": 1, "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "title_fontsize_mobile",
+      "label": "Title Font Size (Mobile)",
+      "min": 16, "max": 48, "step": 1, "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "title_fontweight",
+      "label": "Title Font Weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Heartfelt videos from our amazing customers."
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "desc_fontsize_desktop",
+      "label": "Description Font Size (Desktop)",
+      "min": 12, "max": 28, "step": 1, "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desc_fontsize_mobile",
+      "label": "Description Font Size (Mobile)",
+      "min": 12, "max": 24, "step": 1, "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "desc_fontweight",
+      "label": "Description Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "desc_max_width",
+      "label": "Description Max Width",
+      "min": 300, "max": 900, "step": 20, "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "select",
+      "id": "slides_desktop",
+      "label": "Slides Visible (Desktop ≥1024px)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "slides_tablet",
+      "label": "Slides Visible (Tablet 640–1023px)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Block Style"
+    },
+    {
+      "type": "range",
+      "id": "block_radius",
+      "label": "Block Border Radius",
+      "min": 0, "max": 40, "step": 2, "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "block_gap",
+      "label": "Gap Between Blocks",
+      "min": 8, "max": 48, "step": 4, "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "block_inner_gap",
+      "label": "Inner Gap (Video ↔ Content)",
+      "min": 0, "max": 32, "step": 4, "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Star / Rating Icon"
+    },
+    {
+      "type": "select",
+      "id": "star_icon",
+      "label": "Icon Shape",
+      "options": [
+        { "value": "star",    "label": "⭐ Star" },
+        { "value": "heart",   "label": "❤️ Heart" },
+        { "value": "circle",  "label": "⬤ Circle" },
+        { "value": "diamond", "label": "◆ Diamond" }
+      ],
+      "default": "star"
+    },
+    {
+      "type": "range",
+      "id": "star_size",
+      "label": "Icon Size",
+      "min": 10, "max": 36, "step": 2, "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Icon Color",
+      "default": "#f43f5e"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video_review",
+      "name": "Video Review",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Video"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (Shopify-hosted)"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "OR External Embed URL (YouTube / Vimeo)",
+          "info": "e.g. https://www.youtube.com/embed/VIDEO_ID"
+        },
+        {
+          "type": "image_picker",
+          "id": "thumbnail",
+          "label": "OR Thumbnail Image (with play button)"
+        },
+        {
+          "type": "header",
+          "content": "Review Text"
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review",
+          "default": "The perfect care package! My bestie loved it so much!"
+        },
+        {
+          "type": "color",
+          "id": "review_color",
+          "label": "Review Color",
+          "default": "#2d2d2d"
+        },
+        {
+          "type": "range",
+          "id": "review_fontsize_desktop",
+          "label": "Review Font Size (Desktop)",
+          "min": 11, "max": 24, "step": 1, "unit": "px",
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "review_fontsize_mobile",
+          "label": "Review Font Size (Mobile)",
+          "min": 11, "max": 20, "step": 1, "unit": "px",
+          "default": 13
+        },
+        {
+          "type": "select",
+          "id": "review_fontweight",
+          "label": "Review Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Regular" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "range",
+          "id": "review_max_width",
+          "label": "Review Max Width",
+          "min": 100, "max": 400, "step": 10, "unit": "px",
+          "default": 240
+        },
+        {
+          "type": "header",
+          "content": "Author"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Amanda R."
+        },
+        {
+          "type": "color",
+          "id": "author_color",
+          "label": "Author Color",
+          "default": "#555555"
+        },
+        {
+          "type": "range",
+          "id": "author_fontsize",
+          "label": "Author Font Size",
+          "min": 10, "max": 22, "step": 1, "unit": "px",
+          "default": 13
+        },
+        {
+          "type": "select",
+          "id": "author_fontweight",
+          "label": "Author Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Regular" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi Bold" }
+          ],
+          "default": "500"
+        },
+        {
+          "type": "header",
+          "content": "Stars"
+        },
+        {
+          "type": "range",
+          "id": "star_count",
+          "label": "Filled Stars (out of 5)",
+          "min": 1, "max": 5, "step": 1,
+          "default": 5
+        },
+        {
+          "type": "header",
+          "content": "Block Background"
+        },
+        {
+          "type": "color",
+          "id": "block_bg",
+          "label": "Block Background Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Testimonials",
+      "blocks": [
+        {
+          "type": "video_review",
+          "settings": {
+            "author": "Amanda R.",
+            "review_text": "The perfect care package! My bestie loved it so much!",
+            "star_count": 5
+          }
+        },
+        {
+          "type": "video_review",
+          "settings": {
+            "author": "Jason T.",
+            "review_text": "Great variety, super fresh snacks and beautifully packed.",
+            "star_count": 5
+          }
+        },
+        {
+          "type": "video_review",
+          "settings": {
+            "author": "Priya S.",
+            "review_text": "Made my day! Such a thoughtful and delicious gift.",
+            "star_count": 5
+          }
+        },
+        {
+          "type": "video_review",
+          "settings": {
+            "author": "David K.",
+            "review_text": "Already ordered again! 10/10 would recommend.",
+            "star_count": 5
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

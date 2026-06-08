@@ -1,0 +1,745 @@
+{% comment %} Bottom Info Bar Section {% endcomment %}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+  }
+
+  #section-{{ section.id }} .bottom-bar-outer {
+    width: 100%;
+  }
+
+  #section-{{ section.id }} .bottom-bar-inner {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding: {{ section.settings.padding_vertical }}px {{ section.settings.padding_horizontal }}px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: {{ section.settings.block_gap }}px;
+  }
+
+  #section-{{ section.id }} .bottom-bar-divider {
+    width: 1px;
+    height: {{ section.settings.divider_height }}px;
+    background-color: {{ section.settings.divider_color }};
+    flex-shrink: 0;
+  }
+
+  #section-{{ section.id }} .bottom-bar-item {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.icon_text_gap }}px;
+    text-decoration: none;
+  }
+
+  #section-{{ section.id }} .bottom-bar-item img,
+  #section-{{ section.id }} .bottom-bar-item svg {
+    width: {{ section.settings.icon_width }}px;
+    height: {{ section.settings.icon_height }}px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  #section-{{ section.id }} .bottom-bar-item span {
+    font-size: {{ section.settings.text_size }}px;
+    color: {{ section.settings.text_color }};
+    font-weight: {{ section.settings.text_weight }};
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  #section-{{ section.id }} .bottom-bar-socials {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.social_gap }}px;
+  }
+
+  #section-{{ section.id }} .bottom-bar-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  #section-{{ section.id }} .bottom-bar-socials a:hover {
+    opacity: 0.7;
+  }
+
+  #section-{{ section.id }} .bottom-bar-socials a svg {
+    width: {{ section.settings.social_icon_width }}px;
+    height: {{ section.settings.social_icon_height }}px;
+    fill: {{ section.settings.text_color }};
+  }
+
+  #section-{{ section.id }} .bottom-bar-socials a img {
+    object-fit: contain;
+  }
+
+  @media (max-width: 768px) {
+    #section-{{ section.id }} .bottom-bar-inner {
+      justify-content: center;
+    }
+
+  }
+</style>
+
+<div id="section-{{ section.id }}" class="bottom-bar-outer">
+  <div class="bottom-bar-inner">
+
+    {% for block in section.blocks %}
+
+      {% comment %} Info blocks {% endcomment %}
+      {% unless block.type == 'social_icons' %}
+        {% assign item_tag = 'div' %}
+        {% assign item_href = '' %}
+        {% if block.settings.link != blank %}
+          {% assign item_tag = 'a' %}
+          {% assign item_href = block.settings.link %}
+        {% endif %}
+
+        <{{ item_tag }}
+          class="bottom-bar-item"
+          {% if item_href != '' %}href="{{ item_href }}"{% endif %}
+          {{ block.shopify_attributes }}
+        >
+          {% case block.type %}
+
+            {% when 'reviews' %}
+              {% if block.settings.use_custom_icon and block.settings.custom_icon != blank %}
+                <img src="{{ block.settings.custom_icon | img_url: 'master' }}" alt="">
+              {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="{{ section.settings.text_color }}">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              {% endif %}
+              {% if block.settings.text != blank %}<span>{{ block.settings.text }}</span>{% endif %}
+
+            {% when 'phone' %}
+              {% if block.settings.use_custom_icon and block.settings.custom_icon != blank %}
+                <img src="{{ block.settings.custom_icon | img_url: 'master' }}" alt="">
+              {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="{{ section.settings.text_color }}">
+                  <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/>
+                </svg>
+              {% endif %}
+              {% if block.settings.text != blank %}<span>{{ block.settings.text }}</span>{% endif %}
+
+            {% when 'email' %}
+              {% if block.settings.use_custom_icon and block.settings.custom_icon != blank %}
+                <img src="{{ block.settings.custom_icon | img_url: 'master' }}" alt="">
+              {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="{{ section.settings.text_color }}">
+                  <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+              {% endif %}
+              {% if block.settings.text != blank %}<span>{{ block.settings.text }}</span>{% endif %}
+
+            {% when 'location' %}
+              {% if block.settings.use_custom_icon and block.settings.custom_icon != blank %}
+                <img src="{{ block.settings.custom_icon | img_url: 'master' }}" alt="">
+              {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="{{ section.settings.text_color }}">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6a2.5 2.5 0 010 5z"/>
+                </svg>
+              {% endif %}
+              {% if block.settings.text != blank %}<span>{{ block.settings.text }}</span>{% endif %}
+
+            {% when 'custom' %}
+              {% if block.settings.custom_icon != blank %}
+                <img src="{{ block.settings.custom_icon | img_url: 'master' }}" alt="">
+              {% endif %}
+              {% if block.settings.text != blank %}<span>{{ block.settings.text }}</span>{% endif %}
+
+          {% endcase %}
+        </{{ item_tag }}>
+      {% endunless %}
+
+      {% comment %} Social Icons block {% endcomment %}
+      {% if block.type == 'social_icons' %}
+
+        {% assign has_facebook  = false %}{% if block.settings.facebook_url  != blank %}{% assign has_facebook  = true %}{% endif %}
+        {% assign has_instagram = false %}{% if block.settings.instagram_url != blank %}{% assign has_instagram = true %}{% endif %}
+        {% assign has_tiktok    = false %}{% if block.settings.tiktok_url    != blank %}{% assign has_tiktok    = true %}{% endif %}
+        {% assign has_pinterest = false %}{% if block.settings.pinterest_url != blank %}{% assign has_pinterest = true %}{% endif %}
+        {% assign has_twitter   = false %}{% if block.settings.twitter_url   != blank %}{% assign has_twitter   = true %}{% endif %}
+        {% assign has_youtube   = false %}{% if block.settings.youtube_url   != blank %}{% assign has_youtube   = true %}{% endif %}
+
+        {% if has_facebook or has_instagram or has_tiktok or has_pinterest or has_twitter or has_youtube %}
+          <div class="bottom-bar-socials" {{ block.shopify_attributes }}>
+
+            {% if has_facebook %}
+              <a href="{{ block.settings.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">
+                {% if block.settings.facebook_icon != blank %}
+                  <img src="{{ block.settings.facebook_icon | img_url: 'master' }}"
+                       width="{{ block.settings.facebook_icon_size }}"
+                       height="{{ block.settings.facebook_icon_size }}"
+                       alt="Facebook">
+                {% else %}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:{{ section.settings.social_icon_width }}px;height:{{ section.settings.social_icon_height }}px;fill:{{ section.settings.text_color }};">
+                    <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                  </svg>
+                {% endif %}
+              </a>
+            {% endif %}
+
+            {% if has_instagram %}
+              <a href="{{ block.settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">
+                {% if block.settings.instagram_icon != blank %}
+                  <img src="{{ block.settings.instagram_icon | img_url: 'master' }}"
+                       width="{{ block.settings.instagram_icon_size }}"
+                       height="{{ block.settings.instagram_icon_size }}"
+                       alt="Instagram">
+                {% else %}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:{{ section.settings.social_icon_width }}px;height:{{ section.settings.social_icon_height }}px;">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="{{ section.settings.text_color }}" stroke-width="2"/>
+                    <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" fill="none" stroke="{{ section.settings.text_color }}" stroke-width="2"/>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="{{ section.settings.text_color }}" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                {% endif %}
+              </a>
+            {% endif %}
+
+            {% if has_tiktok %}
+              <a href="{{ block.settings.tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok">
+                {% if block.settings.tiktok_icon != blank %}
+                  <img src="{{ block.settings.tiktok_icon | img_url: 'master' }}"
+                       width="{{ block.settings.tiktok_icon_size }}"
+                       height="{{ block.settings.tiktok_icon_size }}"
+                       alt="TikTok">
+                {% else %}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:{{ section.settings.social_icon_width }}px;height:{{ section.settings.social_icon_height }}px;fill:{{ section.settings.text_color }};">
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.77 1.52V6.76a4.85 4.85 0 01-1-.07z"/>
+                  </svg>
+                {% endif %}
+              </a>
+            {% endif %}
+
+            {% if has_pinterest %}
+              <a href="{{ block.settings.pinterest_url }}" target="_blank" rel="noopener" aria-label="Pinterest">
+                {% if block.settings.pinterest_icon != blank %}
+                  <img src="{{ block.settings.pinterest_icon | img_url: 'master' }}"
+                       width="{{ block.settings.pinterest_icon_size }}"
+                       height="{{ block.settings.pinterest_icon_size }}"
+                       alt="Pinterest">
+                {% else %}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:{{ section.settings.social_icon_width }}px;height:{{ section.settings.social_icon_height }}px;fill:{{ section.settings.text_color }};">
+                    <path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.03-2.83.19-.77 1.27-5.38 1.27-5.38s-.32-.65-.32-1.61c0-1.51.88-2.64 1.97-2.64.93 0 1.38.7 1.38 1.54 0 .94-.6 2.34-.91 3.64-.26 1.09.54 1.97 1.6 1.97 1.92 0 3.4-2.02 3.4-4.95 0-2.59-1.86-4.4-4.52-4.4-3.08 0-4.89 2.31-4.89 4.7 0 .93.36 1.93.8 2.47.09.11.1.2.07.31-.08.34-.26 1.09-.3 1.24-.05.2-.17.24-.39.15-1.45-.68-2.36-2.8-2.36-4.51 0-3.66 2.66-7.02 7.67-7.02 4.03 0 7.16 2.87 7.16 6.7 0 3.99-2.52 7.21-6.01 7.21-1.17 0-2.28-.61-2.66-1.33l-.72 2.7c-.26.99-.97 2.24-1.44 3 1.08.33 2.23.51 3.41.51 5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+                  </svg>
+                {% endif %}
+              </a>
+            {% endif %}
+
+            {% if has_twitter %}
+              <a href="{{ block.settings.twitter_url }}" target="_blank" rel="noopener" aria-label="Twitter / X">
+                {% if block.settings.twitter_icon != blank %}
+                  <img src="{{ block.settings.twitter_icon | img_url: 'master' }}"
+                       width="{{ block.settings.twitter_icon_size }}"
+                       height="{{ block.settings.twitter_icon_size }}"
+                       alt="Twitter / X">
+                {% else %}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:{{ section.settings.social_icon_width }}px;height:{{ section.settings.social_icon_height }}px;fill:{{ section.settings.text_color }};">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.912-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                {% endif %}
+              </a>
+            {% endif %}
+
+            {% if has_youtube %}
+              <a href="{{ block.settings.youtube_url }}" target="_blank" rel="noopener" aria-label="YouTube">
+                {% if block.settings.youtube_icon != blank %}
+                  <img src="{{ block.settings.youtube_icon | img_url: 'master' }}"
+                       width="{{ block.settings.youtube_icon_size }}"
+                       height="{{ block.settings.youtube_icon_size }}"
+                       alt="YouTube">
+                {% else %}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:{{ section.settings.social_icon_width }}px;height:{{ section.settings.social_icon_height }}px;fill:{{ section.settings.text_color }};">
+                    <path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/>
+                  </svg>
+                {% endif %}
+              </a>
+            {% endif %}
+
+          </div>
+        {% endif %}
+
+      {% endif %}
+    {% endfor %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bottom Info Bar",
+  "tag": "section",
+  "class": "bottom-info-bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max Width (px)",
+      "min": 800,
+      "max": 1800,
+      "step": 10,
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Padding Vertical (px)",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Padding Horizontal (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "block_gap",
+      "label": "Block Gap (px)",
+      "min": 4,
+      "max": 48,
+      "step": 2,
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#1a2340"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Font Size (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text & Icon Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Info Icons"
+    },
+    {
+      "type": "range",
+      "id": "icon_width",
+      "label": "Icon Width (px)",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_height",
+      "label": "Icon Height (px)",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_text_gap",
+      "label": "Icon to Text Gap (px)",
+      "min": 2,
+      "max": 20,
+      "step": 1,
+      "default": 7
+    },
+    {
+      "type": "header",
+      "content": "Divider"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Color",
+      "default": "#ffffff40"
+    },
+    {
+      "type": "range",
+      "id": "divider_height",
+      "label": "Divider Height (px)",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Social Icons (default size)"
+    },
+    {
+      "type": "range",
+      "id": "social_icon_width",
+      "label": "Default Width (px)",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "social_icon_height",
+      "label": "Default Height (px)",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "social_gap",
+      "label": "Social Icons Gap (px)",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "default": 14
+    }
+  ],
+  "blocks": [
+    {
+      "type": "reviews",
+      "name": "Reviews Badge",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Over 4,000 5-Star Reviews"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_icon",
+          "label": "Use Custom Icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom Icon Image"
+        }
+      ]
+    },
+    {
+      "type": "phone",
+      "name": "Phone",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Phone Number",
+          "default": "(540) 123-4567"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (e.g. tel:+15401234567)"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_icon",
+          "label": "Use Custom Icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom Icon Image"
+        }
+      ]
+    },
+    {
+      "type": "email",
+      "name": "Email",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Email Address",
+          "default": "hello@jollygoodbox.com"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (e.g. mailto:hello@example.com)"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_icon",
+          "label": "Use Custom Icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom Icon Image"
+        }
+      ]
+    },
+    {
+      "type": "location",
+      "name": "Location",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Location Text",
+          "default": "Manassas, VA"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_icon",
+          "label": "Use Custom Icon",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom Icon Image"
+        }
+      ]
+    },
+    {
+      "type": "custom",
+      "name": "Custom Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Icon Image"
+        }
+      ]
+    },
+    {
+      "type": "social_icons",
+      "name": "Social Icons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Add a URL to show that icon"
+        },
+        {
+          "type": "header",
+          "content": "Facebook"
+        },
+        {
+          "type": "url",
+          "id": "facebook_url",
+          "label": "Facebook URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "facebook_icon",
+          "label": "Custom Facebook Icon (optional)"
+        },
+        {
+          "type": "range",
+          "id": "facebook_icon_size",
+          "label": "Facebook Icon Size (px)",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Instagram"
+        },
+        {
+          "type": "url",
+          "id": "instagram_url",
+          "label": "Instagram URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "instagram_icon",
+          "label": "Custom Instagram Icon (optional)"
+        },
+        {
+          "type": "range",
+          "id": "instagram_icon_size",
+          "label": "Instagram Icon Size (px)",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "TikTok"
+        },
+        {
+          "type": "url",
+          "id": "tiktok_url",
+          "label": "TikTok URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "tiktok_icon",
+          "label": "Custom TikTok Icon (optional)"
+        },
+        {
+          "type": "range",
+          "id": "tiktok_icon_size",
+          "label": "TikTok Icon Size (px)",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Pinterest"
+        },
+        {
+          "type": "url",
+          "id": "pinterest_url",
+          "label": "Pinterest URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "pinterest_icon",
+          "label": "Custom Pinterest Icon (optional)"
+        },
+        {
+          "type": "range",
+          "id": "pinterest_icon_size",
+          "label": "Pinterest Icon Size (px)",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Twitter / X"
+        },
+        {
+          "type": "url",
+          "id": "twitter_url",
+          "label": "Twitter / X URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "twitter_icon",
+          "label": "Custom Twitter / X Icon (optional)"
+        },
+        {
+          "type": "range",
+          "id": "twitter_icon_size",
+          "label": "Twitter / X Icon Size (px)",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "YouTube"
+        },
+        {
+          "type": "url",
+          "id": "youtube_url",
+          "label": "YouTube URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "youtube_icon",
+          "label": "Custom YouTube Icon (optional)"
+        },
+        {
+          "type": "range",
+          "id": "youtube_icon_size",
+          "label": "YouTube Icon Size (px)",
+          "min": 10,
+          "max": 60,
+          "step": 1,
+          "default": 20
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bottom Info Bar",
+      "blocks": [
+        { "type": "reviews" },
+        { "type": "phone" },
+        { "type": "email" },
+        { "type": "location" },
+        { "type": "social_icons" }
+      ]
+    }
+  ]
+}
+{% endschema %}

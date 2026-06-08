@@ -1,0 +1,93 @@
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement_bar_apjHHC": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_GUAMim": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "text_alignment": "center",
+            "mobile_text_size": 16,
+            "desktop_text_size": 20,
+            "icon": "storefront",
+            "filled_icon": false,
+            "mobile_icon_size": 20,
+            "desktop_icon_size": 26,
+            "desktop_layout": "horizontal",
+            "mobile_layout": "horizontal",
+            "hidden_products": "",
+            "enable_specific_display": false,
+            "displayed_products": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_GUAMim"
+      ],
+      "name": "t:sections.announcement-bar.name",
+      "settings": {
+        "columns_desktop": 4,
+        "columns_mobile": 2,
+        "desktop_spacing": 28,
+        "mobile_spacing": 16,
+        "show_separator": false,
+        "color_scheme": "accent-1",
+        "slider_mobile": true,
+        "slider_desktop": true,
+        "type": "loop",
+        "autoplay": false,
+        "autoplay_speed": 1,
+        "hidden_products": "",
+        "enable_specific_display": false,
+        "displayed_products": "",
+        "padding_top": 16,
+        "padding_bottom": 16,
+        "custom_colors_background": "#011d38",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#ffffff"
+      }
+    },
+    "header": {
+      "type": "header",
+      "custom_css": [
+        "@media screen and (min-width: 990px) {.header--middle-left {display: grid; grid-template-columns: 1fr auto 1fr; } .header__inline-menu {justify-self: center; }}",
+        ".mega-menu__grid-list {text-wrap: nowrap;}"
+      ],
+      "settings": {
+        "sticky_header_type": "always",
+        "show_line_separator": true,
+        "color_scheme": "background-1",
+        "logo_link": "/",
+        "logo_position": "middle-left",
+        "menu": "main-menu",
+        "menu_type_desktop": "mega",
+        "highlight_active_link": true,
+        "highlighted_link_color_scheme": "accent-2",
+        "products_mega_menu_links": "",
+        "products_mega_menu_display_collection_products": true,
+        "products_mega_menu_display_collection_images": true,
+        "products_mega_menu_display_collection_images_on_mobile": true,
+        "mega_link_font_size_desktop": 14,
+        "mega_row_gap": 48,
+        "mega_col_gap": 80,
+        "mega_menu_image": "shopify://shop_images/snack-box-chocolate-nobg.png",
+        "mega_menu_caption": "",
+        "mobile_menu_title": "Menu",
+        "secondary_menu": "",
+        "menu_color_scheme": "background-1",
+        "mobile_logo_position": "left",
+        "display_search": true,
+        "margin_bottom": 0,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    }
+  },
+  "order": [
+    "announcement_bar_apjHHC",
+    "header"
+  ]
+}

@@ -1,0 +1,851 @@
+{% comment %}
+  Section: Hero Split
+  Full-width background, inner max-width container
+{% endcomment %}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --hero-padding-v: {{ section.settings.content_padding_v }}px;
+    --hero-padding-h: {{ section.settings.content_padding_h }}px;
+    --section-max-width: {{ section.settings.section_max_width }}px;
+
+    --title-color: {{ section.settings.title_color }};
+    --title-size-desktop: {{ section.settings.title_size_desktop }}px;
+    --title-size-mobile: {{ section.settings.title_size_mobile }}px;
+    --title-weight: {{ section.settings.title_weight }};
+
+    --accent-color: {{ section.settings.accent_title_color }};
+
+    --desc-color: {{ section.settings.desc_color }};
+    --desc-size-desktop: {{ section.settings.desc_size_desktop }}px;
+    --desc-size-mobile: {{ section.settings.desc_size_mobile }}px;
+    --desc-max-width: {{ section.settings.desc_max_width }}px;
+
+    --btn-primary-bg: {{ section.settings.btn_primary_bg }};
+    --btn-primary-hover: {{ section.settings.btn_primary_hover_bg }};
+    --btn-primary-font-size: {{ section.settings.btn_primary_font_size }}px;
+    --btn-primary-font-weight: {{ section.settings.btn_primary_font_weight }};
+    --btn-primary-radius: {{ section.settings.btn_primary_radius }}px;
+    --btn-primary-pad-v: {{ section.settings.btn_primary_pad_v }}px;
+    --btn-primary-pad-h: {{ section.settings.btn_primary_pad_h }}px;
+
+    --btn-secondary-bg: {{ section.settings.btn_secondary_bg }};
+    --btn-secondary-hover: {{ section.settings.btn_secondary_hover_bg }};
+    --btn-secondary-font-size: {{ section.settings.btn_secondary_font_size }}px;
+    --btn-secondary-font-weight: {{ section.settings.btn_secondary_font_weight }};
+    --btn-secondary-radius: {{ section.settings.btn_secondary_radius }}px;
+    --btn-secondary-pad-v: {{ section.settings.btn_secondary_pad_v }}px;
+    --btn-secondary-pad-h: {{ section.settings.btn_secondary_pad_h }}px;
+
+    --badge-font-size: {{ section.settings.badge_font_size }}px;
+    --badge-font-weight: {{ section.settings.badge_font_weight }};
+    --badge-color: {{ section.settings.badge_color }};
+
+    --image-radius: {{ section.settings.image_radius }}px;
+    --image-radius-mobile: {{ section.settings.image_radius_mobile }}px;
+  }
+
+  .hero-split {
+    width: 100%;
+    background: {{ section.settings.section_bg_color }};
+    overflow: hidden;
+  }
+
+  .hero-split__inner {
+    width: 100%;
+    max-width: var(--section-max-width);
+    margin: 0 auto;
+    min-height: {{ section.settings.section_min_height }}px;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .hero-split__content-col {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    background-color: {{ section.settings.content_bg_color }};
+    padding: var(--hero-padding-v) var(--hero-padding-h);
+  }
+
+  .hero-split__content-inner {
+    text-align: left;
+    max-width: 540px;
+  }
+
+  .hero-split__title {
+    margin: 0 0 4px;
+    font-size: var(--title-size-desktop);
+    font-weight: var(--title-weight);
+    line-height: 1.1;
+    color: var(--title-color);
+  }
+
+  .hero-split__title--accent {
+    color: var(--accent-color);
+  }
+
+  .hero-split__desc {
+    margin: 20px 0 0;
+    font-size: var(--desc-size-desktop);
+    color: var(--desc-color);
+    max-width: var(--desc-max-width);
+    line-height: 1.6;
+  }
+
+  .hero-split__buttons {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .hero-split__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.25s ease, opacity 0.25s ease;
+    border: none;
+  }
+
+  .hero-split__btn--primary {
+    padding: var(--btn-primary-pad-v) var(--btn-primary-pad-h);
+    background: var(--btn-primary-bg);
+    font-size: var(--btn-primary-font-size);
+    font-weight: var(--btn-primary-font-weight);
+    border-radius: var(--btn-primary-radius);
+    color: {{ section.settings.btn_primary_text_color }};
+  }
+
+  .hero-split__btn--primary:hover {
+    background: var(--btn-primary-hover);
+  }
+
+  .hero-split__btn--secondary {
+    padding: var(--btn-secondary-pad-v) var(--btn-secondary-pad-h);
+    background: var(--btn-secondary-bg);
+    font-size: var(--btn-secondary-font-size);
+    font-weight: var(--btn-secondary-font-weight);
+    border-radius: var(--btn-secondary-radius);
+    color: {{ section.settings.btn_secondary_text_color }};
+    border: 2px solid {{ section.settings.btn_secondary_border_color }};
+  }
+
+  .hero-split__btn--secondary:hover {
+    background: black;
+    color: white;
+    border-color: black;
+  }
+
+  .hero-split__badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    margin-top: 28px;
+    font-size: var(--badge-font-size);
+    font-weight: var(--badge-font-weight);
+    color: var(--badge-color);
+  }
+
+  .hero-split__badge-sep {
+    color: var(--badge-color);
+    opacity: 0.4;
+  }
+
+  .hero-split__image-col {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: {{ section.settings.image_bg_color }};
+    padding: {{ section.settings.image_padding }}px;
+  }
+
+  .hero-split__image-wrap {
+    width: 100%;
+    max-width: {{ section.settings.image_max_width }}px;
+    margin: 0 auto;
+    border-radius: var(--image-radius);
+    overflow: hidden;
+  }
+
+  .hero-split__image-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    object-position: {{ section.settings.image_focal_point }};
+    border-radius: var(--image-radius);
+  }
+
+  .hero-split__placeholder {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media screen and (max-width: 768px) {
+{% comment %} Custom Start {% endcomment %}
+    .hero-split__badges{
+      text-align: center;
+      justify-content: center;
+    }
+
+    .hero-split__buttons{
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-split__btn{
+      padding: 10px 14px;
+      font-size: 12px
+    }
+
+    .hero-split__title, .hero-split__desc{
+      text-align: center;
+    }
+
+    .hero-split__content-col{
+      margin-top: -40px;
+    }
+{% comment %} Custom End {% endcomment %}
+
+    .hero-split__inner {
+      flex-direction: column-reverse;
+      min-height: auto;
+    }
+
+    .hero-split__content-col,
+    .hero-split__image-col {
+      width: 100%;
+    }
+
+    .hero-split__image-col {
+      min-height: {{ section.settings.image_mobile_height }}px;
+      padding: {{ section.settings.image_mobile_padding }}px;
+    }
+
+    .hero-split__content-col {
+      justify-content: center;
+      padding: {{ section.settings.content_padding_v_mobile }}px {{ section.settings.content_padding_h_mobile }}px;
+    }
+
+    .hero-split__content-inner {
+      max-width: 100%;
+    }
+
+    .hero-split__title {
+      font-size: var(--title-size-mobile);
+    }
+
+    .hero-split__desc {
+      font-size: var(--desc-size-mobile);
+    }
+
+    .hero-split__image-wrap,
+    .hero-split__image-wrap img {
+      border-radius: var(--image-radius-mobile);
+    }
+  }
+</style>
+
+<section class="hero-split">
+  <div class="hero-split__inner">
+    <div class="hero-split__content-col">
+      <div class="hero-split__content-inner">
+        {%- if section.settings.title != blank -%}
+          <h2 class="hero-split__title">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.accent_title != blank -%}
+          <h2 class="hero-split__title hero-split__title--accent">{{ section.settings.accent_title | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <div class="hero-split__desc">{{ section.settings.description }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.btn_primary_label != blank or section.settings.btn_secondary_label != blank -%}
+          <div class="hero-split__buttons">
+            {%- if section.settings.btn_primary_label != blank -%}
+              <a href="{{ section.settings.btn_primary_url }}" class="hero-split__btn hero-split__btn--primary">
+                {{ section.settings.btn_primary_label | escape }}
+              </a>
+            {%- endif -%}
+
+            {%- if section.settings.btn_secondary_label != blank -%}
+              <a href="{{ section.settings.btn_secondary_url }}" class="hero-split__btn hero-split__btn--secondary">
+                {{ section.settings.btn_secondary_label | escape }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- assign has_badge = false -%}
+        {%- if section.settings.badge_1 != blank or section.settings.badge_2 != blank or section.settings.badge_3 != blank -%}
+          {%- assign has_badge = true -%}
+        {%- endif -%}
+
+        {%- if has_badge -%}
+          <div class="hero-split__badges">
+            {%- if section.settings.badge_1 != blank -%}
+              <span>{{ section.settings.badge_1 }}</span>
+            {%- endif -%}
+
+            {%- if section.settings.badge_2 != blank -%}
+              {%- if section.settings.badge_1 != blank -%}
+                <span class="hero-split__badge-sep">|</span>
+              {%- endif -%}
+              <span>{{ section.settings.badge_2 }}</span>
+            {%- endif -%}
+
+            {%- if section.settings.badge_3 != blank -%}
+              {%- if section.settings.badge_1 != blank or section.settings.badge_2 != blank -%}
+                <span class="hero-split__badge-sep">|</span>
+              {%- endif -%}
+              <span>{{ section.settings.badge_3 }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="hero-split__image-col">
+      {%- if section.settings.hero_image != blank -%}
+        <div class="hero-split__image-wrap">
+          {{
+            section.settings.hero_image
+            | image_url: width: 1400
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              widths: '600, 800, 1000, 1200, 1400',
+              sizes: '(min-width: 768px) 50vw, 100vw'
+          }}
+        </div>
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-split__placeholder' }}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Split",
+  "tag": "section",
+  "class": "section-hero-split",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "section_max_width",
+      "min": 1200,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "label": "Section max width",
+      "default": 1600
+    },
+    {
+      "type": "range",
+      "id": "section_min_height",
+      "min": 300,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "label": "Minimum section height",
+      "default": 560
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_v",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Content padding – desktop vertical",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "content_padding_h",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Content padding – desktop horizontal",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "content_padding_v_mobile",
+      "min": 12,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Content padding – mobile vertical",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "content_padding_h_mobile",
+      "min": 12,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Content padding – mobile horizontal",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "content_bg_color",
+      "label": "Content column background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "select",
+      "id": "image_focal_point",
+      "label": "Image focal point",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "top center", "label": "Top" },
+        { "value": "bottom center", "label": "Bottom" },
+        { "value": "center left", "label": "Left" },
+        { "value": "center right", "label": "Right" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "range",
+      "id": "image_max_width",
+      "min": 240,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "label": "Image max width",
+      "default": 560
+    },
+    {
+      "type": "range",
+      "id": "image_padding",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Image padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Image border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "image_radius_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Image border radius on mobile",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "image_bg_color",
+      "label": "Image column background",
+      "default": "#f7f1f3"
+    },
+    {
+      "type": "range",
+      "id": "image_mobile_height",
+      "min": 200,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Image height on mobile",
+      "default": 320
+    },
+    {
+      "type": "range",
+      "id": "image_mobile_padding",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Image padding on mobile",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Send snacks."
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 24,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "label": "Title font size – desktop",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 20,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Title font size – mobile",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title font weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra-bold (800)" },
+        { "value": "900", "label": "Black (900)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Accent Title"
+    },
+    {
+      "type": "text",
+      "id": "accent_title",
+      "label": "Accent title",
+      "default": "Send love."
+    },
+    {
+      "type": "color",
+      "id": "accent_title_color",
+      "label": "Accent title color",
+      "default": "#FF4E80"
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>For birthdays, Graduation, get well, corporate gifts, and every occasion in between. <strong>Ships today</strong>, arrives on time.</p>"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description color",
+      "default": "#4a4a4a"
+    },
+    {
+      "type": "range",
+      "id": "desc_size_desktop",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Description font size – desktop",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desc_size_mobile",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description font size – mobile",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "desc_max_width",
+      "min": 200,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "label": "Description max width",
+      "default": 480
+    },
+    {
+      "type": "header",
+      "content": "Primary Button"
+    },
+    {
+      "type": "text",
+      "id": "btn_primary_label",
+      "label": "Primary button label",
+      "default": "Find the Right Gift"
+    },
+    {
+      "type": "url",
+      "id": "btn_primary_url",
+      "label": "Primary button URL"
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_bg",
+      "label": "Button background",
+      "default": "#FF4E80"
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_hover_bg",
+      "label": "Hover background",
+      "default": "#ff306bff"
+    },
+    {
+      "type": "color",
+      "id": "btn_primary_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "btn_primary_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "btn_primary_font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "btn_primary_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "btn_primary_pad_v",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding – vertical",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "btn_primary_pad_h",
+      "min": 12,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding – horizontal",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Secondary Button"
+    },
+    {
+      "type": "text",
+      "id": "btn_secondary_label",
+      "label": "Secondary button label",
+      "default": "Shop Best Sellers"
+    },
+    {
+      "type": "url",
+      "id": "btn_secondary_url",
+      "label": "Secondary button URL"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_bg",
+      "label": "Button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_hover_bg",
+      "label": "Hover background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_text_color",
+      "label": "Text color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "btn_secondary_border_color",
+      "label": "Border color",
+      "default": "#d0d0d0"
+    },
+    {
+      "type": "range",
+      "id": "btn_secondary_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "btn_secondary_font_weight",
+      "label": "Font weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "btn_secondary_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "btn_secondary_pad_v",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding – vertical",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "btn_secondary_pad_h",
+      "min": 12,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding – horizontal",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Trust Badges"
+    },
+    {
+      "type": "text",
+      "id": "badge_1",
+      "label": "Badge 1",
+      "default": "⭐ 4.6 from 45,000+ reviews"
+    },
+    {
+      "type": "text",
+      "id": "badge_2",
+      "label": "Badge 2",
+      "default": "Ships daily from the USA"
+    },
+    {
+      "type": "text",
+      "id": "badge_3",
+      "label": "Badge 3",
+      "default": "Free Shipping"
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge font size",
+      "default": 13
+    },
+    {
+      "type": "select",
+      "id": "badge_font_weight",
+      "label": "Badge font weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "Badge text color",
+      "default": "#6b6b6b"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Split"
+    }
+  ]
+}
+{% endschema %}

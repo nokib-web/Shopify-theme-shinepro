@@ -1,0 +1,163 @@
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "bottom_bar_dKfEYw": {
+      "type": "bottom-bar",
+      "blocks": {
+        "reviews_wT7VBy": {
+          "type": "reviews",
+          "settings": {
+            "text": "Over 4,000 5-Star Reviews",
+            "link": "",
+            "use_custom_icon": false
+          }
+        },
+        "phone_QRGjPb": {
+          "type": "phone",
+          "settings": {
+            "text": "(540) 123-4567",
+            "link": "",
+            "use_custom_icon": false
+          }
+        },
+        "email_RJH6VA": {
+          "type": "email",
+          "settings": {
+            "text": "hello@jollygoodbox.com",
+            "link": "",
+            "use_custom_icon": false
+          }
+        },
+        "location_WBhpTk": {
+          "type": "location",
+          "settings": {
+            "text": "Manassas, VA",
+            "link": "",
+            "use_custom_icon": false
+          }
+        },
+        "social_icons_H8FjYd": {
+          "type": "social_icons",
+          "settings": {
+            "facebook_url": "https://www.facebook.com/",
+            "facebook_icon_size": 20,
+            "instagram_url": "https://www.instagram.com/",
+            "instagram_icon_size": 20,
+            "tiktok_url": "https://www.tiktok.com/",
+            "tiktok_icon_size": 20,
+            "pinterest_url": "",
+            "pinterest_icon_size": 20,
+            "twitter_url": "http://x.com/",
+            "twitter_icon_size": 20,
+            "youtube_url": "https://www.youtube.com/",
+            "youtube_icon_size": 20
+          }
+        }
+      },
+      "block_order": [
+        "reviews_wT7VBy",
+        "phone_QRGjPb",
+        "email_RJH6VA",
+        "location_WBhpTk",
+        "social_icons_H8FjYd"
+      ],
+      "name": "Bottom Info Bar",
+      "settings": {
+        "max_width": 1400,
+        "padding_vertical": 20,
+        "padding_horizontal": 20,
+        "block_gap": 16,
+        "bg_color": "#1a2340",
+        "text_size": 18,
+        "text_color": "#ffffff",
+        "text_weight": "600",
+        "icon_width": 20,
+        "icon_height": 20,
+        "icon_text_gap": 7,
+        "divider_color": "#ffffff40",
+        "divider_height": 16,
+        "social_icon_width": 25,
+        "social_icon_height": 25,
+        "social_gap": 14
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "fc645871-d789-4cfa-8584-4f8a29b6ce92": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/logo-white-no-bg.png",
+            "image_width": 195,
+            "alignment": "",
+            "url": "",
+            "width_desktop": 3,
+            "width_mobile": "2"
+          }
+        },
+        "1c647602-cc00-4009-a058-976435c8ee9e": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Company",
+            "menu": "shop",
+            "width_desktop": 2,
+            "width_mobile": "1"
+          }
+        },
+        "link_list_YEjdYp": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Quick links",
+            "menu": "shop",
+            "width_desktop": 2,
+            "width_mobile": "1"
+          }
+        },
+        "24f208fd-0898-43eb-af23-d74f8420ab37": {
+          "type": "email_signup",
+          "settings": {
+            "heading": "Subscribe to our emails",
+            "subtext": "<p>Join our email list for exclusive offers and the latest news.</p>",
+            "button_type": "solid",
+            "button_label": "Sign up",
+            "button_style_secondary": false,
+            "width_desktop": 4,
+            "width_mobile": "2"
+          }
+        }
+      },
+      "block_order": [
+        "fc645871-d789-4cfa-8584-4f8a29b6ce92",
+        "1c647602-cc00-4009-a058-976435c8ee9e",
+        "link_list_YEjdYp",
+        "24f208fd-0898-43eb-af23-d74f8420ab37"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "accent-1",
+        "enable_follow_on_shop": false,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": true,
+        "payment_enable": true,
+        "enabled_payment_types": "",
+        "show_policy": false,
+        "branding_text": "Powered by <a href=\"https://shrinesolutions.com/\" target=\"_blank\" title=\"https://shrinesolutions.com/\">Shrine</a>",
+        "margin_top": 0,
+        "padding_top": 32,
+        "padding_bottom": 20,
+        "custom_colors_background": "#121212",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#ffffff",
+        "custom_colors_solid_button_background": "#ffffff",
+        "custom_colors_solid_button_text": "#121212",
+        "custom_colors_outline_button": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "bottom_bar_dKfEYw",
+    "footer"
+  ]
+}

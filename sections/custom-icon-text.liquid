@@ -1,0 +1,351 @@
+{% comment %} Icon Text Bar Section {% endcomment %}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+  }
+
+  #section-{{ section.id }} .itb-inner {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding: {{ section.settings.padding_vertical }}px {{ section.settings.padding_horizontal }}px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #section-{{ section.id }} .itb-block {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.icon_text_gap }}px;
+    flex: 1;
+    justify-content: center;
+    padding: 6px 0;
+  }
+
+  #section-{{ section.id }} .itb-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #section-{{ section.id }} .itb-icon img {
+    width: {{ section.settings.icon_width }}px;
+    height: {{ section.settings.icon_height }}px;
+    object-fit: contain;
+    display: block;
+  }
+
+  #section-{{ section.id }} .itb-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  #section-{{ section.id }} .itb-text-line1 {
+    font-size: {{ section.settings.text_size_line1 }}px;
+    color: {{ section.settings.text_color }};
+    font-weight: {{ section.settings.text_weight_line1 }};
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  #section-{{ section.id }} .itb-text-line2 {
+    font-size: {{ section.settings.text_size_line2 }}px;
+    color: {{ section.settings.text_color_line2 }};
+    font-weight: {{ section.settings.text_weight_line2 }};
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  #section-{{ section.id }} .itb-divider {
+    width: 1px;
+    height: {{ section.settings.divider_height }}px;
+    background-color: {{ section.settings.divider_color }};
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  @media (max-width: 768px) {
+    #section-{{ section.id }} .itb-inner {
+      justify-content: center;
+      gap: 12px;
+    }
+    #section-{{ section.id }} .itb-block {
+      flex: 0 0 calc(50% - 12px);
+      justify-content: flex-start;
+    }
+    #section-{{ section.id }} .itb-divider {
+      display: none;
+    }
+  }
+</style>
+
+<div id="section-{{ section.id }}" class="itb-outer">
+  <div class="itb-inner">
+    {% for block in section.blocks %}
+
+      {% if block.type == 'item' %}
+        {% unless forloop.first %}
+          <div class="itb-divider"></div>
+        {% endunless %}
+
+        <div class="itb-block" {{ block.shopify_attributes }}>
+
+          {% if block.settings.icon != blank %}
+            <div class="itb-icon">
+              <img src="{{ block.settings.icon | img_url: 'master' }}" alt="{{ block.settings.line1 }}">
+            </div>
+          {% endif %}
+
+          {% if block.settings.line1 != blank or block.settings.line2 != blank %}
+            <div class="itb-text">
+              {% if block.settings.line1 != blank %}
+                <span class="itb-text-line1">{{ block.settings.line1 }}</span>
+              {% endif %}
+              {% if block.settings.line2 != blank %}
+                <span class="itb-text-line2">{{ block.settings.line2 }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+
+        </div>
+      {% endif %}
+
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Icon Text Bar",
+  "tag": "section",
+  "class": "icon-text-bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max Width (px)",
+      "min": 800,
+      "max": 1800,
+      "step": 10,
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Padding Vertical (px)",
+      "min": 4,
+      "max": 60,
+      "step": 2,
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Padding Horizontal (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Icon"
+    },
+    {
+      "type": "range",
+      "id": "icon_width",
+      "label": "Icon Width (px)",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "icon_height",
+      "label": "Icon Height (px)",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "icon_text_gap",
+      "label": "Icon to Text Gap (px)",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Line 1 Text"
+    },
+    {
+      "type": "range",
+      "id": "text_size_line1",
+      "label": "Font Size (px)",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "select",
+      "id": "text_weight_line1",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Line 2 Text"
+    },
+    {
+      "type": "range",
+      "id": "text_size_line2",
+      "label": "Font Size (px)",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "text_color_line2",
+      "label": "Color",
+      "default": "#555555"
+    },
+    {
+      "type": "select",
+      "id": "text_weight_line2",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Divider"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Color",
+      "default": "#dddddd"
+    },
+    {
+      "type": "range",
+      "id": "divider_height",
+      "label": "Divider Height (px)",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Icon + Text Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon Image"
+        },
+        {
+          "type": "text",
+          "id": "line1",
+          "label": "Line 1 (Bold)",
+          "default": "Amazon"
+        },
+        {
+          "type": "text",
+          "id": "line2",
+          "label": "Line 2",
+          "default": "Best Seller"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon Text Bar",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "line1": "Amazon",
+            "line2": "Best Seller"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "line1": "Thousands of Boxes Shipped",
+            "line2": "Every Month"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "line1": "Family-Owned",
+            "line2": "Small Business"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "line1": "Secure Checkout",
+            "line2": "100% Safe & Secure"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "line1": "Happiness",
+            "line2": "Guarantee"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

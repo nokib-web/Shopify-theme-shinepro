@@ -1,0 +1,1194 @@
+{% comment %}
+  ============================================================
+  WHAT'S INSIDE — Icon + Label + Count Grid Section
+  Shopify Liquid Section with full desktop & mobile customization
+  ============================================================
+{% endcomment %}
+
+<section
+  class="whats-inside"
+  id="whats-inside-{{ section.id }}"
+  style="
+    --wi-bg: {{ section.settings.background_color }};
+    --wi-heading-color: {{ section.settings.heading_color }};
+    --wi-subtext-color: {{ section.settings.subtext_color }};
+    --wi-item-name-color: {{ section.settings.item_name_color }};
+    --wi-item-count-color: {{ section.settings.item_count_color }};
+    --wi-icon-bg: {{ section.settings.icon_bg_color }};
+    --wi-icon-color: {{ section.settings.icon_color }};
+    --wi-icon-border-color: {{ section.settings.icon_border_color }};
+    --wi-accent-color: {{ section.settings.accent_color }};
+    --wi-heading-size-desktop: {{ section.settings.heading_font_size_desktop }}px;
+    --wi-heading-size-mobile: {{ section.settings.heading_font_size_mobile }}px;
+    --wi-item-name-size-desktop: {{ section.settings.item_name_font_size_desktop }}px;
+    --wi-item-name-size-mobile: {{ section.settings.item_name_font_size_mobile }}px;
+    --wi-item-count-size-desktop: {{ section.settings.item_count_font_size_desktop }}px;
+    --wi-item-count-size-mobile: {{ section.settings.item_count_font_size_mobile }}px;
+    --wi-heading-weight: {{ section.settings.heading_font_weight }};
+    --wi-item-name-weight: {{ section.settings.item_name_font_weight }};
+    --wi-heading-letter-spacing: {{ section.settings.heading_letter_spacing }}px;
+    --wi-icon-size-desktop: {{ section.settings.icon_size_desktop }}px;
+    --wi-icon-size-mobile: {{ section.settings.icon_size_mobile }}px;
+    --wi-icon-border-radius: {{ section.settings.icon_border_radius }}%;
+    --wi-icon-border-width: {{ section.settings.icon_border_width }}px;
+    --wi-icon-padding: {{ section.settings.icon_padding }}px;
+    --wi-items-gap-desktop: {{ section.settings.items_gap_desktop }}px;
+    --wi-items-gap-mobile: {{ section.settings.items_gap_mobile }}px;
+    --wi-item-gap-inner: {{ section.settings.item_inner_gap }}px;
+    --wi-section-max-width: {{ section.settings.section_max_width }}px;
+    --wi-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+    --wi-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --wi-pt-mobile: {{ section.settings.padding_top_mobile }}px;
+    --wi-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --wi-mt: {{ section.settings.margin_top }}px;
+    --wi-mb: {{ section.settings.margin_bottom }}px;
+    --wi-px-desktop: {{ section.settings.horizontal_padding }}px;
+    --wi-px-mobile: {{ section.settings.horizontal_padding_mobile }}px;
+    --wi-border-top: {{ section.settings.border_top_width }}px solid {{ section.settings.border_color }};
+    --wi-border-bottom: {{ section.settings.border_bottom_width }}px solid {{ section.settings.border_color }};
+    --wi-items-per-row-desktop: {{ section.settings.items_per_row_desktop }};
+    --wi-items-per-row-mobile: {{ section.settings.items_per_row_mobile }};
+    --wi-header-mb: {{ section.settings.header_margin_bottom }}px;
+    --wi-text-align: {{ section.settings.text_alignment }};
+    --wi-transition: {{ section.settings.hover_transition_speed }}ms;
+    --wi-hover-scale: {{ section.settings.hover_scale | divided_by: 100.0 }};
+    --wi-icon-shadow: {{ section.settings.icon_shadow }};
+    --wi-divider-color: {{ section.settings.divider_color }};
+  "
+>
+  <div class="wi__inner">
+
+    {% comment %} ── HEADER ── {% endcomment %}
+    {% if section.settings.show_heading or section.settings.show_subtext %}
+      <div class="wi__header">
+        {% if section.settings.show_heading and section.settings.heading != blank %}
+          <{{ section.settings.heading_tag }} class="wi__heading" style="
+            font-family: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
+            font-style: {{ section.settings.heading_font.style }};
+            text-transform: {{ section.settings.heading_text_transform }};
+          ">
+            {% if section.settings.show_heading_decorators %}
+              <span class="wi__heading-deco wi__heading-deco--left" aria-hidden="true">
+                {{- section.settings.heading_decorator -}}
+              </span>
+            {% endif %}
+            {{- section.settings.heading -}}
+            {% if section.settings.show_heading_decorators %}
+              <span class="wi__heading-deco wi__heading-deco--right" aria-hidden="true">
+                {{- section.settings.heading_decorator -}}
+              </span>
+            {% endif %}
+          </{{ section.settings.heading_tag }}>
+        {% endif %}
+        {% if section.settings.show_subtext and section.settings.subtext != blank %}
+          <p class="wi__subtext" style="
+            font-family: {{ section.settings.subtext_font.family }}, {{ section.settings.subtext_font.fallback_families }};
+          ">{{ section.settings.subtext }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_divider %}
+      <div class="wi__divider"></div>
+    {% endif %}
+
+    {% comment %} ── ITEMS GRID ── {% endcomment %}
+    {% if section.blocks.size > 0 %}
+      <div class="wi__grid {% if section.settings.enable_scroll %}wi__grid--scroll{% endif %}">
+        {% if section.settings.enable_scroll %}<div class="wi__track">{% endif %}
+
+        {% for block in section.blocks %}
+          {% if block.type == 'item' %}
+            <div class="wi__item" {{ block.shopify_attributes }}>
+
+              {% comment %} Icon circle {% endcomment %}
+              <div class="wi__icon-wrap" style="
+                {% if block.settings.icon_bg_override != blank %}background-color: {{ block.settings.icon_bg_override }};{% endif %}
+                {% if block.settings.icon_border_color_override != blank %}border-color: {{ block.settings.icon_border_color_override }};{% endif %}
+              ">
+                {% if block.settings.icon_image != blank %}
+                  <img
+                    src="{{ block.settings.icon_image | image_url: width: 200 }}"
+                    srcset="{{ block.settings.icon_image | image_url: width: 100 }} 100w, {{ block.settings.icon_image | image_url: width: 200 }} 200w"
+                    alt="{{ block.settings.item_name | escape }}"
+                    class="wi__icon-img"
+                    loading="lazy"
+                    width="{{ block.settings.icon_image.width }}"
+                    height="{{ block.settings.icon_image.height }}"
+                  >
+                {% elsif block.settings.icon_svg != blank %}
+                  <span class="wi__icon-svg" style="{% if block.settings.icon_color_override != blank %}color: {{ block.settings.icon_color_override }};{% endif %}">
+                    {{ block.settings.icon_svg }}
+                  </span>
+                {% else %}
+                  <span class="wi__icon-emoji" aria-hidden="true">{{ block.settings.icon_emoji | default: '🎁' }}</span>
+                {% endif %}
+              </div>
+
+              {% comment %} Text {% endcomment %}
+              <div class="wi__item-text">
+                {% if block.settings.item_name != blank %}
+                  <span class="wi__item-name" style="
+                    font-family: {{ section.settings.item_name_font.family }}, {{ section.settings.item_name_font.fallback_families }};
+                    {% if block.settings.name_color_override != blank %}color: {{ block.settings.name_color_override }};{% endif %}
+                  ">{{ block.settings.item_name }}</span>
+                {% endif %}
+                {% if block.settings.item_count != blank %}
+                  <span class="wi__item-count" style="
+                    font-family: {{ section.settings.item_count_font.family }}, {{ section.settings.item_count_font.fallback_families }};
+                    {% if block.settings.count_color_override != blank %}color: {{ block.settings.count_color_override }};{% endif %}
+                  ">{{ block.settings.item_count }}</span>
+                {% endif %}
+              </div>
+
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% if section.settings.enable_scroll %}
+          {% for block in section.blocks %}
+            {% if block.type == 'item' %}
+              <div class="wi__item wi__item--clone" aria-hidden="true">
+                <div class="wi__icon-wrap">
+                  {% if block.settings.icon_image != blank %}
+                    <img
+                      src="{{ block.settings.icon_image | image_url: width: 200 }}"
+                      alt=""
+                      class="wi__icon-img"
+                      loading="lazy"
+                      width="{{ block.settings.icon_image.width }}"
+                      height="{{ block.settings.icon_image.height }}"
+                    >
+                  {% elsif block.settings.icon_svg != blank %}
+                    <span class="wi__icon-svg">{{ block.settings.icon_svg }}</span>
+                  {% else %}
+                    <span class="wi__icon-emoji" aria-hidden="true">{{ block.settings.icon_emoji | default: '🎁' }}</span>
+                  {% endif %}
+                </div>
+                <div class="wi__item-text">
+                  {% if block.settings.item_name != blank %}<span class="wi__item-name">{{ block.settings.item_name }}</span>{% endif %}
+                  {% if block.settings.item_count != blank %}<span class="wi__item-count">{{ block.settings.item_count }}</span>{% endif %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+          </div>
+        {% endif %}
+
+      </div>
+    {% else %}
+      {% if request.design_mode %}
+        <p style="text-align:center;color:#bbb;padding:24px;">Add item blocks in the section editor →</p>
+      {% endif %}
+    {% endif %}
+
+  </div>
+</section>
+
+<style>
+  /* ══════════════════════════════════
+     BASE SECTION
+  ══════════════════════════════════ */
+  #whats-inside-{{ section.id }} {
+    background-color: var(--wi-bg);
+    padding-top: var(--wi-pt-desktop);
+    padding-bottom: var(--wi-pb-desktop);
+    margin-top: var(--wi-mt);
+    margin-bottom: var(--wi-mb);
+    border-top: var(--wi-border-top);
+    border-bottom: var(--wi-border-bottom);
+    overflow: hidden;
+  }
+
+  #whats-inside-{{ section.id }} .wi__inner {
+    max-width: var(--wi-section-max-width);
+    margin: 0 auto;
+    padding-left: var(--wi-px-desktop);
+    padding-right: var(--wi-px-desktop);
+  }
+
+  /* ══════════════════════════════════
+     HEADER
+  ══════════════════════════════════ */
+  #whats-inside-{{ section.id }} .wi__header {
+    text-align: var(--wi-text-align);
+    margin-bottom: var(--wi-header-mb);
+  }
+
+  #whats-inside-{{ section.id }} .wi__heading {
+    font-size: var(--wi-heading-size-desktop);
+    font-weight: var(--wi-heading-weight);
+    color: var(--wi-heading-color);
+    letter-spacing: var(--wi-heading-letter-spacing);
+    margin: 0 0 6px;
+    line-height: 1.3;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #whats-inside-{{ section.id }} .wi__heading-deco {
+    color: var(--wi-accent-color);
+    font-size: 0.65em;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  #whats-inside-{{ section.id }} .wi__subtext {
+    font-size: var(--wi-item-count-size-desktop);
+    color: var(--wi-subtext-color);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ══════════════════════════════════
+     DIVIDER
+  ══════════════════════════════════ */
+  #whats-inside-{{ section.id }} .wi__divider {
+    height: {{ section.settings.divider_height }}px;
+    background: var(--wi-divider-color);
+    margin: {{ section.settings.divider_margin }}px auto;
+    width: {{ section.settings.divider_width }}%;
+    border-radius: 99px;
+  }
+
+  /* ══════════════════════════════════
+     GRID
+  ══════════════════════════════════ */
+  #whats-inside-{{ section.id }} .wi__grid:not(.wi__grid--scroll) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--wi-items-gap-desktop);
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  /* ══════════════════════════════════
+     EACH ITEM — uniform box
+  ══════════════════════════════════ */
+  #whats-inside-{{ section.id }} .wi__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--wi-item-gap-inner);
+    text-align: var(--wi-text-align);
+    /* Each item cell is the same width: (max-width - gaps) / items-per-row */
+    width: calc(
+      (var(--wi-section-max-width) - (var(--wi-px-desktop) * 2) - (var(--wi-items-gap-desktop) * (var(--wi-items-per-row-desktop) - 1)))
+      / var(--wi-items-per-row-desktop)
+    );
+    transition: transform var(--wi-transition) ease;
+  }
+
+  {% if section.settings.enable_hover_effect %}
+  #whats-inside-{{ section.id }} .wi__item:hover {
+    transform: translateY(-4px) scale(var(--wi-hover-scale));
+  }
+  #whats-inside-{{ section.id }} .wi__item:hover .wi__icon-wrap {
+    box-shadow: 0 8px 24px {{ section.settings.icon_bg_color | color_modify: 'alpha', 0.35 }};
+  }
+  {% endif %}
+
+  /* ══════════════════════════════════
+     ICON CIRCLE — uniform fixed box
+  ══════════════════════════════════ */
+  #whats-inside-{{ section.id }} .wi__icon-wrap {
+    width: var(--wi-icon-size-desktop);
+    height: var(--wi-icon-size-desktop);
+    flex-shrink: 0;
+    border-radius: var(--wi-icon-border-radius);
+    background-color: var(--wi-icon-bg);
+    border: var(--wi-icon-border-width) solid var(--wi-icon-border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--wi-icon-padding);
+    box-sizing: border-box;
+    box-shadow: var(--wi-icon-shadow);
+    transition: box-shadow var(--wi-transition) ease, transform var(--wi-transition) ease;
+    overflow: hidden;
+  }
+
+  #whats-inside-{{ section.id }} .wi__icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+  }
+
+  #whats-inside-{{ section.id }} .wi__icon-svg {
+    color: var(--wi-icon-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  #whats-inside-{{ section.id }} .wi__icon-svg svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #whats-inside-{{ section.id }} .wi__icon-emoji {
+    font-size: calc(var(--wi-icon-size-desktop) * 0.45);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ══════════════════════════════════
+     ITEM TEXT
+  ══════════════════════════════════ */
+  #whats-inside-{{ section.id }} .wi__item-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  #whats-inside-{{ section.id }} .wi__item-name {
+    font-size: var(--wi-item-name-size-desktop);
+    font-weight: var(--wi-item-name-weight);
+    color: var(--wi-item-name-color);
+    display: block;
+    line-height: 1.3;
+  }
+
+  #whats-inside-{{ section.id }} .wi__item-count {
+    font-size: var(--wi-item-count-size-desktop);
+    color: var(--wi-item-count-color);
+    display: block;
+    line-height: 1.4;
+  }
+
+  /* ══════════════════════════════════
+     SCROLL / MARQUEE
+  ══════════════════════════════════ */
+  #whats-inside-{{ section.id }} .wi__grid--scroll {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  #whats-inside-{{ section.id }} .wi__track {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--wi-items-gap-desktop);
+    width: max-content;
+    animation: wi-scroll-{{ section.id }} {{ section.settings.scroll_speed }}s linear infinite;
+    {% if section.settings.scroll_direction == 'right' %}animation-direction: reverse;{% endif %}
+  }
+
+  #whats-inside-{{ section.id }} .wi__track:hover {
+    {% if section.settings.pause_on_hover %}animation-play-state: paused;{% endif %}
+  }
+
+  @keyframes wi-scroll-{{ section.id }} {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ══════════════════════════════════
+     MOBILE
+  ══════════════════════════════════ */
+  @media (max-width: 749px) {
+    #whats-inside-{{ section.id }} {
+      padding-top: var(--wi-pt-mobile);
+      padding-bottom: var(--wi-pb-mobile);
+    }
+
+    #whats-inside-{{ section.id }} .wi__inner {
+      padding-left: var(--wi-px-mobile);
+      padding-right: var(--wi-px-mobile);
+    }
+
+    #whats-inside-{{ section.id }} .wi__heading {
+      font-size: var(--wi-heading-size-mobile);
+    }
+
+    #whats-inside-{{ section.id }} .wi__item-name {
+      font-size: var(--wi-item-name-size-mobile);
+    }
+
+    #whats-inside-{{ section.id }} .wi__item-count {
+      font-size: var(--wi-item-count-size-mobile);
+    }
+
+    #whats-inside-{{ section.id }} .wi__icon-wrap {
+      width: var(--wi-icon-size-mobile);
+      height: var(--wi-icon-size-mobile);
+    }
+
+    #whats-inside-{{ section.id }} .wi__icon-emoji {
+      font-size: calc(var(--wi-icon-size-mobile) * 0.45);
+    }
+
+    #whats-inside-{{ section.id }} .wi__grid:not(.wi__grid--scroll) {
+      gap: var(--wi-items-gap-mobile);
+    }
+
+    #whats-inside-{{ section.id }} .wi__item {
+      width: calc(
+        (100vw - (var(--wi-px-mobile) * 2) - (var(--wi-items-gap-mobile) * (var(--wi-items-per-row-mobile) - 1)))
+        / var(--wi-items-per-row-mobile)
+      );
+    }
+
+    #whats-inside-{{ section.id }} .wi__track {
+      gap: var(--wi-items-gap-mobile);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "What's Inside",
+  "tag": "section",
+  "class": "whats-inside-section",
+  "max_blocks": 20,
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "🎨 Section Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "section_max_width",
+      "label": "Max section width (px)",
+      "min": 600,
+      "max": 2000,
+      "step": 20,
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding",
+      "label": "Horizontal padding — desktop (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding_mobile",
+      "label": "Horizontal padding — mobile (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 16
+    },
+
+    {
+      "type": "header",
+      "content": "📐 Desktop Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding top — desktop (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding bottom — desktop (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 48
+    },
+
+    {
+      "type": "header",
+      "content": "📱 Mobile Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top — mobile (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom — mobile (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 32
+    },
+
+    {
+      "type": "header",
+      "content": "↕️ Section Margins"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Margin top (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Margin bottom (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 0
+    },
+
+    {
+      "type": "header",
+      "content": "─── Borders"
+    },
+    {
+      "type": "range",
+      "id": "border_top_width",
+      "label": "Border top width (px)",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "border_bottom_width",
+      "label": "Border bottom width (px)",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#e8e8e8"
+    },
+
+    {
+      "type": "header",
+      "content": "✏️ Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_heading",
+      "label": "Show heading",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading text",
+      "default": "What's Inside?"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading HTML tag",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "p",  "label": "Paragraph" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "assistant_n7"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "label": "Heading font size — desktop (px)",
+      "min": 14,
+      "max": 72,
+      "step": 2,
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading font size — mobile (px)",
+      "min": 14,
+      "max": 48,
+      "step": 2,
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading font weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "heading_text_transform",
+      "label": "Heading text transform",
+      "options": [
+        { "value": "none",       "label": "None" },
+        { "value": "uppercase",  "label": "Uppercase" },
+        { "value": "lowercase",  "label": "Lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "label": "Letter spacing (px)",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#111111"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_heading_decorators",
+      "label": "Show decorative icons beside heading",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading_decorator",
+      "label": "Decorator character / emoji",
+      "default": "❧",
+      "info": "Shown on both sides of the heading. Try ❧ ✦ ♥ ❤ ✿ ❋ ✸ ❖"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent / decorator color",
+      "default": "#f94f7b"
+    },
+
+    {
+      "type": "header",
+      "content": "💬 Subtext"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subtext",
+      "label": "Show subtext",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Handpicked items in every box."
+    },
+    {
+      "type": "font_picker",
+      "id": "subtext_font",
+      "label": "Subtext font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "color",
+      "id": "subtext_color",
+      "label": "Subtext color",
+      "default": "#888888"
+    },
+
+    {
+      "type": "header",
+      "content": "↔️ Alignment & Header Spacing"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left",   "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right",  "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "header_margin_bottom",
+      "label": "Space below header (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 32
+    },
+
+    {
+      "type": "header",
+      "content": "— Divider"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show divider",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#eeeeee"
+    },
+    {
+      "type": "range",
+      "id": "divider_height",
+      "label": "Divider height (px)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "label": "Divider width (%)",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "divider_margin",
+      "label": "Divider vertical margin (px)",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "default": 16
+    },
+
+    {
+      "type": "header",
+      "content": "🔢 Grid Layout — Desktop"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row_desktop",
+      "label": "Items per row — desktop",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "items_gap_desktop",
+      "label": "Gap between items — desktop (px)",
+      "min": 8,
+      "max": 80,
+      "step": 4,
+      "default": 24
+    },
+
+    {
+      "type": "header",
+      "content": "📱 Grid Layout — Mobile"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row_mobile",
+      "label": "Items per row — mobile",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "items_gap_mobile",
+      "label": "Gap between items — mobile (px)",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 16
+    },
+
+    {
+      "type": "header",
+      "content": "🔵 Icon Circle — Desktop"
+    },
+    {
+      "type": "range",
+      "id": "icon_size_desktop",
+      "label": "Icon circle size — desktop (px)",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "icon_padding",
+      "label": "Icon inner padding (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_border_radius",
+      "label": "Icon circle border radius (%)",
+      "info": "50% = circle, 0% = square, values between = rounded square",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "icon_border_width",
+      "label": "Icon border width (px)",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Icon background color",
+      "default": "#fce9ef"
+    },
+    {
+      "type": "color",
+      "id": "icon_border_color",
+      "label": "Icon border color",
+      "default": "#f5c6d5"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon / SVG color",
+      "default": "#f94f7b"
+    },
+    {
+      "type": "select",
+      "id": "icon_shadow",
+      "label": "Icon shadow",
+      "options": [
+        { "value": "none",                                     "label": "None" },
+        { "value": "0 2px 8px rgba(0,0,0,0.08)",              "label": "Soft" },
+        { "value": "0 4px 16px rgba(0,0,0,0.12)",             "label": "Medium" },
+        { "value": "0 6px 24px rgba(249,79,123,0.25)",        "label": "Colored glow" }
+      ],
+      "default": "none"
+    },
+
+    {
+      "type": "header",
+      "content": "📱 Icon Circle — Mobile"
+    },
+    {
+      "type": "range",
+      "id": "icon_size_mobile",
+      "label": "Icon circle size — mobile (px)",
+      "min": 32,
+      "max": 100,
+      "step": 4,
+      "default": 56
+    },
+
+    {
+      "type": "header",
+      "content": "🏷️ Item Labels"
+    },
+    {
+      "type": "font_picker",
+      "id": "item_name_font",
+      "label": "Item name font",
+      "default": "assistant_n7"
+    },
+    {
+      "type": "range",
+      "id": "item_name_font_size_desktop",
+      "label": "Item name font size — desktop (px)",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "item_name_font_size_mobile",
+      "label": "Item name font size — mobile (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "item_name_font_weight",
+      "label": "Item name font weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "color",
+      "id": "item_name_color",
+      "label": "Item name color",
+      "default": "#111111"
+    },
+    {
+      "type": "font_picker",
+      "id": "item_count_font",
+      "label": "Item count font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "range",
+      "id": "item_count_font_size_desktop",
+      "label": "Item count font size — desktop (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "item_count_font_size_mobile",
+      "label": "Item count font size — mobile (px)",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 11
+    },
+    {
+      "type": "color",
+      "id": "item_count_color",
+      "label": "Item count color",
+      "default": "#888888"
+    },
+    {
+      "type": "range",
+      "id": "item_inner_gap",
+      "label": "Gap between icon and label (px)",
+      "min": 4,
+      "max": 32,
+      "step": 2,
+      "default": 12
+    },
+
+    {
+      "type": "header",
+      "content": "✨ Hover Effects"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_hover_effect",
+      "label": "Enable hover effects",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "hover_scale",
+      "label": "Hover scale (%)",
+      "info": "100 = no scale, 105 = 5% bigger",
+      "min": 90,
+      "max": 120,
+      "step": 2,
+      "default": 102
+    },
+    {
+      "type": "range",
+      "id": "hover_transition_speed",
+      "label": "Hover transition speed (ms)",
+      "min": 100,
+      "max": 600,
+      "step": 50,
+      "default": 250
+    },
+
+    {
+      "type": "header",
+      "content": "🔄 Auto-Scroll / Marquee"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_scroll",
+      "label": "Enable auto-scroll (marquee)",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Scroll speed (seconds per loop)",
+      "min": 5,
+      "max": 60,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "scroll_direction",
+      "label": "Scroll direction",
+      "options": [
+        { "value": "left",  "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause scroll on hover",
+      "default": true
+    }
+
+  ],
+
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "header",
+          "content": "🖼️ Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image",
+          "info": "Upload a PNG/SVG. Recommended: square, transparent background."
+        },
+        {
+          "type": "textarea",
+          "id": "icon_svg",
+          "label": "Inline SVG code",
+          "info": "Paste raw <svg>…</svg> here. Used if no image is uploaded."
+        },
+        {
+          "type": "text",
+          "id": "icon_emoji",
+          "label": "Emoji fallback",
+          "info": "Used if no image or SVG is provided.",
+          "default": "🎁"
+        },
+        {
+          "type": "color",
+          "id": "icon_color_override",
+          "label": "SVG icon color override",
+          "info": "Overrides the section-level icon color for this item only."
+        },
+        {
+          "type": "color",
+          "id": "icon_bg_override",
+          "label": "Icon background override",
+          "info": "Leave blank to use section default."
+        },
+        {
+          "type": "color",
+          "id": "icon_border_color_override",
+          "label": "Icon border color override",
+          "info": "Leave blank to use section default."
+        },
+        {
+          "type": "header",
+          "content": "🏷️ Label"
+        },
+        {
+          "type": "text",
+          "id": "item_name",
+          "label": "Item name",
+          "default": "Chips"
+        },
+        {
+          "type": "text",
+          "id": "item_count",
+          "label": "Item count / subtitle",
+          "default": "8 Items",
+          "info": "e.g. '8 Items', 'New', 'Fan Fave'"
+        },
+        {
+          "type": "color",
+          "id": "name_color_override",
+          "label": "Name color override"
+        },
+        {
+          "type": "color",
+          "id": "count_color_override",
+          "label": "Count color override"
+        },
+        {
+          "type": "header",
+          "content": "🔗 Link"
+        },
+        {
+          "type": "url",
+          "id": "item_link",
+          "label": "Link URL (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "link_new_tab",
+          "label": "Open in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "What's Inside",
+      "blocks": [
+        { "type": "item", "settings": { "item_name": "Chips",        "item_count": "8 Items",  "icon_emoji": "🥔" } },
+        { "type": "item", "settings": { "item_name": "Cookies",      "item_count": "10 Items", "icon_emoji": "🍪" } },
+        { "type": "item", "settings": { "item_name": "Crackers",     "item_count": "7 Items",  "icon_emoji": "🫙" } },
+        { "type": "item", "settings": { "item_name": "Candy",        "item_count": "12 Items", "icon_emoji": "🍬" } },
+        { "type": "item", "settings": { "item_name": "Granola Bars", "item_count": "4 Items",  "icon_emoji": "🌾" } },
+        { "type": "item", "settings": { "item_name": "Popcorn",      "item_count": "4 Items",  "icon_emoji": "🍿" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,467 @@
+{%- style -%}
+  :root {
+    --jg-hdr-bg-{{ section.id }}: {{ section.settings.background_color }};
+    --jg-hdr-color-{{ section.id }}: {{ section.settings.text_color }};
+    --jg-hdr-accent-{{ section.id }}: {{ section.settings.accent_color }};
+    
+    /* Spacing & Height */
+    --jg-hdr-pad-top-{{ section.id }}: {{ section.settings.pad_top }}px;
+    --jg-hdr-pad-bottom-{{ section.id }}: {{ section.settings.pad_bottom }}px;
+    --jg-hdr-pad-top-mob-{{ section.id }}: {{ section.settings.pad_top_mobile }}px;
+    --jg-hdr-pad-bottom-mob-{{ section.id }}: {{ section.settings.pad_bottom_mobile }}px;
+  }
+  
+  .jg-header-{{ section.id }} {
+    background-color: var(--jg-hdr-bg-{{ section.id }});
+    border-bottom: 1px solid #e5dfd5;
+    padding-top: var(--jg-hdr-pad-top-{{ section.id }});
+    padding-bottom: var(--jg-hdr-pad-bottom-{{ section.id }});
+    padding-left: 30px;
+    padding-right: 30px;
+    font-family: var(--jg-font-sans);
+    position: {% if section.settings.enable_sticky %}sticky{% else %}relative{% endif %};
+    top: 0;
+    z-index: {{ section.settings.z_index }};
+    box-shadow: {% if section.settings.enable_shadow %}0 4px 15px rgba(0, 0, 0, 0.05){% else %}none{% endif %};
+  }
+  .jg-header__container {
+    max-width: {% if section.settings.width_mode == 'boxed' %}1200px{% else %}100%{% endif %};
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Brand Logo styling */
+  .jg-header__logo-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    line-height: 1.1;
+  }
+  .jg-header__logo-crown {
+    width: 24px;
+    height: 16px;
+    fill: var(--jg-hdr-accent-{{ section.id }});
+    margin-bottom: 2px;
+  }
+  .jg-header__logo-the {
+    font-family: var(--jg-font-serif);
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    color: var(--jg-hdr-color-{{ section.id }});
+    text-transform: uppercase;
+  }
+  .jg-header__logo-main {
+    font-family: var(--jg-font-serif);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--jg-hdr-color-{{ section.id }});
+    text-transform: uppercase;
+    margin: 1px 0;
+  }
+  .jg-header__logo-box-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+  }
+  .jg-header__logo-line {
+    height: 1px;
+    background-color: var(--jg-hdr-accent-{{ section.id }});
+    width: 20px;
+  }
+  .jg-header__logo-box {
+    font-family: var(--jg-font-serif);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--jg-hdr-color-{{ section.id }});
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  
+  /* Navigation */
+  .jg-header__nav {
+    display: flex;
+    gap: 24px;
+  }
+  .jg-header__nav-link {
+    font-size: 13px;
+    font-weight: 500;
+    color: #4a4a4a;
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .jg-header__nav-link:hover,
+  .jg-header__nav-link--active {
+    color: var(--jg-hdr-accent-{{ section.id }});
+  }
+  .jg-header__nav-link svg {
+    width: 10px;
+    height: 10px;
+    fill: currentColor;
+  }
+  
+  /* Dropdown wrapper */
+  .jg-header__nav-item {
+    position: relative;
+  }
+  .jg-header__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    border: 1px solid #e5dfd5;
+    border-radius: 4px;
+    padding: 10px 0;
+    min-width: 180px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
+  }
+  .jg-header__nav-item:hover .jg-header__dropdown {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .jg-header__dropdown-link {
+    display: block;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: #4a4a4a;
+    text-decoration: none;
+  }
+  .jg-header__dropdown-link:hover {
+    background-color: var(--jg-color-bg-light);
+    color: var(--jg-hdr-accent-{{ section.id }});
+  }
+
+  /* Icons */
+  .jg-header__icons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .jg-header__icon-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+    color: var(--jg-hdr-color-{{ section.id }});
+    text-decoration: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+  }
+  .jg-header__icon-btn:hover {
+    color: var(--jg-hdr-accent-{{ section.id }});
+  }
+  .jg-header__icon-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .jg-header__cart-badge {
+    background-color: var(--jg-hdr-accent-{{ section.id }});
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 700;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+  }
+  
+  /* Mobile menu button */
+  .jg-header__mobile-toggle {
+    display: none;
+  }
+  
+  @media (max-width: 1024px) {
+    .jg-header-{{ section.id }} {
+      padding-top: var(--jg-hdr-pad-top-mob-{{ section.id }});
+      padding-bottom: var(--jg-hdr-pad-bottom-mob-{{ section.id }});
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .jg-header__nav {
+      display: none;
+    }
+    .jg-header__mobile-toggle {
+      display: block;
+      background: none;
+      border: none;
+      color: var(--jg-hdr-color-{{ section.id }});
+    }
+  }
+
+  {{ section.settings.custom_css }}
+{%- endstyle -%}
+
+<header 
+  id="{{ section.settings.custom_id | default: section.id }}" 
+  class="jg-header-{{ section.id }} {{ section.settings.custom_class }}"
+  style="{{ section.settings.custom_style }}"
+>
+  <div class="jg-header__container">
+    <!-- Mobile Menu Toggle (hamburger) -->
+    <button class="jg-header__mobile-toggle jg-header__icon-btn" aria-label="Menu">
+      <svg viewBox="0 0 24 24">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- Brand Logo -->
+    <a href="/" class="jg-header__logo-link">
+      <svg class="jg-header__logo-crown" viewBox="0 0 24 24">
+        <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5Z"></path>
+        <rect x="5" y="17" width="14" height="2" rx="0.5"></rect>
+      </svg>
+      <span class="jg-header__logo-the">{{ section.settings.logo_tag }}</span>
+      <span class="jg-header__logo-main">{{ section.settings.logo_main }}</span>
+      <div class="jg-header__logo-box-wrapper">
+        <div class="jg-header__logo-line"></div>
+        <span class="jg-header__logo-box">{{ section.settings.logo_sub }}</span>
+        <div class="jg-header__logo-line"></div>
+      </div>
+    </a>
+
+    <!-- Navigation links -->
+    <nav class="jg-header__nav">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <div class="jg-header__nav-item">
+          {%- if link.links != blank -%}
+            <a href="{{ link.url }}" class="jg-header__nav-link">
+              {{ link.title }}
+              <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+            </a>
+            <div class="jg-header__dropdown">
+              {%- for childlink in link.links -%}
+                <a href="{{ childlink.url }}" class="jg-header__dropdown-link">{{ childlink.title }}</a>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <a href="{{ link.url }}" class="jg-header__nav-link{% if link.active %} jg-header__nav-link--active{% endif %}">{{ link.title }}</a>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </nav>
+
+    <!-- Icons Group (Search, Account, Cart) -->
+    <div class="jg-header__icons">
+      <!-- Search button -->
+      <a href="/search" class="jg-header__icon-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </a>
+
+      <!-- Profile -->
+      <a href="/account" class="jg-header__icon-btn" aria-label="Account">
+        <svg viewBox="0 0 24 24">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </a>
+
+      <!-- Cart -->
+      <a href="/cart" class="jg-header__icon-btn" aria-label="Cart">
+        <svg viewBox="0 0 24 24">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="jg-header__cart-badge">{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Jolly Good Header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Controls"
+    },
+    {
+      "type": "select",
+      "id": "width_mode",
+      "label": "Width Mode",
+      "options": [
+        { "value": "full", "label": "Full Width" },
+        { "value": "boxed", "label": "Boxed (1200px)" }
+      ],
+      "default": "boxed"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "label": "Enable Sticky Header",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Navigation & Brand Settings"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Menu Selection"
+    },
+    {
+      "type": "text",
+      "id": "logo_tag",
+      "label": "Logo Small Header",
+      "default": "The"
+    },
+    {
+      "type": "text",
+      "id": "logo_main",
+      "label": "Logo Brand Name",
+      "default": "Jolly Good"
+    },
+    {
+      "type": "text",
+      "id": "logo_sub",
+      "label": "Logo Subtitle",
+      "default": "Box"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Stylings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Logo/Icons Text Color",
+      "default": "#0b233a"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Gold/Accent Color",
+      "default": "#c59235"
+    },
+    {
+      "type": "header",
+      "content": "Spacing Settings"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "pad_top_mobile",
+      "min": 5,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom_mobile",
+      "min": 5,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Borders & Shadows"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_shadow",
+      "label": "Enable Header Drop Shadow",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Advanced Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS overrides"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom HTML Classes"
+    },
+    {
+      "type": "text",
+      "id": "custom_id",
+      "label": "Custom HTML id"
+    },
+    {
+      "type": "text",
+      "id": "custom_style",
+      "label": "Custom Inline Styles"
+    },
+    {
+      "type": "range",
+      "id": "z_index",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "label": "Z-Index Height",
+      "default": 100
+    }
+  ]
+}
+{% endschema %}

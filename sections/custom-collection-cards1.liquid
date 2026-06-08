@@ -1,0 +1,599 @@
+{% comment %}
+  Section: Collection Cards
+  Centred heading + subheading, then a row of clickable collection cards.
+  Each block pulls image / title / description from a chosen collection,
+  with full per-block style overrides in the schema.
+{% endcomment %}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --cc-pad-v:          {{ section.settings.section_pad_v }}px;
+    --cc-pad-h:          {{ section.settings.section_pad_h }}px;
+    --cc-bg:             {{ section.settings.section_bg }};
+    --cc-max-width:      {{ section.settings.section_max_width }}px;
+
+    --cc-title-color:    {{ section.settings.title_color }};
+    --cc-title-d:        {{ section.settings.title_size_desktop }}px;
+    --cc-title-m:        {{ section.settings.title_size_mobile }}px;
+    --cc-title-weight:   {{ section.settings.title_weight }};
+
+    --cc-desc-color:     {{ section.settings.desc_color }};
+    --cc-desc-d:         {{ section.settings.desc_size_desktop }}px;
+    --cc-desc-m:         {{ section.settings.desc_size_mobile }}px;
+  }
+
+  .cc-section {
+    background: var(--cc-bg);
+    padding: var(--cc-pad-v) var(--cc-pad-h);
+  }
+
+  .cc-inner {
+    max-width: var(--cc-max-width);
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .cc-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .cc-header__title {
+    margin: 0 0 12px;
+    font-size: var(--cc-title-d);
+    font-weight: var(--cc-title-weight);
+    color: var(--cc-title-color);
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+  }
+
+  .cc-header__desc {
+    margin: 0;
+    font-size: var(--cc-desc-d);
+    color: var(--cc-desc-color);
+    line-height: 1.6;
+  }
+
+  /* ── Grid ── */
+  .cc-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.blocks.size | at_most: 4 }}, 1fr);
+    gap: {{ section.settings.card_gap }}px;
+  }
+
+  /* ── Card (anchor tag) ── */
+  .cc-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    cursor: pointer;
+  }
+
+  .cc-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+  }
+
+  /* ── Image wrapper ── */
+  .cc-card__img-wrap {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .cc-card__img-wrap img,
+  .cc-card__img-wrap svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+  }
+
+  .cc-card:hover .cc-card__img-wrap img {
+    transform: scale(1.04);
+  }
+
+  /* ── Body ── */
+  .cc-card__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cc-card__title {
+    margin: 0 0 8px;
+    line-height: 1.25;
+    letter-spacing: 0.03em;
+  }
+
+  .cc-card__desc {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Mobile ── */
+  @media screen and (max-width: 768px) {
+    .cc-header__title { font-size: var(--cc-title-m); }
+    .cc-header__desc  { font-size: var(--cc-desc-m); }
+
+    .cc-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .cc-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<section class="cc-section">
+  <div class="cc-inner">
+
+    {%- if section.settings.title != blank or section.settings.description != blank -%}
+      <div class="cc-header">
+        {%- if section.settings.title != blank -%}
+          <h2 class="cc-header__title">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+          <p class="cc-header__desc">{{ section.settings.description | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="cc-grid">
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+
+          {%- comment -%} Resolve collection data ─ fall back to block overrides {%- endcomment -%}
+          {%- assign col = b.collection -%}
+
+          {%- if col != blank -%}
+            {%- assign card_url   = col.url -%}
+            {%- assign card_title = col.title -%}
+            {%- assign card_desc  = col.description | strip_html | truncate: 120 -%}
+            {%- assign card_img   = col.image -%}
+          {%- else -%}
+            {%- assign card_url   = b.card_url -%}
+            {%- assign card_title = b.card_title_override -%}
+            {%- assign card_desc  = b.card_desc_override -%}
+            {%- assign card_img   = b.card_image_override -%}
+          {%- endif -%}
+
+          {%- comment -%} Allow per-block overrides even when collection is set {%- endcomment -%}
+          {%- if b.card_title_override != blank -%}
+            {%- assign card_title = b.card_title_override -%}
+          {%- endif -%}
+          {%- if b.card_desc_override != blank -%}
+            {%- assign card_desc = b.card_desc_override -%}
+          {%- endif -%}
+          {%- if b.card_image_override != blank -%}
+            {%- assign card_img = b.card_image_override -%}
+          {%- endif -%}
+
+          <a
+            href="{{ card_url }}"
+            class="cc-card"
+            style="
+              background: {{ b.card_bg }};
+              border-radius: {{ b.card_radius }}px;
+              padding: 0;
+            "
+            {{ block.shopify_attributes }}
+          >
+
+            {%- comment -%} ── Image ── {%- endcomment -%}
+            <div
+              class="cc-card__img-wrap"
+              style="height: {{ b.image_height }}px; border-radius: {{ b.card_radius }}px {{ b.card_radius }}px 0 0; overflow:hidden;"
+            >
+              {%- if card_img != blank -%}
+                {{
+                  card_img
+                  | image_url: width: 800
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '400, 600, 800',
+                    sizes: '(max-width:768px) 50vw, 25vw',
+                    alt: card_title
+                }}
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'cc-card__placeholder' }}
+              {%- endif -%}
+            </div>
+
+            {%- comment -%} ── Body ── {%- endcomment -%}
+            <div
+              class="cc-card__body"
+              style="padding: {{ b.body_pad_v }}px {{ b.body_pad_h }}px;"
+            >
+              {%- if card_title != blank -%}
+                <p
+                  class="cc-card__title"
+                  style="
+                    color: {{ b.card_title_color }};
+                    font-size: {{ b.card_title_size_desktop }}px;
+                    font-weight: {{ b.card_title_weight }};
+                  "
+                >
+                  {{ card_title | escape }}
+                </p>
+              {%- endif -%}
+
+              {%- if card_desc != blank -%}
+                <p
+                  class="cc-card__desc"
+                  style="
+                    color: {{ b.card_desc_color }};
+                    font-size: {{ b.card_desc_size_desktop }}px;
+                  "
+                >
+                  {{ card_desc }}
+                </p>
+              {%- endif -%}
+            </div>
+
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{%- comment -%} Per-block mobile font overrides {%- endcomment -%}
+<style>
+  @media screen and (max-width: 768px) {
+    {%- for block in section.blocks -%}
+      #shopify-section-{{ section.id }} .cc-grid > *:nth-child({{ forloop.index }}) .cc-card__title {
+        font-size: {{ block.settings.card_title_size_mobile }}px;
+      }
+      #shopify-section-{{ section.id }} .cc-grid > *:nth-child({{ forloop.index }}) .cc-card__desc {
+        font-size: {{ block.settings.card_desc_size_mobile }}px;
+      }
+    {%- endfor -%}
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Cards",
+  "tag": "section",
+  "class": "section-collection-cards",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Layout"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section background",
+      "default": "#f9f7f4"
+    },
+    {
+      "type": "range",
+      "id": "section_pad_v",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Section padding – vertical",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "section_pad_h",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Section padding – horizontal",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "section_max_width",
+      "min": 600,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Content max width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap between cards",
+      "default": 20
+    },
+
+    {
+      "type": "header",
+      "content": "Section Heading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "SNACK BOXES FOR EVERY OCCASION"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "min": 16,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "label": "Title font size – desktop",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 14,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Title font size – mobile",
+      "default": 22
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title font weight",
+      "options": [
+        { "value": "400", "label": "Regular (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra-bold (800)" }
+      ],
+      "default": "700"
+    },
+
+    {
+      "type": "header",
+      "content": "Section Description"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Popular gift ideas, ready to send."
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description color",
+      "default": "#6b6b6b"
+    },
+    {
+      "type": "range",
+      "id": "desc_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description font size – desktop",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desc_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description font size – mobile",
+      "default": 14
+    }
+  ],
+
+  "blocks": [
+    {
+      "type": "collection_card",
+      "name": "Collection Card",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Collection Card"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection (provides image, title, description & URL)"
+        },
+
+        {
+          "type": "header",
+          "content": "Overrides (blank = use collection data)"
+        },
+        {
+          "type": "image_picker",
+          "id": "card_image_override",
+          "label": "Custom image"
+        },
+        {
+          "type": "text",
+          "id": "card_title_override",
+          "label": "Custom title"
+        },
+        {
+          "type": "textarea",
+          "id": "card_desc_override",
+          "label": "Custom description"
+        },
+        {
+          "type": "url",
+          "id": "card_url",
+          "label": "Custom URL (used when no collection is set)"
+        },
+
+        {
+          "type": "header",
+          "content": "Card Style"
+        },
+        {
+          "type": "color",
+          "id": "card_bg",
+          "label": "Card background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "range",
+          "id": "card_radius",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Card border radius",
+          "default": 12
+        },
+
+        {
+          "type": "header",
+          "content": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_height",
+          "min": 100,
+          "max": 600,
+          "step": 10,
+          "unit": "px",
+          "label": "Image height",
+          "default": 220
+        },
+
+        {
+          "type": "header",
+          "content": "Card Body"
+        },
+        {
+          "type": "range",
+          "id": "body_pad_v",
+          "min": 8,
+          "max": 48,
+          "step": 4,
+          "unit": "px",
+          "label": "Body padding – vertical",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "body_pad_h",
+          "min": 8,
+          "max": 48,
+          "step": 4,
+          "unit": "px",
+          "label": "Body padding – horizontal",
+          "default": 20
+        },
+
+        {
+          "type": "header",
+          "content": "Card Title"
+        },
+        {
+          "type": "color",
+          "id": "card_title_color",
+          "label": "Title color",
+          "default": "#1a1a1a"
+        },
+        {
+          "type": "range",
+          "id": "card_title_size_desktop",
+          "min": 10,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "label": "Title font size – desktop",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "card_title_size_mobile",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Title font size – mobile",
+          "default": 13
+        },
+        {
+          "type": "select",
+          "id": "card_title_weight",
+          "label": "Title font weight",
+          "options": [
+            { "value": "400", "label": "Regular (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi-bold (600)" },
+            { "value": "700", "label": "Bold (700)" },
+            { "value": "800", "label": "Extra-bold (800)" }
+          ],
+          "default": "700"
+        },
+
+        {
+          "type": "header",
+          "content": "Card Description"
+        },
+        {
+          "type": "color",
+          "id": "card_desc_color",
+          "label": "Description color",
+          "default": "#6b6b6b"
+        },
+        {
+          "type": "range",
+          "id": "card_desc_size_desktop",
+          "min": 10,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "label": "Description font size – desktop",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "card_desc_size_mobile",
+          "min": 10,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Description font size – mobile",
+          "default": 13
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Collection Cards",
+      "blocks": [
+        { "type": "collection_card", "settings": { "card_title_override": "COLLEGE CARE PACKAGES", "card_desc_override": "A perfect surprise for students away from home." } },
+        { "type": "collection_card", "settings": { "card_title_override": "BIRTHDAY SNACK BOXES", "card_desc_override": "Fun, easy gifts that always arrive on time." } },
+        { "type": "collection_card", "settings": { "card_title_override": "GET WELL SOON", "card_desc_override": "A thoughtful way to brighten someone's day." } },
+        { "type": "collection_card", "settings": { "card_title_override": "CORPORATE & TEAM GIFTING", "card_desc_override": "Easy gifting for teams, clients, and employees." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

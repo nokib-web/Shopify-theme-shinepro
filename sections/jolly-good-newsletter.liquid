@@ -1,0 +1,482 @@
+{%- style -%}
+  :root {
+    --jg-newsl-bg-{{ section.id }}: {{ section.settings.section_background_color }};
+    --jg-newsl-card-bg-{{ section.id }}: {{ section.settings.card_background_color }};
+    
+    /* Spacing */
+    --jg-newsl-pad-top-{{ section.id }}: {{ section.settings.pad_top }}px;
+    --jg-newsl-pad-bottom-{{ section.id }}: {{ section.settings.pad_bottom }}px;
+    --jg-newsl-mar-top-{{ section.id }}: {{ section.settings.mar_top }}px;
+    --jg-newsl-mar-bottom-{{ section.id }}: {{ section.settings.mar_bottom }}px;
+    
+    --jg-newsl-pad-top-mob-{{ section.id }}: {{ section.settings.pad_top_mobile }}px;
+    --jg-newsl-pad-bottom-mob-{{ section.id }}: {{ section.settings.pad_bottom_mobile }}px;
+    --jg-newsl-mar-top-mob-{{ section.id }}: {{ section.settings.mar_top_mobile }}px;
+    --jg-newsl-mar-bottom-mob-{{ section.id }}: {{ section.settings.mar_bottom_mobile }}px;
+
+    /* Font Sizes */
+    --jg-newsl-title-size-{{ section.id }}: {{ section.settings.title_font_size }}px;
+    --jg-newsl-title-size-mob-{{ section.id }}: {{ section.settings.title_font_size_mobile }}px;
+  }
+  
+  .jg-newsletter-{{ section.id }} {
+    background-color: var(--jg-newsl-bg-{{ section.id }});
+    padding-top: var(--jg-newsl-pad-top-{{ section.id }});
+    padding-bottom: var(--jg-newsl-pad-bottom-{{ section.id }});
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: var(--jg-newsl-mar-top-{{ section.id }});
+    margin-bottom: var(--jg-newsl-mar-bottom-{{ section.id }});
+    font-family: var(--jg-font-sans);
+  }
+  .jg-newsletter__container {
+    max-width: {% if section.settings.width_mode == 'boxed' %}1200px{% else %}100%{% endif %};
+    margin: 0 auto;
+    background-color: var(--jg-newsl-card-bg-{{ section.id }});
+    border-radius: 20px;
+    padding: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(11, 35, 58, 0.15);
+  }
+  
+  /* Decorative backgrounds */
+  .jg-newsletter__container::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(197, 146, 53, 0.08) 0%, rgba(255,255,255,0) 70%);
+    pointer-events: none;
+  }
+
+  .jg-newsletter__info {
+    flex: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  .jg-newsletter__content {
+    max-width: 380px;
+    text-align: left;
+  }
+  .jg-newsletter__title {
+    font-family: var(--jg-font-serif);
+    font-size: var(--jg-newsl-title-size-{{ section.id }});
+    color: #ffffff;
+    margin: 0 0 15px 0;
+    line-height: 1.2;
+  }
+  .jg-newsletter__text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #ede7db;
+    margin: 0;
+  }
+  
+  /* Envelope graphic */
+  .jg-newsletter__graphic {
+    width: 140px;
+    height: auto;
+    flex-shrink: 0;
+    animation: float-envelope 4s infinite ease-in-out;
+  }
+  @keyframes float-envelope {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(2deg); }
+  }
+
+  /* Form */
+  .jg-newsletter__form-wrapper {
+    flex: 1;
+    max-width: 460px;
+    width: 100%;
+    z-index: 2;
+  }
+  .jg-newsletter__form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .jg-newsletter__inputs-row {
+    display: flex;
+    gap: 12px;
+  }
+  .jg-newsletter__input-group {
+    flex: 1;
+  }
+  .jg-newsletter__input {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 8px;
+    border: 1px solid #d4cdbf;
+    background-color: #ffffff;
+    font-size: 14px;
+    color: var(--jg-color-blue);
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  .jg-newsletter__input:focus {
+    border-color: var(--jg-color-gold);
+  }
+  
+  /* Phone input specific custom row */
+  .jg-newsletter__phone-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .jg-newsletter__phone-prefix {
+    position: absolute;
+    left: 12px;
+    font-size: 13px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    pointer-events: none;
+    border-right: 1px solid #ddd;
+    padding-right: 8px;
+  }
+  .jg-newsletter__phone-prefix img {
+    width: 16px;
+    height: auto;
+  }
+  .jg-newsletter__input--phone {
+    padding-left: 75px;
+  }
+
+  .jg-newsletter__submit {
+    background-color: var(--jg-color-gold);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(197, 146, 53, 0.3);
+  }
+  .jg-newsletter__submit:hover {
+    background-color: var(--jg-color-gold-hover);
+    transform: translateY(-2px);
+  }
+  
+  .jg-newsletter__disclaimer {
+    font-size: 11px;
+    line-height: 1.4;
+    color: #c0c6cc;
+    text-align: center;
+    margin: 0;
+  }
+
+  @media (max-width: 991px) {
+    .jg-newsletter-{{ section.id }} {
+      padding-top: var(--jg-newsl-pad-top-mob-{{ section.id }});
+      padding-bottom: var(--jg-newsl-pad-bottom-mob-{{ section.id }});
+      margin-top: var(--jg-newsl-mar-top-mob-{{ section.id }});
+      margin-bottom: var(--jg-newsl-mar-bottom-mob-{{ section.id }});
+    }
+    .jg-newsletter__container {
+      flex-direction: column;
+      padding: 40px;
+    }
+    .jg-newsletter__info {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+    .jg-newsletter__content {
+      max-width: 100%;
+      text-align: center;
+    }
+    .jg-newsletter__title {
+      font-size: var(--jg-newsl-title-size-mob-{{ section.id }});
+    }
+    .jg-newsletter__form-wrapper {
+      max-width: 100%;
+    }
+  }
+  @media (max-width: 650px) {
+    .jg-newsletter__inputs-row {
+      flex-direction: column;
+      gap: 15px;
+    }
+  }
+
+  {{ section.settings.custom_css }}
+{%- endstyle -%}
+
+<section 
+  id="{{ section.settings.custom_id | default: section.id }}" 
+  class="jg-newsletter-{{ section.id }} {{ section.settings.custom_class }}"
+  style="{{ section.settings.custom_style }}"
+>
+  <div class="jg-newsletter__container">
+    
+    <!-- Left Column: Content & Envelope Graphic -->
+    <div class="jg-newsletter__info">
+      {%- if section.settings.image != blank -%}
+        <img class="jg-newsletter__graphic" src="{{ section.settings.image | image_url: width: 300 }}" alt="{{ section.settings.title | escape }}" width="140" height="140" loading="lazy">
+      {%- else -%}
+        <img class="jg-newsletter__graphic" src="{{ 'newsletter-envelope.png' | asset_url }}" alt="15% Off Promo Envelope" width="140" height="140" loading="lazy">
+      {%- endif -%}
+      
+      <div class="jg-newsletter__content">
+        <h2 class="jg-newsletter__title">{{ section.settings.title }}</h2>
+        <p class="jg-newsletter__text">
+          {{ section.settings.text }}
+        </p>
+      </div>
+    </div>
+    
+    <!-- Right Column: Sign Up Form -->
+    <div class="jg-newsletter__form-wrapper">
+      {%- form 'customer', class: 'jg-newsletter__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        
+        <div class="jg-newsletter__inputs-row">
+          <!-- Email Field -->
+          <div class="jg-newsletter__input-group">
+            <input 
+              type="email" 
+              name="contact[email]" 
+              class="jg-newsletter__input" 
+              placeholder="Email Address" 
+              required
+              aria-label="Email Address"
+            >
+          </div>
+          
+          <!-- Mobile Field (Optional) -->
+          <div class="jg-newsletter__input-group">
+            <div class="jg-newsletter__phone-wrapper">
+              <span class="jg-newsletter__phone-prefix">
+                🇺🇸 US
+              </span>
+              <input 
+                type="tel" 
+                name="contact[phone]" 
+                class="jg-newsletter__input jg-newsletter__input--phone" 
+                placeholder="Mobile Number (optional)"
+                aria-label="Mobile Number (optional)"
+              >
+            </div>
+          </div>
+        </div>
+        
+        <button type="submit" class="jg-newsletter__submit">
+          {{ section.settings.btn_label }}
+        </button>
+        
+        <p class="jg-newsletter__disclaimer">
+          By signing up, you agree to receive marketing messages. Msg & data rates may apply.
+        </p>
+      {%- endform -%}
+    </div>
+    
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Jolly Good Newsletter",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Controls"
+    },
+    {
+      "type": "select",
+      "id": "width_mode",
+      "label": "Width Mode",
+      "options": [
+        { "value": "full", "label": "Full Width" },
+        { "value": "boxed", "label": "Boxed (1200px)" }
+      ],
+      "default": "boxed"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Join the Jolly Good Community!"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Subtext",
+      "default": "Get 15% off your first order + exclusive offers and gift ideas."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Promotion Image"
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Claim My 15% Off"
+    },
+    {
+      "type": "color",
+      "id": "section_background_color",
+      "label": "Section Background Color",
+      "default": "#fdfbf7"
+    },
+    {
+      "type": "color",
+      "id": "card_background_color",
+      "label": "Card Background Color",
+      "default": "#0b233a"
+    },
+    {
+      "type": "header",
+      "content": "Typography Sliders"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Desktop)",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Spacing Sliders"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "mar_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Top (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mar_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Bottom (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mar_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Top (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mar_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Margin Bottom (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Advanced Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_css",
+      "label": "Custom CSS overrides"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom HTML Classes"
+    },
+    {
+      "type": "text",
+      "id": "custom_id",
+      "label": "Custom HTML id"
+    },
+    {
+      "type": "text",
+      "id": "custom_style",
+      "label": "Custom Inline Styles"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Jolly Good Newsletter Sign Up"
+    }
+  ]
+}
+{% endschema %}
